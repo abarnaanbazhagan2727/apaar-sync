@@ -1,0 +1,76 @@
+{
+  "description": "Prediction outcome and prototype risk score.",
+  "properties": {
+    "prediction": {
+      "description": "Raw prediction class: 1 (Potential Data Issue), 0 (No Issue Flagged)",
+      "title": "Prediction",
+      "type": "integer"
+    },
+    "label": {
+      "description": "Human-readable prediction label",
+      "enum": [
+        "Potential Data Issue",
+        "No Issue Flagged"
+      ],
+      "title": "Label",
+      "type": "string"
+    },
+    "issue_probability": {
+      "description": "Model issue-class probability (0.00 to 1.00)",
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Issue Probability",
+      "type": "number"
+    },
+    "clean_probability": {
+      "description": "Model clean-class probability (0.00 to 1.00)",
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Clean Probability",
+      "type": "number"
+    },
+    "prototype_score_label": {
+      "default": "Prototype Data-Quality Risk Score (0.00 - 1.00)",
+      "description": "Explicit label designating this as a prototype score, not verified fraud",
+      "title": "Prototype Score Label",
+      "type": "string"
+    },
+    "features_evaluated": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "description": "The six numerical features evaluated",
+      "title": "Features Evaluated",
+      "type": "object"
+    },
+    "warnings": {
+      "description": "Descriptive validation warnings for triggered features",
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    },
+    "model_name": {
+      "default": "RandomForestClassifier (APAAR-Sync Prototype)",
+      "description": "Architecture name of the prototype model",
+      "title": "Model Name",
+      "type": "string"
+    },
+    "disclaimer": {
+      "default": "Prototype model score trained on simulated student data for SIH 2026. Does NOT represent verified fraud probability or official APAAR verification.",
+      "description": "Mandatory prototype research disclaimer",
+      "title": "Disclaimer",
+      "type": "string"
+    }
+  },
+  "required": [
+    "prediction",
+    "label",
+    "issue_probability",
+    "clean_probability",
+    "features_evaluated"
+  ],
+  "title": "DataQualityPredictionResponse",
+  "type": "object"
+}

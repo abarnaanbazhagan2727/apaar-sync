@@ -1,0 +1,62 @@
+{
+  "description": "Safe model status information without disclosing filesystem internals.",
+  "properties": {
+    "status": {
+      "enum": [
+        "ready",
+        "missing_file",
+        "error"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "model_type": {
+      "title": "Model Type",
+      "type": "string"
+    },
+    "version": {
+      "title": "Version",
+      "type": "string"
+    },
+    "features": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Features",
+      "type": "array"
+    },
+    "classes": {
+      "items": {
+        "type": "integer"
+      },
+      "title": "Classes",
+      "type": "array"
+    },
+    "total_trees": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Total Trees"
+    },
+    "disclaimer": {
+      "title": "Disclaimer",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "model_type",
+    "version",
+    "features",
+    "classes",
+    "disclaimer"
+  ],
+  "title": "ModelStatusResponse",
+  "type": "object"
+}

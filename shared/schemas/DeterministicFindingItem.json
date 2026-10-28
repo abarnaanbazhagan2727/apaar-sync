@@ -1,0 +1,36 @@
+{
+  "description": "A deterministic validation issue found prior to or alongside ML evaluation.",
+  "properties": {
+    "rule_code": {
+      "title": "Rule Code",
+      "type": "string"
+    },
+    "field": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Field"
+    },
+    "severity": {
+      "title": "Severity",
+      "type": "string"
+    },
+    "message": {
+      "title": "Message",
+      "type": "string"
+    }
+  },
+  "required": [
+    "rule_code",
+    "severity",
+    "message"
+  ],
+  "title": "DeterministicFindingItem",
+  "type": "object"
+}

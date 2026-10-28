@@ -1,0 +1,149 @@
+{
+  "description": "Simulated student record submitted for combined deterministic validation and ML scoring.",
+  "properties": {
+    "student_name": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Full candidate name",
+      "title": "Student Name"
+    },
+    "apaar_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "12-digit APAAR ID or provisional ID",
+      "title": "Apaar Id"
+    },
+    "apaar_opt_out": {
+      "default": false,
+      "description": "Opted out of APAAR",
+      "title": "Apaar Opt Out",
+      "type": "boolean"
+    },
+    "provisional_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Provisional identifier if opted out",
+      "title": "Provisional Id"
+    },
+    "dob": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Date of birth (YYYY-MM-DD or DD-MM-YYYY)",
+      "title": "Dob"
+    },
+    "programme_code": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Approved AICTE programme code",
+      "title": "Programme Code"
+    },
+    "qualifying_exam_pct": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Qualifying exam % marks",
+      "title": "Qualifying Exam Pct"
+    },
+    "gender": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Gender (male, female, transgender)",
+      "title": "Gender"
+    },
+    "category": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Social category (general, ews, obc, sc, st)",
+      "title": "Category"
+    },
+    "seat_pool": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Seat pool quota",
+      "title": "Seat Pool"
+    },
+    "domicile_state": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "State of domicile",
+      "title": "Domicile State"
+    },
+    "is_duplicate": {
+      "default": false,
+      "description": "Duplicate flag for testing",
+      "title": "Is Duplicate",
+      "type": "boolean"
+    }
+  },
+  "title": "StudentRecordQualityInput",
+  "type": "object"
+}

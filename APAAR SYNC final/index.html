@@ -1,0 +1,4189 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>APAAR-Sync</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34' fill='none' stroke='%23a78bfa' stroke-width='2'%3E%3Crect x='4' y='7' width='26' height='20' rx='4'/%3E%3Ccircle cx='13' cy='16' r='3.5'/%3E%3Cpath d='M8 23c1-3 9-3 10 0M21 14h5M21 19h5'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0a12;--cd:rgba(22,17,40,0.76);--tx:#ffffff;--mu:#b4b1cc;--bd:rgba(167,139,250,0.28);--ac:#a78bfa;--so:rgba(255,255,255,0.045);--ok:#4ade80;--wr:#fbbf24;--bad:#f87171;--bt:linear-gradient(90deg,#7c3aed,#db2777);color-scheme:dark;box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:#0b0a12;color:#ffffff;font-family:'Sora',system-ui,-apple-system,sans-serif;font-size:14px;line-height:1.5;color-scheme:dark;position:relative;min-height:100vh}
+body::before{content:'';position:fixed;top:0;left:50%;transform:translateX(-50%);width:960px;max-width:100vw;height:520px;background:radial-gradient(circle at 50% 20%,rgba(168,85,247,0.35) 0%,rgba(190,24,93,0.15) 50%,transparent 75%);filter:blur(90px);pointer-events:none;z-index:-1}
+.w{max-width:1140px;margin:0 auto;padding-block:24px;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.c{background:rgba(22,17,40,0.72);border:1px solid rgba(167,139,250,0.35);border-radius:20px;padding:22px;margin-bottom:20px;box-shadow:0 8px 32px rgba(0,0,0,0.35),0 0 40px rgba(139,92,246,0.06);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+h1,h2,h3{margin:0;font-family:'Sora',sans-serif}h1{font-size:22px;font-weight:700;color:#ffffff;letter-spacing:-0.02em}h2{font-size:16px;font-weight:700;color:#ffffff;margin-bottom:8px}h3{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:#a78bfa;text-transform:uppercase;letter-spacing:0.12em;margin:16px 0 6px}
+.g{display:grid;gap:14px}.g4{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}.g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.k{background:rgba(255,255,255,0.04);border:1px solid rgba(167,139,250,0.25);border-radius:14px;padding:14px 16px;box-shadow:0 4px 16px rgba(0,0,0,0.2)}.k b{display:block;font-size:26px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#ffffff;letter-spacing:-0.02em}.k span{font-size:11px;font-family:'JetBrains Mono',monospace;color:#b4b1cc;text-transform:uppercase;letter-spacing:0.06em}
+button,input,select,textarea{font:inherit;color:inherit}
+.b{background:linear-gradient(90deg,#7c3aed,#db2777);color:#ffffff;border:0;border-radius:10px;padding:10px 18px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 18px rgba(139,92,246,0.4);transition:transform .15s,box-shadow .15s,filter .15s}
+.b:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(139,92,246,0.6);filter:brightness(1.05)}
+.b:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.b.s{background:rgba(255,255,255,0.05);border:1px solid rgba(167,139,250,0.4);color:#e9d5ff;box-shadow:none}
+.b.s:hover{background:rgba(167,139,250,0.2);border-color:#a78bfa;color:#ffffff;box-shadow:0 4px 14px rgba(167,139,250,0.25)}
+.b.d{background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.5);color:#fca5a5;box-shadow:none}
+.b.d:hover{background:rgba(239,68,68,0.25);border-color:#ef4444;color:#fee2e2}
+.b.w{background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.5);color:#fbbf24;box-shadow:none}
+.b.w:hover{background:rgba(245,158,11,0.25);border-color:#f59e0b;color:#fef3c7}
+input,select,textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid #2f2a4a;border-radius:12px;padding:11px 14px;color:#ffffff;font-family:'Sora',sans-serif;box-sizing:border-box;transition:border-color .2s,box-shadow .2s,background .2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#a78bfa;background:rgba(255,255,255,0.07);box-shadow:0 0 0 3px rgba(167,139,250,0.3)}
+select option{background:#161128;color:#ffffff}
+label{display:block;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:#b4b1cc;margin:12px 0 6px}
+.bar{height:12px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#7c3aed,#db2777);transition:width .4s}
+.t{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase}
+.t.ok{background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.4);color:#4ade80}
+.t.wr{background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);color:#fbbf24}
+.t.bad{background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.4);color:#f87171}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;color:#a78bfa;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:12px 8px;border-bottom:1px solid rgba(167,139,250,0.3)}
+td{padding:12px 8px;border-top:1px solid rgba(255,255,255,0.07);color:#e2e0f0}
+.sc{overflow-x:auto}tr.l{cursor:pointer;transition:background .15s}tr.l:hover td{background:rgba(167,139,250,0.12)}
+.m{font-family:'JetBrains Mono',monospace}.mu{color:#b4b1cc;font-size:12px}
+.hd{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid rgba(167,139,250,0.15)}
+.tabs{display:flex;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:4px;gap:4px;margin-bottom:16px;overflow-x:auto}
+.tabs button{flex:1;border:0;background:none;border-radius:10px;padding:9px 10px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.06em;color:#b4b1cc;cursor:pointer;transition:all .2s;text-align:center;white-space:nowrap}
+.tabs button:hover{color:#ffffff;background:rgba(167,139,250,0.1)}
+.tabs .on{background:linear-gradient(90deg,#7c3aed,#db2777);color:#ffffff;box-shadow:0 4px 14px rgba(124,58,237,0.35);font-weight:700}
+.ban{border:1px solid rgba(239,68,68,0.5);background:rgba(239,68,68,0.12);border-radius:14px;padding:14px;margin-bottom:16px}
+.err{color:#f87171;font-size:12px;font-family:'Sora',sans-serif;margin-top:8px;min-height:18px}
+.ov{position:fixed;inset:0;background:rgba(5,3,10,0.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:16px;z-index:40}
+.ov .c{max-width:580px;width:100%;margin:0;max-height:90vh;overflow:auto;background:rgba(22,17,40,0.96);border:1px solid rgba(167,139,250,0.55);box-shadow:0 0 80px rgba(139,92,246,0.35);border-radius:24px;padding:26px}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:rgba(24,18,44,0.95);border:1px solid rgba(167,139,250,0.45);color:#ffffff;font-family:'JetBrains Mono',monospace;font-size:12px;padding:11px 20px;border-radius:12px;z-index:50;display:none;max-width:90vw;box-shadow:0 10px 30px rgba(0,0,0,0.5),0 0 20px rgba(139,92,246,0.3)}
+.lg{min-height:80vh;display:grid;place-items:center}.lg .c{max-width:420px;width:100%}
+.pass{max-width:460px;margin:0 auto;text-align:center;background:rgba(22,17,40,0.75);border:1px solid rgba(167,139,250,0.35);border-radius:20px;padding:24px;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+#qr{display:inline-block;background:#fff;padding:12px;border-radius:14px;margin:12px 0}#qr img,#qr canvas{display:block}
+.lk{background:none;border:0;color:#a78bfa;font-family:'JetBrains Mono',monospace;font-weight:600;cursor:pointer;padding:0;text-decoration:underline;transition:color .2s}
+.lk:hover{color:#c4b5fd}
+.mail{border:1px dashed rgba(167,139,250,0.5);background:rgba(124,58,237,0.1);border-radius:12px;padding:14px;margin:4px 0 12px}
+.hb{border:1px solid rgba(167,139,250,0.35);background:rgba(255,255,255,0.06);color:#a78bfa;border-radius:10px;padding:9px 11px;cursor:pointer;transition:background .15s,border-color .15s}
+.hb:hover{background:rgba(167,139,250,0.2);border-color:#a78bfa}
+.hb i{display:block;width:20px;height:2px;background:currentColor;margin:4px 0;border-radius:1px}
+.dr{position:fixed;top:0;bottom:0;left:0;width:290px;max-width:85vw;background:#140e29;border-right:1px solid rgba(167,139,250,0.25);box-shadow:10px 0 40px rgba(0,0,0,0.65);transform:translateX(-100%);transition:transform .25s;z-index:30;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+.dr.on{transform:none}
+.sh{position:fixed;inset:0;background:rgba(5,3,10,0.75);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .25s;z-index:25}
+.sh.on{opacity:1;pointer-events:auto}
+.ni{display:block;width:100%;text-align:left;border:0;background:none;padding:13px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;letter-spacing:0.05em;color:#c9c6de;cursor:pointer;border-left:3px solid transparent;transition:all .15s}
+.ni:hover{color:#ffffff;background:rgba(167,139,250,0.1)}
+.ni.on{background:linear-gradient(90deg,rgba(124,58,237,0.25),rgba(219,39,119,0.08));color:#ffffff;border-left-color:#a78bfa;font-weight:700}
+.dh{padding:22px 18px;border-bottom:1px solid rgba(167,139,250,0.2);background:rgba(255,255,255,0.02)}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.kv div{background:rgba(255,255,255,0.035);border:1px solid rgba(167,139,250,0.2);border-radius:12px;padding:12px 14px}
+.kv span{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;color:#a5a1c8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px}
+.kv b{word-break:break-word;color:#ffffff}
+
+/* ========================================================================== */
+/* DARK COSMIC LANDING & LOGIN SYSTEM (.lp)                                   */
+/* ========================================================================== */
+.lp{background:#0b0a12;color:#ffffff;min-height:100vh;position:relative;overflow-x:hidden;font-family:'Sora',system-ui,-apple-system,sans-serif;color-scheme:dark;padding-bottom:60px;line-height:1.45}
+.lp *{box-sizing:border-box}
+.lp-frame{position:fixed;inset:20px;border:1px solid rgba(255,255,255,0.08);border-radius:24px;pointer-events:none;z-index:1}
+@media(max-width:640px){.lp-frame{inset:8px;border-radius:16px}}
+.lp-glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:820px;max-width:100vw;height:520px;background:radial-gradient(circle at 50% 30%,rgba(168,85,247,0.55) 0%,rgba(190,24,93,0.25) 55%,transparent 75%);filter:blur(80px);pointer-events:none;z-index:0}
+.lp-orb{position:absolute;border-radius:50%;pointer-events:none;z-index:0;animation:lp-float 7s ease-in-out infinite}
+.lp-orb-1{top:130px;left:9%;width:14px;height:14px;background:#c26738;box-shadow:0 0 16px #c26738;animation-delay:0s}
+.lp-orb-2{top:290px;left:16%;width:10px;height:10px;background:#8e8d9a;box-shadow:0 0 12px #8e8d9a;animation-delay:1.5s}
+.lp-orb-3{top:170px;right:12%;width:12px;height:12px;background:#14b8a6;box-shadow:0 0 16px #14b8a6;animation-delay:3s}
+.lp-orb-4{top:430px;left:7%;width:16px;height:16px;background:#0d9488;box-shadow:0 0 18px #0d9488;animation-delay:4.5s}
+.lp-orb-5{top:380px;right:8%;width:14px;height:14px;background:#ec4899;box-shadow:0 0 18px #ec4899;animation-delay:2s}
+.lp-orb-6{top:520px;right:20%;width:18px;height:18px;background:#a855f7;box-shadow:0 0 20px #a855f7;animation-delay:5.5s}
+@keyframes lp-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+.lp-nav{max-width:1140px;margin:0 auto;padding:34px 28px 16px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:10}
+.lp-brand{display:flex;align-items:center;gap:12px;text-decoration:none;cursor:pointer}
+.lp-brand-name{font-family:'Sora',sans-serif;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:-0.02em}
+.lp-nav-links{display:flex;gap:28px;align-items:center}
+.lp-nav-link{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:#b4b1cc;text-decoration:none;letter-spacing:0.14em;text-transform:uppercase;transition:color .2s}
+.lp-nav-link:hover{color:#a78bfa}
+@media(max-width:820px){.lp-nav-links{display:none}}
+.lp-nav-actions{display:flex;align-items:center;gap:14px}
+.lp-nav-new{background:none;border:0;color:#c9c6de;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.13em;text-transform:uppercase;cursor:pointer;padding:8px 10px;transition:color .2s}
+.lp-nav-new:hover{color:#a78bfa}
+.lp-nav-signin{background:rgba(255,255,255,0.04);border:1px solid #c4b5fd;border-radius:6px 14px 6px 14px;color:#ffffff;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.13em;text-transform:uppercase;padding:9px 18px;cursor:pointer;transition:background .2s,border-color .2s,box-shadow .2s}
+.lp-nav-signin:hover{background:rgba(167,139,250,0.18);border-color:#a78bfa;box-shadow:0 0 18px rgba(167,139,250,0.35)}
+.lp-hero{max-width:900px;margin:32px auto 20px;padding:0 20px;text-align:center;position:relative;z-index:5}
+.lp-hero h1{font-family:'Sora',sans-serif;font-size:clamp(34px,5vw,60px);font-weight:700;line-height:1.15;letter-spacing:-0.03em;color:#ffffff;margin:0 auto 16px}
+.lp-rainbow-word{position:relative;display:inline-block}
+.lp-rainbow-word::after{content:'';position:absolute;left:0;right:0;bottom:-4px;height:4px;background:linear-gradient(90deg,#8b5cf6,#ec4899,#f59e0b,#22c55e);border-radius:2px}
+.lp-hero-sub{font-family:'Sora',sans-serif;font-size:17px;line-height:1.55;color:#c9c6de;max-width:620px;margin:0 auto 24px;font-weight:400}
+.lp-btn-getstarted{background:#ffffff;color:#0b0a12;border:0;border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:13px 28px;cursor:pointer;box-shadow:0 4px 22px rgba(255,255,255,0.28);transition:transform .15s,box-shadow .15s,filter .15s}
+.lp-btn-getstarted:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(255,255,255,0.45);filter:brightness(1.05)}
+.lp-card-wrapper{max-width:520px;margin:48px auto 64px;padding:0 16px;position:relative;z-index:5}
+.lp-card{background:rgba(22,17,40,0.72);border:1px solid rgba(167,139,250,0.55);border-radius:26px;box-shadow:0 0 80px rgba(139,92,246,0.28);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:36px;display:flex;flex-direction:column;position:relative;box-sizing:border-box;width:100%}
+@media(max-width:390px){.lp-card{padding:24px}}
+.lp-tabs{display:flex;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:4px;gap:4px;margin-bottom:20px}
+.lp-tab{flex:1;background:none;border:0;border-radius:10px;padding:9px 6px;color:#b4b1cc;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.06em;cursor:pointer;transition:all .2s;text-align:center}
+.lp-tab-active{background:linear-gradient(90deg,#7c3aed,#db2777);color:#ffffff;box-shadow:0 4px 14px rgba(124,58,237,0.35)}
+.lp-label{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.14em;color:#b4b1cc;margin:14px 0 6px;display:block}
+.lp-input{width:100%;background:rgba(255,255,255,0.05);border:1px solid #2f2a4a;border-radius:12px;padding:14px;color:#ffffff;font-size:14px;font-family:'Sora',sans-serif;box-sizing:border-box;transition:border-color .2s,box-shadow .2s,background .2s}
+.lp-input:focus{outline:none;border-color:#a78bfa;background:rgba(255,255,255,0.07);box-shadow:0 0 0 3px rgba(167,139,250,0.3)}
+.lp-error{color:#f87171;font-size:12px;font-family:'Sora',sans-serif;margin-top:10px;min-height:18px}
+.lp-btn-submit{width:100%;background:linear-gradient(90deg,#7c3aed,#db2777);border:none;border-radius:12px;padding:14px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:#ffffff;cursor:pointer;box-shadow:0 4px 20px rgba(139,92,246,0.5);margin-top:18px;transition:transform .15s,box-shadow .15s}
+.lp-btn-submit:hover{transform:translateY(-1px);box-shadow:0 6px 26px rgba(139,92,246,0.7)}
+.lp-btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.lp-footer-row{display:flex;justify-content:space-between;align-items:center;margin-top:16px;font-size:12px;color:#b4b1cc}
+.lp-footer-note{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.8}
+.lp-link-btn{background:none;border:0;color:#a78bfa;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;padding:0;text-decoration:underline;transition:color .2s}
+.lp-link-btn:hover{color:#c4b5fd}
+.lp-demo-details{margin-top:16px;border-top:1px solid rgba(255,255,255,0.08);padding-top:12px;font-size:12px;color:#b4b1cc}
+.lp-demo-details summary{cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#c9c6de}
+.lp-demo-box{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:10px 12px;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px}
+.lp-btn-row{display:flex;gap:8px;margin-top:10px}
+.lp-btn-outline{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(167,139,250,0.4);border-radius:8px;padding:8px;color:#ffffff;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:background .15s,border-color .15s}
+.lp-btn-outline:hover{background:rgba(167,139,250,0.2);border-color:#a78bfa}
+.lp-btn-danger{border-color:rgba(239,68,68,0.4);color:#fca5a5}
+.lp-btn-danger:hover{background:rgba(239,68,68,0.2);border-color:#ef4444}
+@media(prefers-reduced-motion:reduce){.lp-orb{animation:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<script>
+// ============================================================================
+// APAAR-Sync Single File Sandbox Core
+// Tagline: "One Student, One ID, One Version of the Truth"
+// ============================================================================
+
+const JWT_SECRET = 'apaar-sync-hs256-shared-key-2026';
+let toastTimer = null;
+
+// Helper: Escape HTML
+function esc(s) {
+  if (s == null) return '';
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// Helper: Toast message
+function toast(msg) {
+  const el = document.getElementById('toast');
+  if (!el) return;
+  el.textContent = msg;
+  el.style.display = 'block';
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.style.display = 'none'; }, 3200);
+}
+
+// Helper: Privacy mask
+function maskApaar(id) {
+  if (!id) return '';
+  const clean = id.replace(/-/g, '');
+  if (clean.length < 4) return id;
+  return 'XXXX-XXXX-' + clean.slice(-4);
+}
+function maskName(name) {
+  if (!name) return '';
+  return name.split(' ').map(w => w ? w[0] + '*'.repeat(Math.max(1, w.length - 1)) : '').join(' ');
+}
+
+// Web Crypto Helpers
+function checkCryptoAvailable() {
+  if (typeof window === 'undefined' || !window.crypto || !window.crypto.subtle) {
+    const msg = 'Open via http://localhost:8080, not by double-clicking the file.';
+    L.error = msg;
+    const errEl = document.querySelector('.err');
+    if (errEl) errEl.textContent = msg;
+    throw new Error(msg);
+  }
+}
+
+async function sha256Hex(str) {
+  checkCryptoAvailable();
+  const buf = new TextEncoder().encode(str);
+  const hash = await crypto.subtle.digest('SHA-256', buf);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function hmacSha256Hex(keyStr, dataStr) {
+  checkCryptoAvailable();
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    'raw', enc.encode(keyStr),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false, ['sign']
+  );
+  const sig = await crypto.subtle.sign('HMAC', key, enc.encode(dataStr));
+  return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function pbkdf2Hash(password, saltHex) {
+  checkCryptoAvailable();
+  const enc = new TextEncoder();
+  const keyMaterial = await crypto.subtle.importKey(
+    'raw', enc.encode(password),
+    { name: 'PBKDF2' }, false, ['deriveBits']
+  );
+  const salt = new Uint8Array(saltHex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+  const derived = await crypto.subtle.deriveBits(
+    { name: 'PBKDF2', salt, iterations: 60000, hash: 'SHA-256' },
+    keyMaterial, 256
+  );
+  return Array.from(new Uint8Array(derived)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// Minimal JWT (HS256) implementation using Web Crypto
+function b64u(str) {
+  return btoa(unescape(encodeURIComponent(str)))
+    .replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
+}
+function unb64u(str) {
+  str = str.replace(/-/g, '+').replace(/_/g, '/');
+  while (str.length % 4) str += '=';
+  return decodeURIComponent(escape(atob(str)));
+}
+
+async function signJwt(payload) {
+  const header = { alg: 'HS256', typ: 'JWT' };
+  const h64 = b64u(JSON.stringify(header));
+  const p64 = b64u(JSON.stringify(payload));
+  const sigHex = await hmacSha256Hex(JWT_SECRET, `${h64}.${p64}`);
+  return `${h64}.${p64}.${sigHex}`;
+}
+
+async function verifyJwt(token) {
+  if (!token || typeof token !== 'string') return null;
+  const parts = token.split('.');
+  if (parts.length !== 3) return null;
+  const [h64, p64, sigHex] = parts;
+  const expectedSigHex = await hmacSha256Hex(JWT_SECRET, `${h64}.${p64}`);
+  if (sigHex !== expectedSigHex) return null;
+  try {
+    const payload = JSON.parse(unb64u(p64));
+    if (payload.exp && Date.now() / 1000 > payload.exp) return null;
+    return payload;
+  } catch {
+    return null;
+  }
+}
+
+// ECDSA P-256 Offline Digital Certificate Authority (WebCrypto)
+let CERT_KEYS = null;
+let CERT_PUBLIC_JWK = null;
+
+async function initCertKeys() {
+  if (CERT_KEYS) return CERT_KEYS;
+  try {
+    CERT_KEYS = await crypto.subtle.generateKey(
+      { name: 'ECDSA', namedCurve: 'P-256' },
+      true,
+      ['sign', 'verify']
+    );
+    CERT_PUBLIC_JWK = await crypto.subtle.exportKey('jwk', CERT_KEYS.publicKey);
+  } catch (err) {
+    console.error('Failed to initialize ECDSA certificate keys:', err);
+  }
+  return CERT_KEYS;
+}
+
+async function generateOfflineCertificate() {
+  await initCertKeys();
+  const payload = {
+    apaarMasked: maskApaar(DB.student.apaar),
+    nameMasked: maskName(DB.student.name),
+    credits: getStudentVerifiedCredits(),
+    institution: DB.student.college,
+    institutionId: DB.student.collegeId || 'AICTE-1-4417',
+    programme: DB.student.programme,
+    issueDate: new Date().toISOString().slice(0, 10),
+    certId: `CERT-APX-2026-${DB.student.enrolmentNo || '0814'}`,
+    issuer: 'AICTE / Academic Bank of Credits Digital Trust Network'
+  };
+  const enc = new TextEncoder();
+  const payloadStr = JSON.stringify(payload);
+  const sigBuf = await crypto.subtle.sign(
+    { name: 'ECDSA', hash: { name: 'SHA-256' } },
+    CERT_KEYS.privateKey,
+    enc.encode(payloadStr)
+  );
+  const sigHex = Array.from(new Uint8Array(sigBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  return `${b64u(payloadStr)}.${sigHex}.${b64u(JSON.stringify(CERT_PUBLIC_JWK))}`;
+}
+
+async function verifyOfflineCertificate(tokenStr) {
+  if (!tokenStr || typeof tokenStr !== 'string') {
+    return { valid: false, error: 'Empty certificate token provided.' };
+  }
+  const parts = tokenStr.trim().split('.');
+  if (parts.length !== 3) {
+    return { valid: false, error: 'Malformed token structure. Expected 3 dot-separated segments.' };
+  }
+  try {
+    const payloadStr = unb64u(parts[0]);
+    const sigHex = parts[1];
+    const pubJwkStr = unb64u(parts[2]);
+    const payload = JSON.parse(payloadStr);
+    const pubJwk = JSON.parse(pubJwkStr);
+
+    const sigBytes = new Uint8Array(sigHex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+    const pubKey = await crypto.subtle.importKey(
+      'jwk',
+      pubJwk,
+      { name: 'ECDSA', namedCurve: 'P-256' },
+      false,
+      ['verify']
+    );
+    const enc = new TextEncoder();
+    const isValid = await crypto.subtle.verify(
+      { name: 'ECDSA', hash: { name: 'SHA-256' } },
+      pubKey,
+      sigBytes,
+      enc.encode(payloadStr)
+    );
+    if (!isValid) {
+      return { valid: false, error: 'Signature verification FAILED! Payload or signature bytes have been altered.', payload };
+    }
+    return { valid: true, payload };
+  } catch (err) {
+    return { valid: false, error: `Invalid certificate data: ${err.message}` };
+  }
+}
+
+// Levenshtein & Jaro-Winkler Similarity Algorithms
+function levenshteinDistance(s1, s2) {
+  s1 = (s1 || '').toLowerCase().trim();
+  s2 = (s2 || '').toLowerCase().trim();
+  const m = s1.length;
+  const n = s2.length;
+  const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
+  for (let i = 0; i <= m; i++) dp[i][0] = i;
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (s1[i - 1] === s2[j - 1]) dp[i][j] = dp[i - 1][j - 1];
+      else dp[i][j] = 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+    }
+  }
+  return dp[m][n];
+}
+
+function jaroWinklerSimilarity(s1, s2) {
+  s1 = (s1 || '').toLowerCase().trim();
+  s2 = (s2 || '').toLowerCase().trim();
+  if (s1 === s2) return 1.0;
+  if (!s1.length || !s2.length) return 0.0;
+  const matchDistance = Math.floor(Math.max(s1.length, s2.length) / 2) - 1;
+  const s1Matches = new Array(s1.length).fill(false);
+  const s2Matches = new Array(s2.length).fill(false);
+  let matches = 0;
+  for (let i = 0; i < s1.length; i++) {
+    const start = Math.max(0, i - matchDistance);
+    const end = Math.min(i + matchDistance + 1, s2.length);
+    for (let j = start; j < end; j++) {
+      if (s2Matches[j] || s1[i] !== s2[j]) continue;
+      s1Matches[i] = true;
+      s2Matches[j] = true;
+      matches++;
+      break;
+    }
+  }
+  if (matches === 0) return 0.0;
+  let t = 0;
+  let point = 0;
+  for (let i = 0; i < s1.length; i++) {
+    if (!s1Matches[i]) continue;
+    while (!s2Matches[point]) point++;
+    if (s1[i] !== s2[point]) t++;
+    point++;
+  }
+  t /= 2;
+  const jaro = (matches / s1.length + matches / s2.length + (matches - t) / matches) / 3;
+  let prefix = 0;
+  for (let i = 0; i < Math.min(4, Math.min(s1.length, s2.length)); i++) {
+    if (s1[i] === s2[i]) prefix++;
+    else break;
+  }
+  return jaro + prefix * 0.1 * (1 - jaro);
+}
+
+// Tamper-Evident Hash Chain Verification
+async function verifyAuditChain() {
+  if (typeof auditChainPromise !== 'undefined' && auditChainPromise) {
+    await auditChainPromise;
+  }
+  const logs = DB.auditLogs;
+  let lastHash = '0000000000000000000000000000000000000000000000000000000000000000';
+  for (let i = logs.length - 1; i >= 0; i--) {
+    const entry = logs[i];
+    if (entry.prevHash !== lastHash) {
+      return {
+        valid: false,
+        brokenIndex: i,
+        action: entry.action,
+        time: entry.time,
+        details: entry.details,
+        reason: `Previous hash mismatch! Entry ${i} prevHash (${(entry.prevHash||'').slice(0, 10)}...) does not match previous hash (${lastHash.slice(0, 10)}...).`
+      };
+    }
+    const rawStr = `${entry.time}|${entry.actor}|${entry.role}|${entry.institutionId}|${entry.action}|${entry.apaar || ''}|${entry.details}|${entry.prevHash}`;
+    const expected = await sha256Hex(rawStr);
+    if (expected !== entry.hash) {
+      return {
+        valid: false,
+        brokenIndex: i,
+        action: entry.action,
+        time: entry.time,
+        details: entry.details,
+        reason: `Content alteration detected! Entry ${i} (${entry.action}) data produces hash ${(expected||'').slice(0, 10)}... but records ${(entry.hash||'').slice(0, 10)}...`
+      };
+    }
+    lastHash = entry.hash;
+  }
+  return { valid: true, count: logs.length };
+}
+
+function tamperAuditEntry() {
+  if (DB.auditLogs.length > 0) {
+    const target = DB.auditLogs[Math.min(1, DB.auditLogs.length - 1)];
+    target.details = target.details + ' [UNAUTHORIZED TAMPERING RECORD MODIFIED]';
+    saveDB();
+    toast('⚠️ Demo: Audit entry modified without recomputing SHA-256 hash!');
+    render();
+  }
+}
+
+// Download Helper
+function downloadFile(content, filename, mimeType) {
+  if (window.claude && typeof window.claude.use === 'function') {
+    try {
+      const d = window.claude.use('downloads');
+      if (d && typeof d.download === 'function') {
+        d.download({ content, filename, mimeType });
+        return;
+      }
+    } catch (e) {
+      // fallback to normal blob download
+    }
+  }
+  const blob = content instanceof Blob ? content : new Blob([content], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 500);
+}
+
+// UI Components Helpers
+function kv(rows) {
+  return `<div class="kv">${rows.map(r => `<div><span>${esc(r.label)}</span><b>${r.mono ? `<span class="m">${esc(r.val)}</span>` : esc(r.val)}</b></div>`).join('')}</div>`;
+}
+
+function tb(headers, rows) {
+  return `<div class="sc"><table><thead><tr>${headers.map(h => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr class="${r.clickable ? 'l' : ''}" ${r.click ? `onclick="${r.click}"` : ''}>${r.cols.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+
+function bars(rows, maxVal) {
+  const max = maxVal || Math.max(...rows.map(r => r.val || 1), 1);
+  return rows.map(r => {
+    const pct = Math.min(100, Math.round(((r.val || 0) / max) * 100));
+    return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+      <div style="width:140px;font-size:12px;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${esc(r.label)}">${esc(r.label)}</div>
+      <div class="bar" style="flex:1"><i style="width:${pct}%"></i></div>
+      <div style="width:60px;text-align:right;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums">${r.val != null ? esc(r.val) : ''}</div>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================================
+// SINGLE SHARED IN-MEMORY STATE OBJECT (DB)
+// ============================================================================
+const DB = {
+  // Pre-hashed passwords (PBKDF2 60k iterations, salt '1234567890abcdef')
+  users: [
+    {
+      email: 'registrar@apex.edu',
+      role: 'college_admin',
+      institution_id: 'AICTE-1-4417',
+      name: 'Dr. Ramesh Sundaram',
+      salt: '1234567890abcdef',
+      pwdHash: '6d5a97e86b8cadd4b693eaae313ea19475077bf719e92bb19c9b803fa73db35c' // Demo@123
+    },
+    {
+      email: 'officer@aicte.gov.in',
+      role: 'aicte_regulator',
+      name: 'Dr. Rajeshwar Sharma',
+      salt: '1234567890abcdef',
+      pwdHash: '6d5a97e86b8cadd4b693eaae313ea19475077bf719e92bb19c9b803fa73db35c' // Demo@123
+    }
+  ],
+
+  aicteWhitelist: [
+    { email: 'officer.test@aicte-india.org', officerId: 'AICTE-OFF-1001', name: 'Dr. R. K. Test' },
+    { email: 'neha.officer@aicte-india.org', officerId: 'AICTE-OFF-1002', name: 'Neha Officer' },
+    { email: 'regional.officer@aicte.gov.in', officerId: 'AICTE-OFF-1003', name: 'Regional Director SRO' }
+  ],
+
+  // Student Profile: Aarav Sharma
+  student: {
+    apaar: '9182-3841-0012',
+    dob: '2004-05-14',
+    name: 'Aarav Sharma',
+    gender: 'Male',
+    blood: 'B+',
+    category: 'GEN',
+    nationality: 'Indian',
+    mobile: '+91 98XXXXXX21',
+    email: 'aarav.sharma@apex.edu',
+    address: 'Madhapur, Hyderabad, Telangana 500081',
+    father: 'Rajesh Sharma',
+    mother: 'Sunita Sharma',
+    guardian: 'Rajesh Sharma (Father)',
+    guardianMobile: '+91 98XXXXXX08',
+    aadhaarMasked: 'XXXX XXXX 4821',
+    digiLocker: 'Linked (mock), KYC verified',
+    enrolmentNo: 'APX22CS014',
+    univReg: 'UREG-2022-CS-0514',
+    college: 'Apex Institute of Technology',
+    collegeId: 'AICTE-1-4417',
+    collegeDomain: 'apex.edu',
+    programme: 'B.Tech Computer Science and Engineering',
+    batch: '2022 to 2026',
+    yearSemester: '3rd year Semester 5',
+    cgpa: 8.42,
+    section: 'B',
+    mentor: 'Dr. Anita Menon',
+    attendance: '86%',
+    backlogs: 0,
+    admission: '2022 TS EAMCET (Category A)',
+    rank: '4,218',
+    type: 'Day scholar',
+    scholarship: 'None',
+    abcId: '4021-5830-7716',
+    abcOpened: 'Jul 2022',
+    lastSyncTime: 'Today at 08:30 AM'
+  },
+
+  // ABC Credit History
+  terms: [
+    {
+      term: 'Sem 1', credits: 22, sgpa: 8.1, status: 'Verified',
+      courses: [
+        { code: 'CS101', name: 'Programming Fundamentals', credits: 4, grade: 'A', status: 'Verified' },
+        { code: 'MA101', name: 'Engineering Mathematics I', credits: 4, grade: 'B+', status: 'Verified' },
+        { code: 'PH101', name: 'Physics for Engineers', credits: 3, grade: 'A', status: 'Verified' },
+        { code: 'CH101', name: 'Engineering Chemistry', credits: 3, grade: 'B', status: 'Verified' },
+        { code: 'EE101', name: 'Basic Electrical Engineering', credits: 3, grade: 'B+', status: 'Verified' },
+        { code: 'EN101', name: 'English Communication', credits: 2, grade: 'A', status: 'Verified' },
+        { code: 'CS1L1', name: 'Programming Lab', credits: 2, grade: 'A', status: 'Verified' },
+        { code: 'ME1L1', name: 'Workshop Practice', credits: 1, grade: 'B', status: 'Verified' }
+      ]
+    },
+    {
+      term: 'Sem 2', credits: 20, sgpa: 8.4, status: 'Verified',
+      courses: [
+        { code: 'CS102', name: 'Data Structures', credits: 4, grade: 'A+', status: 'Verified' },
+        { code: 'MA102', name: 'Engineering Mathematics II', credits: 4, grade: 'A', status: 'Verified' },
+        { code: 'PH102', name: 'Applied Physics', credits: 3, grade: 'B+', status: 'Verified' },
+        { code: 'EC101', name: 'Basic Electronics', credits: 3, grade: 'B', status: 'Verified' },
+        { code: 'HS101', name: 'Communication Skills', credits: 2, grade: 'A', status: 'Verified' },
+        { code: 'CS2L1', name: 'Data Structures Lab', credits: 2, grade: 'A', status: 'Verified' },
+        { code: 'ME2L1', name: 'Engineering Graphics', credits: 2, grade: 'B+', status: 'Verified' }
+      ]
+    },
+    {
+      term: 'Sem 3', credits: 20, sgpa: 8.6, status: 'Verified',
+      courses: [
+        { code: 'CS201', name: 'Discrete Mathematics', credits: 4, grade: 'A', status: 'Verified' },
+        { code: 'CS202', name: 'Object Oriented Programming', credits: 4, grade: 'A+', status: 'Verified' },
+        { code: 'CS203', name: 'Digital Logic', credits: 3, grade: 'B+', status: 'Verified' },
+        { code: 'CS204', name: 'Computer Organization', credits: 3, grade: 'A', status: 'Verified' },
+        { code: 'MA201', name: 'Probability and Statistics', credits: 4, grade: 'B+', status: 'Verified' },
+        { code: 'CS2L2', name: 'OOP Lab', credits: 2, grade: 'A', status: 'Verified' }
+      ]
+    },
+    {
+      term: 'Sem 4', credits: 20, sgpa: 8.6, status: 'Verified',
+      courses: [
+        { code: 'CS301', name: 'Design and Analysis of Algorithms', credits: 4, grade: 'A', status: 'Verified' },
+        { code: 'CS302', name: 'Theory of Computation', credits: 3, grade: 'B+', status: 'Verified' },
+        { code: 'CS303', name: 'Software Engineering', credits: 3, grade: 'A', status: 'Verified' },
+        { code: 'CS304', name: 'Microprocessors', credits: 3, grade: 'B', status: 'Verified' },
+        { code: 'MA301', name: 'Numerical Methods', credits: 3, grade: 'B+', status: 'Verified' },
+        { code: 'NPTEL-ML', name: 'Introduction to Machine Learning (MOOC, SWAYAM)', credits: 3, grade: 'B', status: 'Verified' },
+        { code: 'CS3L1', name: 'Algorithms Lab', credits: 1, grade: 'A', status: 'Verified' },
+        { code: 'EC210', name: 'Digital Electronics', credits: 3, grade: 'C', status: 'Rejected', remark: 'Marksheet mismatch' }
+      ]
+    }
+  ],
+
+  // Extra pending upload item
+  pendingCreditUploads: [
+    {
+      id: 'CR-UP-001',
+      studentApaar: '9182-3841-0012',
+      studentName: 'Aarav Sharma',
+      code: 'NPTEL-CC',
+      name: 'Cloud Computing (MOOC, SWAYAM)',
+      credits: 3,
+      grade: 'A',
+      term: 'Sem 5',
+      status: 'Pending',
+      submittedAt: '2026-10-25 14:20'
+    }
+  ],
+
+  // Registered Ongoing Courses
+  coursesEnrolled: [
+    { code: 'CS501', name: 'Operating Systems', credits: 4, type: 'Core', status: 'Ongoing' },
+    { code: 'CS502', name: 'Database Management Systems', credits: 4, type: 'Core', status: 'Ongoing' },
+    { code: 'CS503', name: 'Computer Networks', credits: 3, type: 'Core', status: 'Ongoing' },
+    { code: 'CS5E1', name: 'Machine Learning', credits: 3, type: 'Elective', status: 'Ongoing' },
+    { code: 'HS501', name: 'Professional Ethics', credits: 2, type: 'Mandatory', status: 'Ongoing' },
+    { code: 'CS5L1', name: 'DBMS Laboratory', credits: 2, type: 'Lab', status: 'Ongoing' }
+  ],
+
+  // Internships
+  internships: [
+    { title: 'Summer Internship 2025', org: 'Brightwave Systems (sample)', duration: '8 weeks, Jun to Aug 2025', status: 'Completed', credits: 4 },
+    { title: 'Data Analytics Virtual Internship', org: 'Skyline Analytics (sample)', duration: '10 weeks', status: 'Ongoing', credits: 'Pending' },
+    { title: 'Industrial Visit Report', org: 'Apex Industry Cell', duration: '2 days', status: 'Completed', credits: 1 }
+  ],
+
+  // Transfers
+  transfers: [
+    {
+      id: 'TR-001',
+      studentApaar: '9182-3841-0012',
+      studentName: 'Aarav Sharma',
+      fromInst: 'Apex Institute of Technology',
+      toInst: 'MLR Institute of Technology',
+      courseCodes: ['CS101', 'MA101'],
+      totalCredits: 8,
+      reason: 'Programme change',
+      status: 'Pending',
+      submittedAt: '2026-10-26 10:15',
+      remark: ''
+    }
+  ],
+
+  // Redemptions
+  redemptions: [],
+
+  // Student documents
+  documents: [
+    { id: 'DOC-1', name: 'Class_XII_Marksheet.pdf', type: 'Marksheet', size: '1.2 MB', sha: 'a9f3b1e847c2098d...', status: 'Verified' },
+    { id: 'DOC-2', name: 'Aadhaar_Card_Copy.pdf', type: 'ID proof', size: '820 KB', sha: 'e3b0c44298fc1c14...', status: 'Verified' }
+  ],
+
+  // College Admin Home Data: Apex Institute of Technology
+  apex: {
+    sanctionedIntake: 600,
+    departments: [
+      { name: 'CSE', intake: 120, enrolled: 104, faculty: 6 },
+      { name: 'CSE (AI and ML)', intake: 60, enrolled: 52, faculty: 3 },
+      { name: 'CSE (Data Science)', intake: 40, enrolled: 34, faculty: 2 },
+      { name: 'Information Technology', intake: 60, enrolled: 50, faculty: 3 },
+      { name: 'ECE', intake: 90, enrolled: 78, faculty: 5 },
+      { name: 'EEE', intake: 40, enrolled: 30, faculty: 2 },
+      { name: 'Mechanical', intake: 60, enrolled: 48, faculty: 3 },
+      { name: 'Civil', intake: 40, enrolled: 30, faculty: 2 },
+      { name: 'Chemical', intake: 30, enrolled: 20, faculty: 1 },
+      { name: 'Biotechnology', intake: 20, enrolled: 16, faculty: 1 },
+      { name: 'Aerospace', intake: 20, enrolled: 12, faculty: 1 },
+      { name: 'Automobile', intake: 20, enrolled: 16, faculty: 1 }
+    ],
+    supportingDepts: [
+      { name: 'Mathematics', faculty: 4, type: 'Basic Science & Humanities' },
+      { name: 'Physics', faculty: 3, type: 'Basic Science & Humanities' },
+      { name: 'Chemistry', faculty: 2, type: 'Basic Science & Humanities' },
+      { name: 'English and Humanities', faculty: 2, type: 'Humanities' },
+      { name: 'MBA', faculty: 4, type: 'Postgraduate Programme' },
+      { name: 'MCA', faculty: 3, type: 'Postgraduate Programme' }
+    ],
+    quotas: [
+      { category: 'GEN', approved: 260, admitted: 210 },
+      { category: 'OBC', approved: 160, admitted: 136 },
+      { category: 'SC', approved: 90, admitted: 76 },
+      { category: 'ST', approved: 40, admitted: 24 },
+      { category: 'EWS', approved: 50, admitted: 44 }
+    ],
+    faculty: [
+      { id: 'FAC-101', name: 'Dr. Ramesh Sundaram', dept: 'CSE', active: true },
+      { id: 'FAC-102', name: 'Dr. Anita Menon', dept: 'CSE', active: true },
+      { id: 'FAC-103', name: 'Prof. Suresh Rao', dept: 'CSE', active: true },
+      { id: 'FAC-104', name: 'Dr. Kavitha Nair', dept: 'CSE', active: true },
+      { id: 'FAC-105', name: 'Prof. Arjun Verma', dept: 'CSE', active: true },
+      { id: 'FAC-106', name: 'Dr. Meena Iyer', dept: 'CSE', active: true },
+      { id: 'FAC-107', name: 'Prof. Rahul Khanna', dept: 'CSE (AI and ML)', active: true },
+      { id: 'FAC-108', name: 'Dr. Sana Sheikh', dept: 'CSE (AI and ML)', active: true },
+      { id: 'FAC-109', name: 'Prof. Vikram Joshi', dept: 'CSE (AI and ML)', active: true },
+      { id: 'FAC-110', name: 'Dr. Lakshmi Pillai', dept: 'CSE (Data Science)', active: true },
+      { id: 'FAC-111', name: 'Prof. Imran Ali', dept: 'CSE (Data Science)', active: true },
+      { id: 'FAC-112', name: 'Dr. Pooja Desai', dept: 'Information Technology', active: true },
+      { id: 'FAC-113', name: 'Prof. Harish Gupta', dept: 'Information Technology', active: true },
+      { id: 'FAC-114', name: 'Dr. Neha Kulkarni', dept: 'Information Technology', active: true },
+      { id: 'FAC-115', name: 'Prof. Manoj Das', dept: 'ECE', active: true },
+      { id: 'FAC-116', name: 'Dr. Prakash Naidu', dept: 'ECE', active: true },
+      { id: 'FAC-117', name: 'Prof. Divya Menon', dept: 'ECE', active: true },
+      { id: 'FAC-118', name: 'Dr. Farhan Siddiqui', dept: 'ECE', active: true },
+      { id: 'FAC-119', name: 'Prof. Geeta Rao', dept: 'ECE', active: true },
+      { id: 'FAC-120', name: 'Dr. Satish Kumar', dept: 'EEE', active: true },
+      { id: 'FAC-121', name: 'Prof. Nandini Bose', dept: 'EEE', active: true },
+      { id: 'FAC-122', name: 'Dr. Vivek Reddy', dept: 'Mechanical', active: true },
+      { id: 'FAC-123', name: 'Prof. Ayesha Khan', dept: 'Mechanical', active: true },
+      { id: 'FAC-124', name: 'Dr. Mohan Raj', dept: 'Mechanical', active: true },
+      { id: 'FAC-125', name: 'Prof. Sunita Patil', dept: 'Civil', active: true },
+      { id: 'FAC-126', name: 'Dr. Bhaskar Rao', dept: 'Civil', active: true },
+      { id: 'FAC-127', name: 'Prof. Tara Nambiar', dept: 'Chemical', active: true },
+      { id: 'FAC-128', name: 'Dr. Gopal Krishnan', dept: 'Biotechnology', active: true },
+      { id: 'FAC-129', name: 'Prof. Ritu Agarwal', dept: 'Aerospace', active: true },
+      { id: 'FAC-130', name: 'Dr. Jayanth Murthy', dept: 'Automobile', active: true }
+    ],
+    studentsLedger: [
+      { apaar: '9182-3841-0012', name: 'Aarav Sharma', category: 'GEN', credits: 82, flag: 'Clear' },
+      { apaar: '9182-4411-9231', name: 'Priya Nair', category: 'OBC', credits: 74, flag: 'Clear' },
+      { apaar: '9182-7729-1092', name: 'Rohan Varma', category: 'GEN', credits: 128, flag: 'Dual enrolment' },
+      { apaar: '9182-6632-8472', name: 'Ananya Iyer', category: 'SC', credits: 96, flag: 'Credit jump +48' },
+      { apaar: '9182-1192-3382', name: 'Kavya Patel', category: 'EWS', credits: 90, flag: 'Clear' }
+    ],
+    fraudFlags: [
+      { id: 1, severity: 'Critical', desc: 'Duplicate APAAR ID 9182-7729-1092 active at Apex Institute of Technology and MLR Institute of Technology', apaar: '9182-7729-1092', frozen: false },
+      { id: 2, severity: 'High', desc: 'Credit jump 9182-6632-8472 +48 credits in Semester 4 (cohort median 22)', apaar: '9182-6632-8472', frozen: false },
+      { id: 3, severity: 'Critical', desc: 'Duplicate APAAR ID 9182-9001-3355 active at Maharaja Agrasen Institute of Technology and Thapar Institute of Engineering and Technology', apaar: '9182-9001-3355', frozen: false }
+    ],
+    admissionUploadHistory: [
+      { id: 'UPL-001', date: '2026-09-12 11:30', admitted: 42, rejected: 2, filename: 'admissions_round1.csv', by: 'registrar@apex.edu' }
+    ]
+  },
+
+  // Central Audit Log (Tamper-evident SHA-256 hash-chain)
+  auditLogs: [
+    {
+      time: '2026-10-28 08:30:12', actor: 'System Worker', role: 'System', institutionId: 'AICTE-1-4417', action: 'KYC Sync', apaar: '9182-3841-0012', details: 'DigiLocker KYC and ABC credit registry synchronized',
+      prevHash: '3644a8598efd1a598c277bb64e2de8a140e80ce2b61c6bdd7b6d9484d3e91046',
+      hash: 'f6cd2ce6da0df4058184cffe1600f1251b34c9fcf56ba8b205840fe2b5d8b2e7'
+    },
+    {
+      time: '2026-10-27 15:10:04', actor: 'Aarav Sharma', role: 'Student', institutionId: 'AICTE-1-4417', action: 'Credit Transfer Submitted', apaar: '9182-3841-0012', details: 'Submitted transfer request TR-001 for 8 credits to MLR Institute of Technology',
+      prevHash: '1d9535a43196285fee4fd0eb36a6a830a97198aa0b47c0c654f3879d4f801d8f',
+      hash: '3644a8598efd1a598c277bb64e2de8a140e80ce2b61c6bdd7b6d9484d3e91046'
+    },
+    {
+      time: '2026-10-26 16:45:20', actor: 'registrar@apex.edu', role: 'College Admin', institutionId: 'AICTE-1-4417', action: 'Faculty Roster Verified', apaar: null, details: 'Verified 30 active department faculty members',
+      prevHash: '0000000000000000000000000000000000000000000000000000000000000000',
+      hash: '1d9535a43196285fee4fd0eb36a6a830a97198aa0b47c0c654f3879d4f801d8f'
+    }
+  ],
+
+  // Seat-Rule Exception Requests
+  seatExceptions: [
+    {
+      id: 'EXC-101',
+      instId: 'AICTE-1-4417',
+      instName: 'Apex Institute of Technology',
+      category: 'EWS',
+      requestedSeats: 6,
+      reason: 'State Govt PMSSS meritorious scholarship candidate admissions exceed standard allocation.',
+      status: 'Pending',
+      submittedAt: '2026-10-27 14:20',
+      officerNote: '',
+      decidedAt: null
+    }
+  ],
+
+  // Cross Institution Records for Verification
+  crossRecords: [
+    {
+      apaar: '9182-9001-3355', name: 'Imran Qureshi', category: 'GEN',
+      enrolments: [
+        { inst: 'Maharaja Agrasen Institute of Technology', credits: 110, status: 'Active' },
+        { inst: 'Thapar Institute of Engineering and Technology', credits: 104, status: 'Active' }
+      ]
+    },
+    {
+      apaar: '9182-7729-1092', name: 'Rohan Varma', category: 'GEN',
+      enrolments: [
+        { inst: 'Apex Institute of Technology', credits: 128, status: 'Active' },
+        { inst: 'MLR Institute of Technology', credits: 120, status: 'Active' }
+      ]
+    },
+    {
+      apaar: '9182-2201-4410', name: 'Sneha Reddy', category: 'OBC',
+      enrolments: [
+        { inst: 'GVP College of Engineering', credits: 64, status: 'Active' }
+      ]
+    },
+    {
+      apaar: '9182-3841-0012', name: 'Aarav Sharma', category: 'GEN',
+      enrolments: [
+        { inst: 'Apex Institute of Technology', credits: 82, status: 'Active' }
+      ]
+    }
+  ],
+
+  // Live Alerts Queue for AICTE (push every 20s)
+  pendingAicteAlerts: [
+    { severity: 'Critical', title: 'Duplicate APAAR ID', inst: 'Chandigarh University', desc: 'APAAR 9182-4410-7721 active at Chandigarh University and Amity University', apaar: '9182-4410-7721', frozen: false },
+    { severity: 'High', title: 'Seat matrix violation', inst: 'Manipal Institute of Technology', desc: 'Admitted count exceeds approved intake by 24, admissions throttled', apaar: null, throttled: true },
+    { severity: 'Critical', title: 'Duplicate APAAR ID', inst: 'SRM Institute of Science and Technology', desc: 'APAAR 9182-5520-1188 active at SRM and Vellore Institute of Technology', apaar: '9182-5520-1188', frozen: false }
+  ],
+  aicteAlerts: [
+    { severity: 'Critical', title: 'Duplicate APAAR ID', inst: 'Apex Institute of Technology', desc: 'APAAR 9182-7729-1092 active at Apex and MLR Institute of Technology', apaar: '9182-7729-1092', frozen: false },
+    { severity: 'High', title: 'Credit Velocity Jump', inst: 'Apex Institute of Technology', desc: 'APAAR 9182-6632-8472 gained +48 credits in Sem 4 (cohort avg 22)', apaar: '9182-6632-8472', frozen: false }
+  ],
+
+  // Sync log (8 entries)
+  syncLogs: [
+    { time: '10:14:02', service: 'DigiLocker', apaar: '9182-3841-0012', op: 'KYC Verification', result: 'Pass', latency: '124ms' },
+    { time: '10:12:45', service: 'ABC Registry', apaar: '9182-3841-0012', op: 'Credit Push (Sem 4)', result: 'Pass', latency: '198ms' },
+    { time: '09:58:10', service: 'DigiLocker', apaar: '9182-7729-1092', op: 'Aadhaar Vault Match', result: 'Failed', latency: '412ms' },
+    { time: '09:44:22', service: 'ABC Registry', apaar: '9182-4411-9231', op: 'Credit Balance Sync', result: 'Pass', latency: '142ms' },
+    { time: '09:30:15', service: 'DigiLocker', apaar: '9182-6632-8472', op: 'KYC Verification', result: 'Pass', latency: '110ms' },
+    { time: '09:15:00', service: 'ABC Registry', apaar: '9182-9001-3355', op: 'Credit Enrolment Lookup', result: 'Pass', latency: '165ms' },
+    { time: '08:50:18', service: 'DigiLocker', apaar: '9182-1192-3382', op: 'Caste Certificate KYC', result: 'Pass', latency: '135ms' },
+    { time: '08:30:12', service: 'ABC Registry', apaar: '9182-3841-0012', op: 'Academic Bank Init', result: 'Pass', latency: '180ms' }
+  ],
+
+  // 190+ Institutions Register
+  institutions: []
+};
+
+// Seed 190+ institutions realistically
+(function initInstitutions() {
+  const seed = [
+    { name: 'Apex Institute of Technology', city: 'Hyderabad', state: 'Telangana', region: 'South', id: 'AICTE-1-4417', domain: 'apex.edu', intake: 600, enrolled: 512, faculty: 30 },
+    { name: 'GVP College of Engineering', city: 'Visakhapatnam', state: 'Andhra Pradesh', region: 'South', intake: 660, enrolled: 630, faculty: 34 },
+    { name: 'MLR Institute of Technology', city: 'Hyderabad', state: 'Telangana', region: 'South', intake: 540, enrolled: 510, faculty: 27 },
+    { name: 'Vasavi College of Engineering', city: 'Hyderabad', state: 'Telangana', region: 'South', intake: 600, enrolled: 588, faculty: 31 },
+    { name: 'Vellore Institute of Technology', city: 'Vellore', state: 'Tamil Nadu', region: 'South', intake: 840, enrolled: 835, faculty: 48 },
+    { name: 'SRM Institute of Science and Technology', city: 'Chengalpattu', state: 'Tamil Nadu', region: 'South', intake: 780, enrolled: 770, faculty: 42 },
+    { name: 'PSG College of Technology', city: 'Coimbatore', state: 'Tamil Nadu', region: 'South', intake: 600, enrolled: 595, faculty: 33 },
+    { name: "St Joseph's College of Engineering", city: 'Chennai', state: 'Tamil Nadu', region: 'South', id: 'AICTE-1-10029341', domain: 'stjosephs.edu.in', intake: 600, enrolled: 580, faculty: 30 },
+    { name: 'R V College of Engineering', city: 'Bengaluru', state: 'Karnataka', region: 'South', intake: 660, enrolled: 654, faculty: 35 },
+    { name: 'Manipal Institute of Technology', city: 'Manipal', state: 'Karnataka', region: 'South', intake: 720, enrolled: 744, faculty: 34 }, // Over quota
+    { name: 'Delhi Technological University', city: 'New Delhi', state: 'Delhi', region: 'North', intake: 800, enrolled: 790, faculty: 45 },
+    { name: 'Maharaja Agrasen Institute of Technology', city: 'New Delhi', state: 'Delhi', region: 'North', intake: 600, enrolled: 590, faculty: 31 },
+    { name: 'Thapar Institute of Engineering and Technology', city: 'Patiala', state: 'Punjab', region: 'North', intake: 720, enrolled: 710, faculty: 38 },
+    { name: 'Chandigarh University', city: 'Mohali', state: 'Punjab', region: 'North', intake: 840, enrolled: 830, faculty: 44 },
+    { name: 'Amity University', city: 'Noida', state: 'Uttar Pradesh', region: 'North', intake: 780, enrolled: 760, faculty: 40 },
+    { name: 'Jadavpur University', city: 'Kolkata', state: 'West Bengal', region: 'East', intake: 600, enrolled: 585, faculty: 36 },
+    { name: 'Kalinga Institute of Industrial Technology', city: 'Bhubaneswar', state: 'Odisha', region: 'East', intake: 780, enrolled: 765, faculty: 41 },
+    { name: 'COEP Technological University', city: 'Pune', state: 'Maharashtra', region: 'West', intake: 600, enrolled: 598, faculty: 33 },
+    { name: 'Nirma University', city: 'Ahmedabad', state: 'Gujarat', region: 'West', intake: 540, enrolled: 520, faculty: 28 },
+    { name: 'SGSITS', city: 'Indore', state: 'Madhya Pradesh', region: 'Central', intake: 480, enrolled: 460, faculty: 25 }
+  ];
+
+  const states = [
+    { state: 'Telangana', region: 'South', cities: ['Hyderabad', 'Warangal', 'Nizamabad'] },
+    { state: 'Andhra Pradesh', region: 'South', cities: ['Vijayawada', 'Guntur', 'Tirupati'] },
+    { state: 'Tamil Nadu', region: 'South', cities: ['Chennai', 'Madurai', 'Trichy'] },
+    { state: 'Karnataka', region: 'South', cities: ['Bengaluru', 'Mysuru', 'Mangaluru'] },
+    { state: 'Kerala', region: 'South', cities: ['Thiruvananthapuram', 'Kochi', 'Kozhikode'] },
+    { state: 'Delhi', region: 'North', cities: ['New Delhi', 'Rohini', 'Dwarka'] },
+    { state: 'Punjab', region: 'North', cities: ['Amritsar', 'Jalandhar', 'Ludhiana'] },
+    { state: 'Uttar Pradesh', region: 'North', cities: ['Lucknow', 'Kanpur', 'Agra'] },
+    { state: 'Rajasthan', region: 'North', cities: ['Jaipur', 'Jodhpur', 'Kota'] },
+    { state: 'West Bengal', region: 'East', cities: ['Kolkata', 'Durgapur', 'Siliguri'] },
+    { state: 'Odisha', region: 'East', cities: ['Bhubaneswar', 'Cuttack', 'Rourkela'] },
+    { state: 'Bihar', region: 'East', cities: ['Patna', 'Gaya', 'Muzaffarpur'] },
+    { state: 'Assam', region: 'North-East', cities: ['Guwahati', 'Silchar', 'Dibrugarh'] },
+    { state: 'Meghalaya', region: 'North-East', cities: ['Shillong', 'Tura'] },
+    { state: 'Maharashtra', region: 'West', cities: ['Mumbai', 'Pune', 'Nagpur', 'Nashik'] },
+    { state: 'Gujarat', region: 'West', cities: ['Ahmedabad', 'Surat', 'Vadodara'] },
+    { state: 'Madhya Pradesh', region: 'Central', cities: ['Bhopal', 'Indore', 'Gwalior'] },
+    { state: 'Chhattisgarh', region: 'Central', cities: ['Raipur', 'Bhilai', 'Bilaspur'] }
+  ];
+
+  const prefixes = ['National', 'Premier', 'Institute of Engineering & Technology', 'College of Technology', 'Imperial', 'Apex', 'Horizon', 'Global', 'Vanguard', 'St. Mary', 'Bharath'];
+  const instList = [...seed];
+  let idCounter = 12000;
+
+  for (let i = seed.length; i < 192; i++) {
+    const sObj = states[i % states.length];
+    const city = sObj.cities[i % sObj.cities.length];
+    const prefix = prefixes[i % prefixes.length];
+    const name = `${prefix} ${city}`;
+    const initials = name.split(' ').map(w => w[0].toLowerCase()).join('');
+    const intake = 300 + (i * 25 % 540);
+    const faculty = Math.max(15, Math.round(intake / (16 + (i % 8))));
+    const enrolled = Math.round(intake * (0.75 + ((i % 25) / 100)));
+    idCounter += 17;
+    instList.push({
+      name,
+      city,
+      state: sObj.state,
+      region: sObj.region,
+      id: `AICTE-1-${idCounter}`,
+      domain: `${initials}.edu.in`,
+      intake,
+      enrolled,
+      faculty
+    });
+  }
+  DB.institutions = instList;
+})();
+
+// Calculate Student ABC verified credits total
+function getStudentVerifiedCredits() {
+  let total = 0;
+  for (const t of DB.terms) {
+    for (const c of t.courses) {
+      if (c.status === 'Verified') total += (c.credits || 0);
+    }
+  }
+  return total;
+}
+
+// Calculate College Health Score
+function getCollegeHealthScore() {
+  const activeFaculty = DB.apex.faculty.filter(f => f.active).length;
+  const effectiveIntake = Math.min(DB.apex.sanctionedIntake, activeFaculty * 20);
+  const totalEnrolled = DB.apex.departments.reduce((s, d) => s + d.enrolled, 0);
+  const isLocked = totalEnrolled >= effectiveIntake;
+
+  let score = 100;
+  let deductions = [];
+  if (isLocked) {
+    score -= 25;
+    deductions.push('Admissions locked (-25): capacity exceeded active faculty ratio');
+  }
+
+  let overQuotaCount = 0;
+  for (const q of DB.apex.quotas) {
+    if (q.admitted > q.approved) {
+      overQuotaCount++;
+      score -= 5;
+    }
+  }
+  if (overQuotaCount > 0) {
+    deductions.push(`Over-quota category breaches (-${overQuotaCount * 5}): ${overQuotaCount} category quotas exceeded`);
+  }
+
+  const openFraudFlags = DB.apex.fraudFlags.filter(f => !f.frozen).length;
+  if (openFraudFlags > 0) {
+    const fraudPenalty = Math.min(24, openFraudFlags * 8);
+    score -= fraudPenalty;
+    deductions.push(`Unresolved compliance flags (-${fraudPenalty}): ${openFraudFlags} flags active`);
+  }
+
+  score = Math.max(0, Math.min(100, score));
+  let badge = 'Compliant';
+  let badgeClass = 'ok';
+  if (score < 60) { badge = 'At risk'; badgeClass = 'bad'; }
+  else if (score < 85) { badge = 'Needs attention'; badgeClass = 'wr'; }
+
+  return { score, badge, badgeClass, isLocked, effectiveIntake, totalEnrolled, activeFaculty, deductions };
+}
+
+// ============================================================================
+// PERSISTENCE & BROADCAST CHANNEL
+// ============================================================================
+const STORAGE_KEY = 'apaar_sync_db_state_2026';
+let syncChannel = null;
+try {
+  if (typeof BroadcastChannel !== 'undefined') {
+    syncChannel = new BroadcastChannel('apaar_sync_channel');
+    syncChannel.onmessage = (e) => {
+      if (e.data && e.data.type === 'DB_SYNC') {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          try {
+            Object.assign(DB, JSON.parse(raw));
+            render();
+          } catch (_) {}
+        }
+      }
+    };
+  }
+} catch (_) {}
+
+function saveDB() {
+  if (typeof localStorage !== 'undefined') {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(DB));
+    } catch (_) {}
+  }
+  if (syncChannel) {
+    try {
+      syncChannel.postMessage({ type: 'DB_SYNC' });
+    } catch (_) {}
+  }
+}
+
+let INITIAL_DB_SNAPSHOT = null;
+
+function resetDemoData() {
+  if (INITIAL_DB_SNAPSHOT) {
+    const fresh = JSON.parse(INITIAL_DB_SNAPSHOT);
+    for (const key of Object.keys(DB)) delete DB[key];
+    Object.assign(DB, fresh);
+    if (typeof localStorage !== 'undefined') {
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(DB));
+      } catch (_) {}
+    }
+    if (syncChannel) {
+      try { syncChannel.postMessage({ type: 'DB_SYNC' }); } catch (_) {}
+    }
+    V.auditVerificationResult = null;
+    V.admissionValidationResults = null;
+    toast('Demo data reset to initial sandbox baseline.');
+    render();
+  }
+}
+
+// Add an audit log entry (Tamper-evident SHA-256 Hash Chain)
+let auditChainPromise = Promise.resolve();
+
+function logAudit(actor, role, action, apaar, details, institutionId = 'AICTE-1-4417') {
+  const d = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  const time = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  
+  const entry = { time, actor, role, institutionId, action, apaar, details, prevHash: '', hash: '' };
+  DB.auditLogs.unshift(entry);
+
+  auditChainPromise = auditChainPromise.then(async () => {
+    const idx = DB.auditLogs.indexOf(entry);
+    const nextOlder = DB.auditLogs[idx + 1];
+    const prevHash = nextOlder && nextOlder.hash ? nextOlder.hash : '0000000000000000000000000000000000000000000000000000000000000000';
+    entry.prevHash = prevHash;
+    const rawStr = `${entry.time}|${entry.actor}|${entry.role}|${entry.institutionId}|${entry.action}|${entry.apaar || ''}|${entry.details}|${entry.prevHash}`;
+    try {
+      entry.hash = await sha256Hex(rawStr);
+    } catch (_) {
+      entry.hash = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
+    }
+    saveDB();
+  });
+
+  saveDB();
+  return entry;
+}
+
+// ============================================================================
+// GLOBAL CLIENT STATE: S, L, V
+// ============================================================================
+const S = {
+  token: null,
+  user: null, // { sub, email, role, institution_id, name }
+  page: 'home',
+  menuOpen: false,
+  lockoutUntil: 0,
+  failedAttempts: 0
+};
+
+const L = {
+  tab: 'college_admin', // 'college_admin' | 'aicte_regulator' | 'student' | 'verify_cert'
+  isRegister: false,
+  regStep: 1,
+  // Login fields
+  email: '',
+  password: '',
+  apaar: '',
+  dob: '',
+  otp: '',
+  studentStep: 1,
+  error: '',
+  // Certificate verification fields
+  certToken: '',
+  certResult: null,
+  // Register fields
+  regOfficerId: '',
+  regInstId: '',
+  regEmail: '',
+  regName: '',
+  regMobile: '',
+  regPwd: '',
+  regConfirmPwd: '',
+  mockOtpSent: ''
+};
+
+const V = {
+  // View specific state
+  qrWindowSec: 30,
+  qrRemaining: 30,
+  creditTab: 'transfer', // 'transfer' | 'redeem' | 'statement'
+  transferTargetInst: '',
+  transferSelectedCourses: [],
+  transferReason: '',
+  redeemGoal: 'Certificate',
+  expandedTerms: {},
+  // Audit & Admission validation
+  auditVerificationResult: null,
+  admissionValidationResults: null,
+  // Admin search & filters
+  searchQuery: '',
+  institutionSearch: '',
+  institutionStateFilter: '',
+  institutionPage: 0,
+  // Modals
+  modal: null // { type: 'reject_credit' | 'reject_transfer' | 'freeze_seat', data: any }
+};
+
+// Periodic live alert push for AICTE regulator (every 20 seconds)
+setInterval(() => {
+  if (S.user && S.user.role === 'aicte_regulator' && DB.pendingAicteAlerts.length > 0) {
+    const nextAlert = DB.pendingAicteAlerts.shift();
+    DB.aicteAlerts.unshift(nextAlert);
+    logAudit('AICTE System Monitor', 'AICTE Regulator', 'Alert Ingested', nextAlert.apaar, `${nextAlert.severity} alert for ${nextAlert.inst}: ${nextAlert.title}`);
+    toast(`New AICTE Alert: ${nextAlert.title} (${nextAlert.inst})`);
+    render();
+  }
+}, 20000);
+
+// QR Rotating Countdown for student pass (every 1 second)
+setInterval(() => {
+  if (S.user && S.user.role === 'student' && S.page === 'home') {
+    V.qrRemaining--;
+    if (V.qrRemaining <= 0) {
+      V.qrRemaining = 30;
+      updateStudentQr();
+    }
+    const barEl = document.getElementById('qr-countdown-bar');
+    if (barEl) {
+      const pct = Math.round((V.qrRemaining / 30) * 100);
+      barEl.style.width = pct + '%';
+    }
+  }
+}, 1000);
+
+async function getStudentQrUrl() {
+  const windowIdx = Math.floor(Date.now() / 30000);
+  const tokenRaw = await hmacSha256Hex(JWT_SECRET, `${DB.student.apaar}|${windowIdx}`);
+  const token = tokenRaw.slice(0, 24);
+  return `apaar-sync://verify?id=${encodeURIComponent(DB.student.apaar)}&w=${windowIdx}&t=${token}`;
+}
+
+async function updateStudentQr() {
+  const container = document.getElementById('qr');
+  if (!container || typeof QRCode === 'undefined') return;
+  container.innerHTML = '';
+  const url = await getStudentQrUrl();
+  try {
+    new QRCode(container, {
+      text: url,
+      width: 170,
+      height: 170,
+      colorDark: '#0f172a',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  } catch (e) {
+    container.innerHTML = '<span class="mu">QR Generation Unavailable</span>';
+  }
+}
+
+// ============================================================================
+// AUTHENTICATION LOGIC
+// ============================================================================
+async function handleLoginSubmit(e) {
+  if (e) e.preventDefault();
+  if (Date.now() < S.lockoutUntil) {
+    L.error = 'Too many attempts. Try again in 30 seconds.';
+    render();
+    return;
+  }
+
+  L.error = '';
+
+  if (L.tab === 'student') {
+    if (L.studentStep === 1) {
+      const cleanApaar = L.apaar.trim();
+      const cleanDob = L.dob.trim();
+      if (!cleanApaar || !cleanDob) {
+        L.error = 'Please enter both APAAR ID and Date of Birth.';
+        render();
+        return;
+      }
+      if (cleanApaar !== DB.student.apaar || cleanDob !== DB.student.dob) {
+        recordFailedAttempt();
+        L.error = 'No student record found with matching APAAR ID and Date of Birth.';
+        render();
+        return;
+      }
+      L.studentStep = 2;
+      L.otp = '';
+      toast('Demo OTP sent: 123456');
+      render();
+      return;
+    } else {
+      // Step 2 OTP
+      if (L.otp.trim() !== '123456') {
+        recordFailedAttempt();
+        L.error = 'Invalid OTP. Enter demo OTP: 123456.';
+        render();
+        return;
+      }
+      // Successful Student Login
+      resetFailedAttempts();
+      const payload = {
+        sub: DB.student.apaar,
+        email: DB.student.email,
+        role: 'student',
+        name: DB.student.name,
+        iat: Math.floor(Date.now() / 1000),
+        exp: Math.floor(Date.now() / 1000) + 8 * 3600
+      };
+      try {
+        S.token = await signJwt(payload);
+        S.user = payload;
+        S.page = 'home';
+        logAudit(DB.student.name, 'Student', 'Signed In', DB.student.apaar, 'Authenticated via APAAR OTP');
+        toast(`Signed in as ${DB.student.name}`);
+        render();
+        setTimeout(updateStudentQr, 100);
+      } catch (err) {
+        L.error = err && err.message ? err.message : String(err);
+        render();
+      }
+      return;
+    }
+  }
+
+  // College Admin and AICTE Login
+  const email = L.email.trim().toLowerCase();
+  const pwd = L.password;
+  if (!email || !pwd) {
+    L.error = 'Email and password are required.';
+    render();
+    return;
+  }
+
+  const user = DB.users.find(u => u.email.toLowerCase() === email && u.role === L.tab);
+  if (!user) {
+    recordFailedAttempt();
+    L.error = 'Invalid credentials for the selected role.';
+    render();
+    return;
+  }
+
+  try {
+    const hash = await pbkdf2Hash(pwd, user.salt);
+    if (hash !== user.pwdHash) {
+      recordFailedAttempt();
+      L.error = 'Invalid credentials. Please check your password.';
+      render();
+      return;
+    }
+
+    // Successful Login
+    resetFailedAttempts();
+    const payload = {
+      sub: user.email,
+      email: user.email,
+      role: user.role,
+      name: user.name,
+      institution_id: user.institution_id || null,
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + 8 * 3600
+    };
+    S.token = await signJwt(payload);
+    S.user = payload;
+    S.page = 'home';
+    logAudit(user.name, user.role === 'college_admin' ? 'College Admin' : 'AICTE Regulator', 'Signed In', null, 'Password login authenticated', user.institution_id || 'AICTE-HQ');
+    toast(`Signed in as ${user.name}`);
+    render();
+  } catch (err) {
+    L.error = err && err.message ? err.message : String(err);
+    render();
+  }
+}
+
+function recordFailedAttempt() {
+  S.failedAttempts++;
+  if (S.failedAttempts >= 5) {
+    S.lockoutUntil = Date.now() + 30000;
+    L.error = 'Too many attempts. Try again in 30 seconds.';
+    setTimeout(render, 30100);
+  }
+}
+function resetFailedAttempts() {
+  S.failedAttempts = 0;
+  S.lockoutUntil = 0;
+}
+
+// Fill Demo button logic
+function fillDemoCredentials() {
+  L.error = '';
+  if (L.tab === 'college_admin') {
+    L.email = 'registrar@apex.edu';
+    L.password = 'Demo@123';
+  } else if (L.tab === 'aicte_regulator') {
+    L.email = 'officer@aicte.gov.in';
+    L.password = 'Demo@123';
+  } else if (L.tab === 'student') {
+    if (L.studentStep === 1) {
+      L.apaar = '9182-3841-0012';
+      L.dob = '2004-05-14';
+    } else {
+      L.otp = '123456';
+    }
+  }
+  render();
+}
+
+function signOut() {
+  if (S.user) {
+    logAudit(S.user.name, S.user.role, 'Signed Out', null, 'Session ended gracefully');
+  }
+  S.token = null;
+  S.user = null;
+  S.page = 'home';
+  S.menuOpen = false;
+  L.password = '';
+  L.studentStep = 1;
+  L.isRegister = false;
+  toast('Signed out successfully.');
+  render();
+}
+
+// Registration Eligibility Check
+function handleRegistrationStep1(e) {
+  if (e) e.preventDefault();
+  L.error = '';
+  if (L.tab === 'aicte_regulator') {
+    const email = L.regEmail.trim().toLowerCase();
+    const offId = L.regOfficerId.trim().toUpperCase();
+    if (!email.endsWith('@aicte-india.org') && !email.endsWith('@aicte.gov.in')) {
+      L.error = 'Official email must have @aicte-india.org or @aicte.gov.in domain.';
+      render();
+      return;
+    }
+    const match = DB.aicteWhitelist.find(w => w.email.toLowerCase() === email && w.officerId.toUpperCase() === offId);
+    if (!match) {
+      L.error = 'Officer credentials not found in official AICTE registry whitelist.';
+      render();
+      return;
+    }
+    L.regName = match.name;
+    L.regStep = 2;
+    L.mockOtpSent = '849201';
+    render();
+  } else if (L.tab === 'college_admin') {
+    const instId = L.regInstId.trim();
+    const email = L.regEmail.trim().toLowerCase();
+    const personal = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'live.com', 'rediffmail.com', 'proton.me', 'icloud.com'];
+    const domain = email.split('@')[1] || '';
+    if (personal.includes(domain)) {
+      L.error = 'Personal email providers are strictly prohibited. Use institutional email.';
+      render();
+      return;
+    }
+    const inst = DB.institutions.find(i => (i.id && i.id.toUpperCase() === instId.toUpperCase()) || i.domain === domain);
+    if (!inst) {
+      L.error = 'Institution not found in AICTE approved institutional register.';
+      render();
+      return;
+    }
+    if (!domain.endsWith(inst.domain) && inst.domain !== domain) {
+      L.error = `Institutional email domain (@${domain}) does not match institution's registered domain (@${inst.domain}).`;
+      render();
+      return;
+    }
+    if (DB.users.some(u => u.email.toLowerCase() === email)) {
+      L.error = 'An account with this institutional email is already registered.';
+      render();
+      return;
+    }
+    L.regStep = 2;
+    L.mockOtpSent = '519342';
+    render();
+  }
+}
+
+async function handleRegistrationStep2(e) {
+  if (e) e.preventDefault();
+  L.error = '';
+  if (L.otp.trim() !== L.mockOtpSent) {
+    L.error = `Invalid OTP. Enter the mock OTP shown: ${L.mockOtpSent}`;
+    render();
+    return;
+  }
+  if (!L.regName.trim()) {
+    L.error = 'Full name is required.';
+    render();
+    return;
+  }
+  if (L.tab === 'college_admin') {
+    const mob = L.regMobile.trim();
+    if (!/^[6-9]\d{9}$/.test(mob)) {
+      L.error = 'Enter a valid 10-digit mobile number starting with 6, 7, 8 or 9.';
+      render();
+      return;
+    }
+  }
+  if (L.regPwd.length < 8 || !/[A-Z]/.test(L.regPwd) || !/[a-z]/.test(L.regPwd) || !/\d/.test(L.regPwd)) {
+    L.error = 'Password must be at least 8 characters with upper case, lower case, and a digit.';
+    render();
+    return;
+  }
+  if (L.regPwd !== L.regConfirmPwd) {
+    L.error = 'Passwords do not match.';
+    render();
+    return;
+  }
+
+  // Create user
+  const salt = '1234567890abcdef';
+  const pwdHash = await pbkdf2Hash(L.regPwd, salt);
+  const newUser = {
+    email: L.regEmail.trim().toLowerCase(),
+    role: L.tab,
+    name: L.regName.trim(),
+    salt,
+    pwdHash,
+    institution_id: L.tab === 'college_admin' ? L.regInstId.trim() : null
+  };
+  DB.users.push(newUser);
+  logAudit(newUser.name, newUser.role === 'college_admin' ? 'College Admin' : 'AICTE Regulator', 'Account Registered', null, 'New official account created through verified institutional portal', newUser.institution_id || 'AICTE-HQ');
+
+  toast('Account registered successfully! You may now sign in.');
+  L.isRegister = false;
+  L.regStep = 1;
+  L.email = newUser.email;
+  L.password = L.regPwd;
+  L.error = '';
+  render();
+}
+
+function fillDemoRegister() {
+  if (L.tab === 'aicte_regulator') {
+    L.regEmail = 'officer.test@aicte-india.org';
+    L.regOfficerId = 'AICTE-OFF-1001';
+  } else if (L.tab === 'college_admin') {
+    L.regInstId = 'AICTE-1-10029341';
+    L.regEmail = 'admin@stjosephs.edu.in';
+  }
+  render();
+}
+
+// Formatting APAAR ID as XXXX-XXXX-XXXX while typing
+function onApaarInput(el) {
+  let v = el.value.replace(/\D/g, '').slice(0, 12);
+  let formatted = '';
+  for (let i = 0; i < v.length; i++) {
+    if (i > 0 && i % 4 === 0) formatted += '-';
+    formatted += v[i];
+  }
+  el.value = formatted;
+  L.apaar = formatted;
+}
+
+// ============================================================================
+// STAMPED DOCUMENT GENERATORS (PDF & EXCEL)
+// ============================================================================
+async function downloadStampedPdf(title, contentRows, filename) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(16);
+  doc.setTextColor(55, 48, 163);
+  doc.text('APAAR-Sync | Official Verification Record', 14, 18);
+
+  doc.setFontSize(12);
+  doc.setTextColor(15, 23, 42);
+  doc.text(title, 14, 26);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(100, 116, 139);
+  doc.text('AICTE & Academic Bank of Credits Digital Integrity System · One Student, One ID, One Version of the Truth', 14, 32);
+  doc.text(`Generated: ${new Date().toUTCString()}`, 14, 37);
+
+  doc.setDrawColor(226, 232, 240);
+  doc.line(14, 40, 196, 40);
+
+  let y = 48;
+  doc.setFontSize(10);
+  doc.setTextColor(15, 23, 42);
+
+  for (const row of contentRows) {
+    if (y > 260) { doc.addPage(); y = 20; }
+    doc.setFont('helvetica', 'bold');
+    doc.text(row.label + ':', 14, y);
+    doc.setFont('helvetica', 'normal');
+    doc.text(String(row.val), 70, y);
+    y += 7;
+  }
+
+  // Stamp Footer
+  const digestString = contentRows.map(r => `${r.label}:${r.val}`).join('|');
+  const sha = await sha256Hex(digestString);
+  const hmac = await hmacSha256Hex(JWT_SECRET, sha);
+
+  y += 10;
+  if (y > 255) { doc.addPage(); y = 25; }
+  doc.setDrawColor(226, 232, 240);
+  doc.line(14, y, 196, y);
+  y += 6;
+
+  doc.setFontSize(8);
+  doc.setFont('courier', 'normal');
+  doc.setTextColor(100, 116, 139);
+  doc.text('DIGITAL COMPLIANCE STAMP (HMAC-SHA256 & SHA-256 INTEGRITY CHAIN):', 14, y);
+  y += 5;
+  doc.text(`SHA-256:      ${sha}`, 14, y);
+  y += 4;
+  doc.text(`HMAC-SHA256:  ${hmac}`, 14, y);
+
+  doc.save(filename || 'APAAR_Sync_Record.pdf');
+  toast('Stamped PDF downloaded successfully.');
+}
+
+async function downloadAicteExcel() {
+  if (typeof XLSX === 'undefined') {
+    toast('Excel export library not loaded.');
+    return;
+  }
+  const wb = XLSX.utils.book_new();
+
+  // Sheet 1: Institutions
+  const instData = DB.institutions.map(i => ({
+    'AICTE Institution ID': i.id || 'AICTE-1-PENDING',
+    'Institution Name': i.name,
+    'City': i.city,
+    'State': i.state,
+    'Region': i.region,
+    'Sanctioned Intake': i.intake,
+    'Enrolled Students': i.enrolled,
+    'Active Faculty': i.faculty,
+    'Enrolment Rate': Math.round((i.enrolled / i.intake) * 100) + '%'
+  }));
+  const wsInst = XLSX.utils.json_to_sheet(instData);
+  XLSX.utils.book_append_sheet(wb, wsInst, 'Institutions');
+
+  // Sheet 2: Digital Integrity Stamp
+  const digestSource = JSON.stringify(instData);
+  const sha = await sha256Hex(digestSource);
+  const hmac = await hmacSha256Hex(JWT_SECRET, sha);
+
+  const stampData = [
+    { 'Property': 'Platform', 'Value': 'APAAR-Sync' },
+    { 'Property': 'Jurisdiction', 'Value': 'All India Council for Technical Education (AICTE)' },
+    { 'Property': 'Export Timestamp', 'Value': new Date().toISOString() },
+    { 'Property': 'Institutions Total', 'Value': DB.institutions.length },
+    { 'Property': 'SHA-256 Digest', 'Value': sha },
+    { 'Property': 'HMAC-SHA256 Verification Stamp', 'Value': hmac }
+  ];
+  const wsStamp = XLSX.utils.json_to_sheet(stampData);
+  XLSX.utils.book_append_sheet(wb, wsStamp, 'Digital_Stamp');
+
+  XLSX.writeFile(wb, 'AICTE_Institutions_Register_Stamped.xlsx');
+  toast('Stamped Excel downloaded successfully.');
+}
+
+// ============================================================================
+// ROLE VIEWS & RENDERING ENGINE
+// ============================================================================
+
+function renderAppShell(contentHtml, pageTitle) {
+  const u = S.user;
+  const isAicte = u.role === 'aicte_regulator';
+  const roleLabel = u.role === 'college_admin' ? 'College admin' : isAicte ? 'AICTE regulator' : 'Student';
+  const roleSubtitle = u.role === 'college_admin' ? `${roleLabel} · ${u.name} · ${DB.student.college}` : `${roleLabel} · ${u.name}`;
+
+  // Nav menus strictly as specified
+  const menus = {
+    college_admin: [
+      { id: 'departments', label: 'Departments' },
+      { id: 'faculty', label: 'Faculty' },
+      { id: 'admission', label: 'Admission' },
+      { id: 'students', label: 'Students' },
+      { id: 'approvals', label: 'Approvals' },
+      { id: 'audit_log', label: 'Audit log' },
+      { id: 'reports', label: 'Reports' }
+    ],
+    aicte_regulator: [
+      { id: 'institutions', label: 'Institutions' },
+      { id: 'compliance', label: 'Compliance & audit centre' },
+      { id: 'verification', label: 'Verification' }
+    ],
+    student: [
+      { id: 'personal', label: 'Personal details' },
+      { id: 'academic', label: 'Academic details' },
+      { id: 'courses', label: 'Courses enrolled' },
+      { id: 'internship', label: 'Internship' },
+      { id: 'credit_actions', label: 'Credit actions' },
+      { id: 'documents', label: 'Documents' }
+    ]
+  };
+
+  const navList = menus[u.role] || [];
+
+  return `
+    <!-- Scrim -->
+    <div class="sh ${S.menuOpen ? 'on' : ''}" onclick="S.menuOpen=false;render()"></div>
+
+    <!-- Slide-in Drawer -->
+    <aside class="dr ${S.menuOpen ? 'on' : ''}" aria-label="Main menu">
+      <div class="dh">
+        <button class="lk" style="font-size:18px;font-weight:700;color:#ffffff;text-decoration:none;display:inline-flex;align-items:center;gap:10px" onclick="navigate('home')">
+          <svg width="24" height="24" viewBox="0 0 34 34" fill="none" stroke="#a78bfa" stroke-width="2" aria-hidden="true"><rect x="4" y="7" width="26" height="20" rx="4"/><circle cx="13" cy="16" r="3.5"/><path d="M8 23c1-3 9-3 10 0M21 14h5M21 19h5"/></svg>
+          <span>APAAR-Sync</span>
+        </button>
+        <div class="mu" style="font-size:11px;margin-top:6px;font-family:'JetBrains Mono',monospace">${esc(roleSubtitle)}</div>
+      </div>
+      <nav style="flex:1;overflow-y:auto;padding-top:6px">
+        <button class="ni ${S.page === 'home' ? 'on' : ''}" onclick="navigate('home')">
+          ${u.role === 'college_admin' ? 'Dashboard' : isAicte ? 'Overview' : 'Home'}
+        </button>
+        ${navList.map(item => `
+          <button class="ni ${S.page === item.id ? 'on' : ''}" onclick="navigate('${item.id}')">
+            ${esc(item.label)}
+          </button>
+        `).join('')}
+      </nav>
+      <div style="margin-top:auto;padding:16px;border-top:1px solid var(--bd)">
+        <div class="t wr" style="display:block;text-align:center;margin-bottom:12px;padding:4px">Sandbox · mock DigiLocker/ABC</div>
+        <button class="b w" style="width:100%;margin-bottom:8px" onclick="resetDemoData()">Reset demo data</button>
+        <button class="b s" style="width:100%" onclick="signOut()">Sign out</button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="w">
+      <header class="hd">
+        <div style="display:flex;align-items:center;gap:12px">
+          <button class="hb" aria-label="Open menu" onclick="S.menuOpen=true;render()">
+            <i></i><i></i><i></i>
+          </button>
+          <div>
+            <h1 style="font-size:20px;font-weight:700;color:#ffffff;letter-spacing:-0.02em">${esc(pageTitle)}</h1>
+            <div class="mu" style="font-size:11px;margin-top:2px">One Student, One ID, One Version of the <span class="lp-rainbow-word">Truth</span></div>
+          </div>
+        </div>
+        ${isAicte ? `
+          <div style="flex:1;max-width:380px;min-width:200px">
+            <input type="text" placeholder="Search APAAR ID or institution" onkeydown="if(event.key==='Enter')handleAicteHeaderSearch(this.value)" value="${esc(V.searchQuery)}">
+          </div>
+        ` : ''}
+      </header>
+      ${contentHtml}
+    </main>
+  `;
+}
+
+function handleAicteHeaderSearch(val) {
+  V.searchQuery = val.trim();
+  const clean = val.replace(/\D/g, '');
+  if (clean.length === 12) {
+    V.verificationLookupId = val.trim();
+    navigate('verification');
+  } else {
+    V.institutionSearch = val.trim();
+    navigate('institutions');
+  }
+}
+
+function navigate(pageId) {
+  S.page = pageId;
+  S.menuOpen = false;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  render();
+  if (S.user && S.user.role === 'student' && pageId === 'home') {
+    setTimeout(updateStudentQr, 100);
+  }
+}
+
+// ----------------------------------------------------------------------------
+// STUDENT VIEWS
+// ----------------------------------------------------------------------------
+function renderStudentHome() {
+  const verifiedCredits = getStudentVerifiedCredits();
+  return `
+    <div class="pass">
+      <div class="c" style="text-align:center">
+        <span class="t ok">One student · one ID</span>
+        <h2 style="font-size:20px;margin-top:10px">${esc(DB.student.name)}</h2>
+        <div class="m mu" style="font-size:12px;margin:6px 0">
+          APAAR ${maskApaar(DB.student.apaar)} · ABC ${esc(DB.student.abcId)}
+        </div>
+        <div class="mu" style="font-size:12px">${esc(DB.student.college)}</div>
+        
+        <div id="qr"></div>
+        
+        <div class="bar" style="height:6px;max-width:240px;margin:8px auto">
+          <i id="qr-countdown-bar" style="width:100%"></i>
+        </div>
+        <div class="mu" style="font-size:11px">Rotates in 30s. Screenshots expire.</div>
+      </div>
+
+      <div class="c" style="text-align:left">
+        <h3>Everything linked to your IDs</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+          <button class="b s" onclick="navigate('personal')">Personal Details</button>
+          <button class="b s" onclick="navigate('academic')">Academic Details</button>
+          <button class="b s" onclick="navigate('credit_actions')">Transfer & Redeem</button>
+          <button class="b s" onclick="navigate('documents')">Documents</button>
+        </div>
+      </div>
+
+      <div class="c" style="text-align:left">
+        <h3>Academic Bank of Credits</h3>
+        <div style="display:flex;align-items:baseline;gap:8px;margin:8px 0">
+          <b style="font-size:28px">${verifiedCredits}</b>
+          <span class="mu">of 160 credits</span>
+          <span class="t ok" style="margin-left:auto">Synced with DigiLocker</span>
+        </div>
+        <div class="bar" style="margin-bottom:10px">
+          <i style="width:${Math.round((verifiedCredits / 160) * 100)}%"></i>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px" class="mu">
+          <span>Last sync: ${esc(DB.student.lastSyncTime)}</span>
+          <button class="b s" style="padding:4px 10px;font-size:11px" onclick="refreshStudentSync()">Refresh sync</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function refreshStudentSync() {
+  const d = new Date();
+  DB.student.lastSyncTime = `Today at ${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')}`;
+  DB.syncLogs.unshift({
+    time: `${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')}:${String(d.getSeconds()).padStart(2, '0')}`,
+    service: 'DigiLocker/ABC',
+    apaar: DB.student.apaar,
+    op: 'Student Manual Sync Refresh',
+    result: 'Pass',
+    latency: '115ms'
+  });
+  logAudit(DB.student.name, 'Student', 'DigiLocker Refresh', DB.student.apaar, 'Refreshed ABC credit sync cache');
+  toast('Academic Bank of Credits synchronized with DigiLocker.');
+  render();
+}
+
+function renderStudentPersonal() {
+  const s = DB.student;
+  return `
+    <div class="c">
+      <h2>National Digital Identity Linkage</h2>
+      <div class="mu" style="margin-bottom:14px">Official government credentials verified via DigiLocker and ABC APIs.</div>
+      ${kv([
+        { label: 'APAAR ID (Full)', val: s.apaar, mono: true },
+        { label: 'Academic Bank of Credits ID', val: s.abcId, mono: true },
+        { label: 'ABC Opened Date', val: s.abcOpened },
+        { label: 'DigiLocker Status', val: s.digiLocker },
+        { label: 'Aadhaar (Masked)', val: s.aadhaarMasked, mono: true },
+        { label: 'College Enrolment No', val: s.enrolmentNo, mono: true },
+        { label: 'University Reg No', val: s.univReg, mono: true },
+        { label: 'AICTE Institution ID', val: s.collegeId, mono: true }
+      ])}
+    </div>
+
+    <div class="c">
+      <h2>Personal, Family & Guardian Details</h2>
+      ${kv([
+        { label: 'Full Legal Name', val: s.name },
+        { label: 'Date of Birth', val: s.dob },
+        { label: 'Gender', val: s.gender },
+        { label: 'Blood Group', val: s.blood },
+        { label: 'Category', val: s.category },
+        { label: 'Nationality', val: s.nationality },
+        { label: 'Primary Mobile', val: s.mobile },
+        { label: 'Registered Email', val: s.email },
+        { label: 'Father Name', val: s.father },
+        { label: 'Mother Name', val: s.mother },
+        { label: 'Guardian', val: s.guardian },
+        { label: 'Guardian Mobile', val: s.guardianMobile },
+        { label: 'Residential Address', val: s.address }
+      ])}
+    </div>
+
+    <div class="c">
+      <h2>Admission & Institutional Linkage</h2>
+      ${kv([
+        { label: 'Admitted Institution', val: s.college },
+        { label: 'Academic Programme', val: s.programme },
+        { label: 'Batch Cohort', val: s.batch },
+        { label: 'Current Semester', val: s.yearSemester },
+        { label: 'Admission Channel', val: s.admission },
+        { label: 'Entrance Rank', val: s.rank },
+        { label: 'Student Mentor', val: s.mentor },
+        { label: 'Scholarship', val: s.scholarship }
+      ])}
+    </div>
+  `;
+}
+
+function renderStudentAcademic() {
+  const s = DB.student;
+  const verifiedCredits = getStudentVerifiedCredits();
+  return `
+    <div class="c">
+      <h2>Academic Summary</h2>
+      <div class="g g4" style="margin-top:12px">
+        <div class="k"><span>Verified Credits</span><b>${verifiedCredits}</b><span class="mu">Target: 160</span></div>
+        <div class="k"><span>Cumulative GPA</span><b>${s.cgpa}</b><span class="mu">Scale: 10.0</span></div>
+        <div class="k"><span>Attendance</span><b>${s.attendance}</b><span class="mu">Eligibility &ge; 75%</span></div>
+        <div class="k"><span>Active Backlogs</span><b>${s.backlogs}</b><span class="mu">Clear Standing</span></div>
+      </div>
+    </div>
+
+    <div class="c">
+      <h2>National Registries Linkage</h2>
+      ${tb(
+        ['Register', 'Identifier', 'Verified Link', 'Status'],
+        [
+          { cols: ['APAAR National Registry', `<span class="m">${s.apaar}</span>`, 'Ministry of Education', '<span class="t ok">Linked</span>'] },
+          { cols: ['Academic Bank of Credits', `<span class="m">${s.abcId}</span>`, 'UGC / ABC System', '<span class="t ok">Active</span>'] },
+          { cols: ['DigiLocker Aadhaar eKYC', `<span class="m">${s.aadhaarMasked}</span>`, 'UIDAI / MeitY', '<span class="t ok">Verified</span>'] },
+          { cols: ['AICTE Approval Register', `<span class="m">${s.collegeId}</span>`, s.college, '<span class="t ok">Approved</span>'] },
+          { cols: ['College Examination Records', `<span class="m">${s.enrolmentNo}</span>`, s.programme, '<span class="t ok">Enrolled</span>'] }
+        ]
+      )}
+    </div>
+
+    <div class="c">
+      <h2>Academic Bank of Credits (ABC) Credit History</h2>
+      <div class="mu" style="margin-bottom:12px">Click any semester to view course-level credits, grades, and statutory verification status.</div>
+      ${tb(
+        ['Term', 'Credits', 'SGPA', 'Status', 'Courses Breakdown'],
+        DB.terms.map((t, idx) => {
+          const isExp = Boolean(V.expandedTerms[t.term]);
+          let coursesDetail = '';
+          if (isExp) {
+            coursesDetail = `<div style="margin-top:8px;padding:8px;background:var(--cd);border:1px solid var(--bd);border-radius:10px">
+              <table>
+                <thead><tr><th>Code</th><th>Course Name</th><th>Credits</th><th>Grade</th><th>Status</th></tr></thead>
+                <tbody>
+                  ${t.courses.map(c => `
+                    <tr>
+                      <td class="m">${esc(c.code)}</td>
+                      <td>${esc(c.name)}</td>
+                      <td>${c.credits}</td>
+                      <td><b>${esc(c.grade)}</b></td>
+                      <td><span class="t ${c.status === 'Verified' ? 'ok' : c.status === 'Pending' ? 'wr' : 'bad'}">${esc(c.status)}</span>${c.remark ? `<div class="mu" style="font-size:10px">${esc(c.remark)}</div>` : ''}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>`;
+          }
+          return {
+            clickable: true,
+            click: `V.expandedTerms['${t.term}']=!V.expandedTerms['${t.term}'];render()`,
+            cols: [
+              `<b>${esc(t.term)}</b>`,
+              `<b>${t.credits}</b>`,
+              t.sgpa,
+              `<span class="t ok">${esc(t.status)}</span>`,
+              `<button class="lk">${isExp ? 'Hide course rows ▲' : 'View course rows ▼'}</button>${coursesDetail}`
+            ]
+          };
+        })
+      )}
+    </div>
+  `;
+}
+
+function renderStudentCourses() {
+  return `
+    <div class="c">
+      <h2>Current Semester Courses (Semester 5)</h2>
+      <div class="mu" style="margin-bottom:12px">Registered subjects currently under instruction for 2026-27 Autumn cycle.</div>
+      ${tb(
+        ['Course Code', 'Title', 'Credits', 'Type', 'Status'],
+        DB.coursesEnrolled.map(c => ({
+          cols: [`<span class="m">${esc(c.code)}</span>`, esc(c.name), c.credits, esc(c.type), `<span class="t ok">${esc(c.status)}</span>`]
+        }))
+      )}
+    </div>
+  `;
+}
+
+function renderStudentInternships() {
+  return `
+    <div class="c">
+      <h2>AICTE Activity & Internship Ledger</h2>
+      <div class="mu" style="margin-bottom:12px">Internships and industrial visits credited into the Academic Bank of Credits record.</div>
+      ${tb(
+        ['Internship / Activity', 'Organization', 'Duration', 'Credits', 'Status'],
+        DB.internships.map(i => ({
+          cols: [esc(i.title), esc(i.org), esc(i.duration), `<b>${i.credits}</b>`, `<span class="t ${i.status === 'Completed' ? 'ok' : 'wr'}">${esc(i.status)}</span>`]
+        }))
+      )}
+    </div>
+  `;
+}
+
+function renderStudentCreditActions() {
+  const verifiedCredits = getStudentVerifiedCredits();
+  // Get all verified courses
+  const allVerifiedCourses = [];
+  for (const t of DB.terms) {
+    for (const c of t.courses) {
+      if (c.status === 'Verified') {
+        allVerifiedCourses.push({ ...c, term: t.term });
+      }
+    }
+  }
+
+  // Find locked courses (in any open Pending transfer)
+  const lockedCodes = new Set();
+  for (const tr of DB.transfers) {
+    if (tr.status === 'Pending') {
+      tr.courseCodes.forEach(code => lockedCodes.add(code));
+    }
+  }
+
+  return `
+    <div class="c">
+      <h2>Credit Actions & Mobility</h2>
+      <div class="tabs" style="margin-top:12px">
+        <button class="${V.creditTab === 'transfer' ? 'on' : ''}" onclick="V.creditTab='transfer';render()">Transfer request</button>
+        <button class="${V.creditTab === 'redeem' ? 'on' : ''}" onclick="V.creditTab='redeem';render()">Redeem</button>
+        <button class="${V.creditTab === 'statement' ? 'on' : ''}" onclick="V.creditTab='statement';render()">Statement</button>
+      </div>
+
+      ${V.creditTab === 'transfer' ? `
+        <div style="margin-top:12px">
+          <h3>Submit a new credit transfer request</h3>
+          <form onsubmit="handleStudentTransferSubmit(event)" style="margin-top:10px">
+            <label>Target AICTE Institution</label>
+            <select id="transfer-inst-select" required>
+              <option value="">Select approved destination institution...</option>
+              ${DB.institutions.filter(i => i.name !== DB.student.college).map(i => `
+                <option value="${esc(i.name)}">${esc(i.name)} (${esc(i.city)}, ${esc(i.state)})</option>
+              `).join('')}
+            </select>
+
+            <label>Select Verified Courses to Transfer</label>
+            <div style="max-height:220px;overflow-y:auto;border:1px solid var(--bd);border-radius:10px;padding:8px;background:var(--bg)">
+              ${allVerifiedCourses.map(c => {
+                const isLocked = lockedCodes.has(c.code);
+                return `
+                  <div style="display:flex;align-items:center;gap:8px;padding:6px;border-bottom:1px solid var(--bd)">
+                    <input type="checkbox" name="transferCourse" value="${esc(c.code)}" data-cr="${c.credits}" style="width:auto" ${isLocked ? 'disabled' : ''}>
+                    <div style="flex:1">
+                      <b class="m">${esc(c.code)}</b> - ${esc(c.name)} (${c.credits} cr, Grade: ${esc(c.grade)})
+                      <span class="mu">· ${esc(c.term)}</span>
+                    </div>
+                    ${isLocked ? '<span class="t wr">Locked in open transfer</span>' : '<span class="t ok">Available</span>'}
+                  </div>
+                `;
+              }).join('')}
+            </div>
+
+            <label>Reason for Transfer</label>
+            <textarea id="transfer-reason" rows="2" placeholder="e.g. Programme transfer, lateral admission, or university migration" required></textarea>
+
+            <button type="submit" class="b" style="margin-top:12px">Submit transfer request</button>
+          </form>
+
+          <h3 style="margin-top:24px">Transfer History & Decisions</h3>
+          ${tb(
+            ['ID', 'Target Institution', 'Courses (Credits)', 'Reason', 'Status', 'Admin Remarks'],
+            DB.transfers.map(tr => ({
+              cols: [
+                `<span class="m">${esc(tr.id)}</span>`,
+                esc(tr.toInst),
+                `${esc(tr.courseCodes.join(', '))} (<b>${tr.totalCredits} cr</b>)`,
+                esc(tr.reason),
+                `<span class="t ${tr.status === 'Approved' ? 'ok' : tr.status === 'Pending' ? 'wr' : 'bad'}">${esc(tr.status)}</span>`,
+                tr.remark ? `<span style="font-weight:600">${esc(tr.remark)}</span>` : '<span class="mu">-</span>'
+              ]
+            }))
+          )}
+        </div>
+      ` : ''}
+
+      ${V.creditTab === 'redeem' ? `
+        <div style="margin-top:12px">
+          <h3>National Credit Framework (NCrF) Award Redemption</h3>
+          <div class="mu" style="margin-bottom:14px">Convert verified Academic Bank of Credits into certified academic qualifications.</div>
+
+          <div class="g g4" style="margin-bottom:18px">
+            <div class="k">
+              <span>Verified Credits</span>
+              <b>${verifiedCredits}</b>
+            </div>
+            <div class="k">
+              <span>Certificate</span>
+              <b>30</b>
+              <span class="mu">${verifiedCredits >= 30 ? '<span class="t ok">Eligible</span>' : `<span class="t bad">Short by ${30 - verifiedCredits}</span>`}</span>
+            </div>
+            <div class="k">
+              <span>Diploma</span>
+              <b>60</b>
+              <span class="mu">${verifiedCredits >= 60 ? '<span class="t ok">Eligible</span>' : `<span class="t bad">Short by ${60 - verifiedCredits}</span>`}</span>
+            </div>
+            <div class="k">
+              <span>Degree</span>
+              <b>120</b>
+              <span class="mu">${verifiedCredits >= 120 ? '<span class="t ok">Eligible</span>' : `<span class="t bad">Short by ${120 - verifiedCredits}</span>`}</span>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="b" onclick="handleRedemption('Certificate', 30)" ${verifiedCredits < 30 ? 'disabled' : ''}>Redeem Certificate (30 credits)</button>
+            <button class="b" onclick="handleRedemption('Diploma', 60)" ${verifiedCredits < 60 ? 'disabled' : ''}>Redeem Diploma (60 credits)</button>
+            <button class="b" onclick="handleRedemption('Degree', 120)" ${verifiedCredits < 120 ? 'disabled' : ''}>Redeem Degree (120 credits)</button>
+          </div>
+
+          <h3 style="margin-top:24px">Redemption History</h3>
+          ${DB.redemptions.length === 0 ? '<div class="mu" style="padding:8px 0">No award redemptions processed yet.</div>' : tb(
+            ['Date', 'Award', 'Credits Redeemed', 'Status', 'Reference'],
+            DB.redemptions.map(r => ({
+              cols: [esc(r.date), `<b>${esc(r.award)}</b>`, r.credits, '<span class="t ok">Awarded</span>', `<span class="m">${esc(r.ref)}</span>`]
+            }))
+          )}
+        </div>
+      ` : ''}
+
+      ${V.creditTab === 'statement' ? `
+        <div style="margin-top:12px">
+          <div class="hd" style="margin-bottom:10px">
+            <h3>Verified Academic Bank of Credits Statement</h3>
+            <button class="b" onclick="downloadStudentStatementPdf()">Download PDF</button>
+          </div>
+          <div class="mu" style="margin-bottom:12px">Official digital statement verified via UIDAI eKYC and UGC ABC Registry.</div>
+          ${tb(
+            ['Term', 'Code', 'Course Title', 'Credits', 'Grade', 'Verification Status'],
+            allVerifiedCourses.map(c => ({
+              cols: [esc(c.term), `<span class="m">${esc(c.code)}</span>`, esc(c.name), c.credits, `<b>${esc(c.grade)}</b>`, '<span class="t ok">Verified</span>']
+            }))
+          )}
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+function handleStudentTransferSubmit(e) {
+  e.preventDefault();
+  const select = document.getElementById('transfer-inst-select');
+  const reasonEl = document.getElementById('transfer-reason');
+  const checkedBoxes = Array.from(document.querySelectorAll('input[name="transferCourse"]:checked'));
+  if (checkedBoxes.length === 0) {
+    toast('Please select at least one verified course to transfer.');
+    return;
+  }
+  const courseCodes = checkedBoxes.map(b => b.value);
+  const totalCredits = checkedBoxes.reduce((acc, b) => acc + parseInt(b.getAttribute('data-cr') || '0', 10), 0);
+  const targetInst = select.value;
+  const reason = reasonEl.value.trim();
+
+  const trId = `TR-${String(DB.transfers.length + 1).padStart(3, '0')}`;
+  const newTransfer = {
+    id: trId,
+    studentApaar: DB.student.apaar,
+    studentName: DB.student.name,
+    fromInst: DB.student.college,
+    toInst: targetInst,
+    courseCodes,
+    totalCredits,
+    reason,
+    status: 'Pending',
+    submittedAt: new Date().toISOString().replace('T', ' ').slice(0, 16),
+    remark: ''
+  };
+  DB.transfers.unshift(newTransfer);
+
+  logAudit(
+    DB.student.name,
+    'Student',
+    'Credit Transfer Requested',
+    DB.student.apaar,
+    `Requested transfer of ${totalCredits} credits (${courseCodes.join(', ')}) to ${targetInst}`
+  );
+
+  toast(`Transfer request ${trId} submitted for college admin approval.`);
+  render();
+}
+
+function handleRedemption(award, reqCredits) {
+  const verifiedCredits = getStudentVerifiedCredits();
+  if (verifiedCredits < reqCredits) {
+    toast(`Cannot redeem ${award}: requires ${reqCredits} credits (shortfall of ${reqCredits - verifiedCredits}).`);
+    return;
+  }
+  const ref = `NCrF-${award.toUpperCase()}-${Math.floor(100000 + Math.random() * 900000)}`;
+  const now = new Date().toISOString().slice(0, 10);
+  DB.redemptions.unshift({
+    date: now,
+    award,
+    credits: reqCredits,
+    ref
+  });
+  logAudit(
+    DB.student.name,
+    'Student',
+    'Award Redeemed',
+    DB.student.apaar,
+    `Redeemed ${award} (${reqCredits} verified credits) under NCrF. Certificate Ref: ${ref}`
+  );
+  toast(`Award ${award} successfully redeemed! Reference: ${ref}`);
+  render();
+}
+
+async function downloadStudentStatementPdf() {
+  const rows = [
+    { label: 'Student Legal Name', val: DB.student.name },
+    { label: 'APAAR ID (Masked)', val: maskApaar(DB.student.apaar) },
+    { label: 'Academic Bank of Credits ID', val: DB.student.abcId },
+    { label: 'College / Institution', val: DB.student.college },
+    { label: 'Programme of Study', val: DB.student.programme },
+    { label: 'Total Verified ABC Credits', val: `${getStudentVerifiedCredits()} credits` },
+    { label: 'Cumulative Grade Point Average', val: DB.student.cgpa }
+  ];
+  for (const t of DB.terms) {
+    for (const c of t.courses) {
+      if (c.status === 'Verified') {
+        rows.push({ label: `${t.term} - ${c.code}`, val: `${c.name} (${c.credits} cr, Grade: ${c.grade})` });
+      }
+    }
+  }
+  await downloadStampedPdf('Academic Bank of Credits (ABC) Transcript', rows, 'ABC_Statement_Aarav_Sharma.pdf');
+}
+
+let currentOfflineCertToken = '';
+
+async function updateStudentOfflineCertQr() {
+  const container = document.getElementById('offline-cert-qr');
+  const box = document.getElementById('offline-cert-token-box');
+  if (!container) return;
+  container.innerHTML = '';
+  try {
+    const token = await generateOfflineCertificate();
+    currentOfflineCertToken = token;
+    if (box) box.value = token;
+    if (typeof QRCode !== 'undefined') {
+      new QRCode(container, {
+        text: token,
+        width: 150,
+        height: 150,
+        colorDark: '#0f172a',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+  } catch (err) {
+    container.innerHTML = '<span class="mu" style="font-size:11px">QR generation error</span>';
+  }
+}
+
+function copyOfflineCertToken() {
+  const box = document.getElementById('offline-cert-token-box');
+  if (box && box.value) {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(box.value);
+    }
+    toast('Offline certificate token copied to clipboard.');
+  }
+}
+
+function downloadOfflineCertJson() {
+  if (!currentOfflineCertToken) return;
+  try {
+    const parts = currentOfflineCertToken.split('.');
+    const payload = JSON.parse(unb64u(parts[0]));
+    const jsonStr = JSON.stringify({ token: currentOfflineCertToken, payload }, null, 2);
+    downloadFile(jsonStr, `APAAR_Offline_Certificate_${DB.student.apaar}.json`, 'application/json');
+  } catch (_) {}
+}
+
+function testVerifyMyCert() {
+  if (!currentOfflineCertToken) return;
+  signOut();
+  L.tab = 'verify_cert';
+  L.certToken = currentOfflineCertToken;
+  render();
+  setTimeout(() => handleVerifyCertSubmit(), 100);
+}
+
+function renderStudentDocuments() {
+  setTimeout(updateStudentOfflineCertQr, 50);
+  return `
+    <div class="c">
+      <div class="hd" style="margin-bottom:8px">
+        <div>
+          <h2>Offline Certificate QR (Dual Mode Verification)</h2>
+          <div class="mu" style="font-size:12px">Tamper-proof academic credential signed with WebCrypto ECDSA P-256. Verified offline without network access.</div>
+        </div>
+        <span class="t ok">Dual Mode Active</span>
+      </div>
+
+      <div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap;margin-top:10px">
+        <div style="text-align:center">
+          <div id="offline-cert-qr" style="background:#fff;padding:12px;border-radius:14px;border:1px solid var(--bd);display:inline-block"></div>
+          <div class="mu" style="font-size:11px;margin-top:6px">Offline Digital Stamp (P-256)</div>
+        </div>
+        <div style="flex:1;min-width:240px">
+          <div class="kv" style="margin-bottom:12px">
+            <div><span>Signing Standard</span><b>ECDSA P-256 · SHA-256</b></div>
+            <div><span>Verification Mode</span><b>Offline Zero-Trust</b></div>
+            <div><span>Masked Student</span><b>${maskName(DB.student.name)} (${maskApaar(DB.student.apaar)})</b></div>
+            <div><span>Verified Credits</span><b>${getStudentVerifiedCredits()} credits</b></div>
+          </div>
+          <label>Cryptographic Offline Token</label>
+          <textarea id="offline-cert-token-box" rows="3" readonly class="m" style="font-size:11px" onclick="this.select()"></textarea>
+          <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+            <button class="b s" onclick="copyOfflineCertToken()">Copy Certificate Token</button>
+            <button class="b s" onclick="downloadOfflineCertJson()">Download Token (.json)</button>
+            <button class="b" onclick="testVerifyMyCert()">Verify in Public Portal</button>
+          </div>
+          <div class="mu" style="font-size:11px;margin-top:6px">
+            Live mode (30s dynamic expiry) is active on Home. Offline mode can be verified by anyone on the login screen.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="c">
+      <h2>Document Locker & Verification</h2>
+      <div class="mu" style="margin-bottom:12px">Upload marksheet, certificates or identity proofs. Stored in-memory with SHA-256 tamper-evident integrity hash.</div>
+      <form onsubmit="handleDocUpload(event)" style="margin-bottom:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+        <div style="flex:1;min-width:200px">
+          <label>Document Category</label>
+          <select id="doc-type-select">
+            <option>Marksheet</option>
+            <option>ID proof</option>
+            <option>Bonafide certificate</option>
+            <option>Income certificate</option>
+            <option>Category certificate</option>
+            <option>Internship certificate</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div style="flex:2;min-width:240px">
+          <label>Choose File (PDF, PNG, JPG, DOCX &le; 5 MB)</label>
+          <input type="file" id="doc-file-input" required>
+        </div>
+        <button type="submit" class="b">Upload document</button>
+      </form>
+
+      ${tb(
+        ['Document Name', 'Type', 'Size', 'SHA-256 Fingerprint', 'Status', 'Actions'],
+        DB.documents.map((d, idx) => ({
+          cols: [
+            esc(d.name),
+            esc(d.type),
+            esc(d.size),
+            `<span class="m" title="${esc(d.sha)}">${esc(d.sha.slice(0, 16))}...</span>`,
+            `<span class="t ${d.status === 'Verified' ? 'ok' : 'wr'}">${esc(d.status)}</span>`,
+            `<button class="lk" onclick="toast('Downloading mock file: ${esc(d.name)}')">Download</button> &nbsp;|&nbsp; <button class="lk" style="color:var(--bad)" onclick="removeDoc(${idx})">Remove</button>`
+          ]
+        }))
+      )}
+
+      <div style="margin-top:20px;border-top:1px solid var(--bd);padding-top:14px;display:flex;gap:10px">
+        <button class="b s" onclick="downloadStudentStatementPdf()">Download ABC Credit Statement (PDF)</button>
+        <button class="b s" onclick="downloadStudentProfileSummaryPdf()">Download Student Profile Summary (PDF)</button>
+      </div>
+    </div>
+  `;
+}
+
+async function handleDocUpload(e) {
+  e.preventDefault();
+  const fileInput = document.getElementById('doc-file-input');
+  const typeSelect = document.getElementById('doc-type-select');
+  const file = fileInput.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) {
+    toast('File exceeds maximum allowed limit of 5 MB.');
+    return;
+  }
+  const sha = await sha256Hex(file.name + file.size + Date.now());
+  DB.documents.push({
+    id: `DOC-${Date.now()}`,
+    name: file.name,
+    type: typeSelect.value,
+    size: (file.size / 1024).toFixed(1) + ' KB',
+    sha,
+    status: 'Pending verification'
+  });
+  logAudit(DB.student.name, 'Student', 'Document Uploaded', DB.student.apaar, `Uploaded ${file.name} (${typeSelect.value}) with SHA-256 fingerprint`);
+  toast(`Document ${file.name} uploaded successfully.`);
+  render();
+}
+
+function removeDoc(idx) {
+  const removed = DB.documents.splice(idx, 1)[0];
+  if (removed) {
+    toast(`Removed ${removed.name}`);
+    render();
+  }
+}
+
+async function downloadStudentProfileSummaryPdf() {
+  const rows = [
+    { label: 'Full Legal Name', val: DB.student.name },
+    { label: 'APAAR ID (Masked)', val: maskApaar(DB.student.apaar) },
+    { label: 'ABC ID', val: DB.student.abcId },
+    { label: 'Admitted College', val: DB.student.college },
+    { label: 'Programme & Batch', val: `${DB.student.programme} (${DB.student.batch})` },
+    { label: 'CGPA & Status', val: `${DB.student.cgpa} / 10.0 (Regular Student)` },
+    { label: 'Aadhaar eKYC', val: DB.student.aadhaarMasked },
+    { label: 'DigiLocker Status', val: DB.student.digiLocker }
+  ];
+  await downloadStampedPdf('Student Institutional Profile Summary', rows, 'Student_Profile_Summary.pdf');
+}
+
+// ----------------------------------------------------------------------------
+// COLLEGE ADMIN VIEWS (Apex Institute of Technology)
+// ----------------------------------------------------------------------------
+function renderAdminHome() {
+  const health = getCollegeHealthScore();
+  return `
+    ${health.isLocked ? `
+      <div class="ban">
+        <b>Admissions locked: faculty ratio exceeded.</b>
+        <div style="font-size:12px;margin-top:4px">
+          The approved student-to-faculty capacity threshold (1:20) has been breached. Active faculty: ${health.activeFaculty}. Effective intake capacity capped at ${health.effectiveIntake}.
+        </div>
+      </div>
+    ` : ''}
+
+    <div class="c">
+      <h2>${esc(DB.student.college)}: current situation</h2>
+      <div class="mu" style="margin-bottom:14px">Hyderabad, Telangana · AICTE-1-4417 · Affiliated to JNTUH</div>
+      <div class="g g4">
+        <div class="k"><span>Health Score</span><b>${health.score} <span class="t ${health.badgeClass}">${health.badge}</span></b><span class="mu">Baseline 100</span></div>
+        <div class="k"><span>Enrolled Students</span><b>${health.totalEnrolled}</b><span class="mu">Reported admissions</span></div>
+        <div class="k"><span>Effective Intake</span><b>${health.effectiveIntake}</b><span class="mu">Sanctioned: ${DB.apex.sanctionedIntake}</span></div>
+        <div class="k"><span>Active Faculty</span><b>${health.activeFaculty}</b><span class="mu">Roster total: ${DB.apex.faculty.length}</span></div>
+        <div class="k"><span>Departments</span><b>${DB.apex.departments.length}</b><span class="mu">Engineering & Tech</span></div>
+        <div class="k"><span>Open Flags</span><b>${DB.apex.fraudFlags.filter(f => !f.frozen).length}</b><span class="mu">Fraud & Quota</span></div>
+      </div>
+    </div>
+
+    <div class="c">
+      <h2>Reverse faculty-linked smart intake</h2>
+      <div class="mu" style="margin-bottom:8px">Effective intake = min(Sanctioned intake: ${DB.apex.sanctionedIntake}, Active faculty &times; 20). Dynamic regulatory ceiling.</div>
+      <div class="bar" role="progressbar" style="margin:10px 0">
+        <i style="width:${Math.min(100, Math.round((health.totalEnrolled / health.effectiveIntake) * 100))}%;background:${health.isLocked ? 'var(--bad)' : 'var(--bt)'}"></i>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:12px">
+        <span><b>${health.totalEnrolled}</b> of <b>${health.effectiveIntake}</b> seats used (${Math.round((health.totalEnrolled / health.effectiveIntake) * 100)}%)</span>
+        <span>Admissions: <b>${health.isLocked ? '<span style="color:var(--bad)">LOCKED</span>' : '<span style="color:var(--ok)">PERMITTED</span>'}</b></span>
+      </div>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="b" onclick="addFacultyDirect()">Add faculty (+20 seats)</button>
+        <button class="b w" onclick="demoFacultyResign()">Demo: 6 faculty resign</button>
+      </div>
+
+      <h3>Why this score?</h3>
+      <div style="font-size:12px;color:var(--mu)">
+        ${health.deductions.length === 0 ? '<div style="color:var(--ok)">Full compliance standard: zero deductions applied.</div>' : health.deductions.map(d => `<div style="margin-bottom:4px;color:var(--bad)">• ${esc(d)}</div>`).join('')}
+      </div>
+    </div>
+
+    <div class="g g2">
+      <div class="c">
+        <h2>Category Quota Matrix (Statutory Distribution)</h2>
+        ${tb(
+          ['Category', 'Approved', 'Admitted', 'Status'],
+          DB.apex.quotas.map(q => {
+            const diff = q.admitted - q.approved;
+            let statusTag = '<span class="t ok">Available</span>';
+            if (diff === 0) statusTag = '<span class="t wr">Full</span>';
+            else if (diff > 0) statusTag = `<span class="t bad">Over by ${diff}</span>`;
+            return {
+              cols: [`<b>${esc(q.category)}</b>`, q.approved, q.admitted, statusTag]
+            };
+          })
+        )}
+      </div>
+
+      <div class="c">
+        <h2>Departments Enrolment Breakdown</h2>
+        ${bars(DB.apex.departments.map(d => ({ label: d.name, val: d.enrolled })), 130)}
+      </div>
+    </div>
+  `;
+}
+
+function addFacultyDirect() {
+  const nextId = `FAC-${100 + DB.apex.faculty.length + 1}`;
+  DB.apex.faculty.push({
+    id: nextId,
+    name: `Dr. Candidate ${DB.apex.faculty.length + 1}`,
+    dept: 'CSE',
+    active: true
+  });
+  logAudit(S.user.name, 'College Admin', 'Faculty Added', null, `Added new faculty member ${nextId} (+20 intake capacity)`);
+  toast('Faculty member added: +20 effective seats available.');
+  render();
+}
+
+function demoFacultyResign() {
+  let count = 0;
+  for (const f of DB.apex.faculty) {
+    if (f.active) {
+      f.active = false;
+      count++;
+      if (count >= 6) break;
+    }
+  }
+  logAudit(S.user.name, 'College Admin', 'Faculty Resignation Batch', null, 'Simulated resignation of 6 faculty members for testing smart intake locks');
+  toast('Simulated: 6 faculty members resigned. Capacity recalculated.');
+  render();
+}
+
+function renderAdminDepartments() {
+  return `
+    <div class="c">
+      <h2>Engineering & Technology Departments</h2>
+      <div class="mu" style="margin-bottom:12px">Approved degree programmes, intake ceilings, active faculty, and students-per-faculty ratios.</div>
+      ${tb(
+        ['Department', 'Intake', 'Enrolled', 'Faculty', 'Ratio', 'Head of Dept', 'Status'],
+        DB.apex.departments.map(d => {
+          const ratio = Math.round(d.enrolled / Math.max(1, d.faculty));
+          const isOver = ratio > 20;
+          const hod = DB.apex.faculty.find(f => f.dept === d.name && f.active) || { name: 'Assigned Senior Prof' };
+          return {
+            cols: [
+              `<b>${esc(d.name)}</b>`,
+              d.intake,
+              d.enrolled,
+              d.faculty,
+              `<span class="m">1:${ratio}</span>`,
+              esc(hod.name),
+              isOver ? '<span class="t bad">Over 1:20</span>' : '<span class="t ok">Within 1:20</span>'
+            ]
+          };
+        })
+      )}
+    </div>
+
+    <div class="c">
+      <h2>Supporting & Postgraduate Departments</h2>
+      ${tb(
+        ['Department', 'Active Faculty', 'Programme Classification', 'Status'],
+        DB.apex.supportingDepts.map(d => ({
+          cols: [`<b>${esc(d.name)}</b>`, d.faculty, esc(d.type), '<span class="t ok">Active</span>']
+        }))
+      )}
+    </div>
+  `;
+}
+
+function renderAdminFaculty() {
+  return `
+    <div class="c">
+      <h2>Faculty Roster Management</h2>
+      <div class="mu" style="margin-bottom:12px">Add, reinstate or resign faculty members. Capacity changes update admissions immediately.</div>
+
+      <form onsubmit="handleAdminAddFaculty(event)" style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px">
+        <div style="flex:2;min-width:180px">
+          <label>Faculty Full Name</label>
+          <input type="text" id="faculty-name-input" placeholder="e.g. Dr. K. Radhakrishnan" required>
+        </div>
+        <div style="flex:1;min-width:140px">
+          <label>Employee ID</label>
+          <input type="text" id="faculty-empid-input" placeholder="FAC-150" class="m" required>
+        </div>
+        <div style="flex:1.5;min-width:180px">
+          <label>Department</label>
+          <select id="faculty-dept-select">
+            ${DB.apex.departments.map(d => `<option value="${esc(d.name)}">${esc(d.name)}</option>`).join('')}
+          </select>
+        </div>
+        <button type="submit" class="b">Add faculty</button>
+      </form>
+
+      <div style="margin-bottom:14px;display:flex;gap:10px;align-items:center">
+        <button class="b s" onclick="loadSampleFacultyCsvWithErrors()">Load bulk CSV sample with errors</button>
+      </div>
+
+      ${tb(
+        ['ID', 'Faculty Name', 'Department', 'Status', 'Action'],
+        DB.apex.faculty.map(f => ({
+          cols: [
+            `<span class="m">${esc(f.id)}</span>`,
+            `<b>${esc(f.name)}</b>`,
+            esc(f.dept),
+            f.active ? '<span class="t ok">Active</span>' : '<span class="t bad">Resigned</span>',
+            `<button class="lk" onclick="toggleFacultyActive('${f.id}')">${f.active ? 'Mark resigned' : 'Reinstate'}</button>`
+          ]
+        }))
+      )}
+    </div>
+  `;
+}
+
+function handleAdminAddFaculty(e) {
+  e.preventDefault();
+  const name = document.getElementById('faculty-name-input').value.trim();
+  const id = document.getElementById('faculty-empid-input').value.trim().toUpperCase();
+  const dept = document.getElementById('faculty-dept-select').value;
+  if (!name || !id) return;
+  if (DB.apex.faculty.some(f => f.id === id)) {
+    toast(`Faculty ID ${id} already exists.`);
+    return;
+  }
+  DB.apex.faculty.push({ id, name, dept, active: true });
+  logAudit(S.user.name, 'College Admin', 'Faculty Appointed', null, `Appointed ${name} (${id}) to department ${dept}`);
+  toast(`Faculty ${name} (${id}) added.`);
+  render();
+}
+
+function toggleFacultyActive(id) {
+  const f = DB.apex.faculty.find(item => item.id === id);
+  if (!f) return;
+  f.active = !f.active;
+  logAudit(S.user.name, 'College Admin', f.active ? 'Faculty Reinstated' : 'Faculty Resigned', null, `Toggled faculty status for ${f.name} (${f.id})`);
+  toast(`Faculty ${f.name} is now ${f.active ? 'Active' : 'Resigned'}.`);
+  render();
+}
+
+function loadSampleFacultyCsvWithErrors() {
+  const csv = `name,employee_id,department
+Dr. Anand Sharma,FAC-190,CSE
+Prof. Invalid Dept,FAC-191,Aeronautics Rocketry
+,FAC-192,ECE
+Dr. Duplicate ID,FAC-101,Civil`;
+  parseAndValidateFacultyCsv(csv);
+}
+
+function parseAndValidateFacultyCsv(csvText) {
+  const lines = csvText.trim().split('\n').map(l => l.trim()).filter(Boolean);
+  let accepted = 0;
+  let rejected = 0;
+  let reasons = [];
+
+  for (let i = 1; i < lines.length; i++) {
+    const parts = lines[i].split(',').map(p => p.trim());
+    const name = parts[0];
+    const id = parts[1];
+    const dept = parts[2];
+    if (!name || !id || !dept) {
+      rejected++;
+      reasons.push(`Row ${i}: Missing mandatory fields`);
+      continue;
+    }
+    if (!DB.apex.departments.some(d => d.name === dept)) {
+      rejected++;
+      reasons.push(`Row ${i} (${name}): Unknown department '${dept}'`);
+      continue;
+    }
+    if (DB.apex.faculty.some(f => f.id === id)) {
+      rejected++;
+      reasons.push(`Row ${i} (${name}): Duplicate Employee ID '${id}'`);
+      continue;
+    }
+    DB.apex.faculty.push({ id, name, dept, active: true });
+    accepted++;
+  }
+  logAudit(S.user.name, 'College Admin', 'Bulk Faculty Ingestion', null, `Processed CSV: ${accepted} accepted, ${rejected} rejected`);
+  toast(`Bulk faculty CSV: ${accepted} added, ${rejected} rejected with errors.`);
+  render();
+}
+
+function handleCollegeSubmitSeatException(e) {
+  e.preventDefault();
+  const cat = document.getElementById('exception-category-select').value;
+  const count = document.getElementById('exception-seats-input').value;
+  const reason = document.getElementById('exception-reason-input').value;
+  submitSeatException(cat, count, reason);
+}
+
+function submitSeatException(category, requestedSeats, reason) {
+  const excId = `EXC-${100 + (DB.seatExceptions ? DB.seatExceptions.length : 0) + 1}`;
+  const req = {
+    id: excId,
+    instId: 'AICTE-1-4417',
+    instName: DB.student.college,
+    category,
+    requestedSeats: parseInt(requestedSeats, 10) || 5,
+    reason: (reason || '').trim(),
+    status: 'Pending',
+    submittedAt: new Date().toISOString().replace('T', ' ').slice(0, 16),
+    officerNote: '',
+    decidedAt: null
+  };
+  if (!DB.seatExceptions) DB.seatExceptions = [];
+  DB.seatExceptions.unshift(req);
+  logAudit(S.user.name, 'College Admin', 'Seat-Rule Exception Requested', null, `Requested +${req.requestedSeats} seats for ${category}: ${req.reason}`);
+  DB.aicteAlerts.unshift({
+    severity: 'Medium',
+    title: 'Seat Exception Requested',
+    inst: DB.student.college,
+    desc: `${DB.student.college} requested ${req.requestedSeats} additional ${category} seats. Justification: ${req.reason}`,
+    apaar: null
+  });
+  saveDB();
+  toast(`Seat exception request ${excId} submitted for AICTE regulatory approval.`);
+  render();
+  return req;
+}
+
+function renderAdminAdmission() {
+  const health = getCollegeHealthScore();
+  return `
+    <div class="c">
+      <h2>Student Admission Ingestion (Batch CSV Processing)</h2>
+      <div class="mu" style="margin-bottom:12px">Upload candidate lists for statutory validation, DigiLocker KYC verification, quota reconciliation, and AI fuzzy duplicate detection.</div>
+
+      ${health.isLocked ? `
+        <div class="ban" style="margin-bottom:14px">
+          <b>Admissions are currently LOCKED:</b> Cannot admit new students until faculty capacity is increased.
+        </div>
+      ` : ''}
+
+      <form onsubmit="handleAdminAdmissionCsv(event)" style="margin-bottom:16px">
+        <label>Paste Admission CSV (Columns: apaar, name, dob, category)</label>
+        <textarea id="admission-csv-area" rows="5" placeholder="apaar,name,dob,category
+9182-5501-9921,Rahul Verma,2004-06-18,GEN
+9182-3841-0012,Duplicate Student,2004-05-14,OBC"></textarea>
+
+        <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap">
+          <button type="submit" class="b" ${health.isLocked ? 'disabled' : ''}>Process admissions batch</button>
+          <button type="button" class="b s" onclick="loadSampleAdmissionCsvWithErrors()">Load sample with errors & fuzzy duplicates</button>
+        </div>
+      </form>
+
+      ${V.admissionValidationResults && V.admissionValidationResults.length > 0 ? `
+        <div style="margin:20px 0;border-top:1px solid var(--bd);padding-top:16px">
+          <h3>Automated Fuzzy Validation & Fix Guidance Report</h3>
+          <div class="mu" style="margin-bottom:10px">Catches formatting issues and near-duplicates using Jaro-Winkler similarity (threshold &ge; 0.85) with plain-language resolution hints.</div>
+          ${tb(
+            ['Row #', 'APAAR ID', 'Candidate Name', 'Status', 'Detected Issue', 'Plain-Language Fix Guidance'],
+            V.admissionValidationResults.map(r => ({
+              cols: [
+                `<b>Row ${r.row}</b>`,
+                `<span class="m">${esc(r.apaar || '-')}</span>`,
+                esc(r.name || '-'),
+                `<span class="t ${r.status === 'Admitted' ? 'ok' : 'bad'}">${esc(r.status)}</span>`,
+                r.issues.length ? `<span style="color:var(--bad)">${esc(r.issues.join('; '))}</span>` : '<span class="mu">None (Clean)</span>',
+                `<b>${esc(r.fixGuidance.join(' '))}</b>`
+              ]
+            }))
+          )}
+        </div>
+      ` : ''}
+
+      <h3>Admission Batch Upload History</h3>
+      ${tb(
+        ['Batch ID', 'Date & Time', 'Admitted', 'Rejected', 'File / Source', 'Responsible Officer'],
+        DB.apex.admissionUploadHistory.map(u => ({
+          cols: [
+            `<span class="m">${esc(u.id)}</span>`,
+            esc(u.date),
+            `<b style="color:var(--ok)">${u.admitted}</b>`,
+            u.rejected > 0 ? `<b style="color:var(--bad)">${u.rejected}</b>` : '0',
+            esc(u.filename),
+            esc(u.by)
+          ]
+        }))
+      )}
+    </div>
+
+    <!-- Seat-Rule Exception Request Form -->
+    <div class="c">
+      <h2>Seat-Rule Exception Workflow</h2>
+      <div class="mu" style="margin-bottom:12px">Apply for AICTE statutory quota flexibility when reserved or state merit category quotas are exceeded.</div>
+      <form onsubmit="handleCollegeSubmitSeatException(event)" style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+        <div style="flex:1;min-width:140px">
+          <label>Category</label>
+          <select id="exception-category-select">
+            <option value="EWS">EWS</option>
+            <option value="OBC">OBC</option>
+            <option value="SC">SC</option>
+            <option value="ST">ST</option>
+            <option value="GEN">GEN</option>
+          </select>
+        </div>
+        <div style="flex:1;min-width:120px">
+          <label>Additional Seats</label>
+          <input type="number" id="exception-seats-input" min="1" max="25" value="5" required>
+        </div>
+        <div style="flex:3;min-width:240px">
+          <label>Statutory Justification / Reason</label>
+          <input type="text" id="exception-reason-input" placeholder="e.g. State Govt PMSSS scholarship merit allocations exceed quota" required>
+        </div>
+        <button type="submit" class="b">Submit exception request</button>
+      </form>
+
+      ${DB.seatExceptions && DB.seatExceptions.length > 0 ? `
+        <h3 style="margin-top:20px">College Exception Requests Status</h3>
+        ${tb(
+          ['ID', 'Category', 'Seats Requested', 'Reason / Justification', 'Status', 'Regulatory Note'],
+          DB.seatExceptions.map(exc => ({
+            cols: [
+              `<span class="m">${esc(exc.id)}</span>`,
+              `<span class="t ok">${esc(exc.category)}</span>`,
+              `<b>+${exc.requestedSeats}</b>`,
+              esc(exc.reason),
+              `<span class="t ${exc.status === 'Approved' ? 'ok' : exc.status === 'Pending' ? 'wr' : 'bad'}">${esc(exc.status)}</span>`,
+              exc.officerNote ? `<i>${esc(exc.officerNote)}</i>` : '<span class="mu">-</span>'
+            ]
+          }))
+        )}
+      ` : ''}
+    </div>
+  `;
+}
+
+function loadSampleAdmissionCsvWithErrors() {
+  const el = document.getElementById('admission-csv-area');
+  if (el) {
+    el.value = `apaar,name,dob,category
+9182-8812-3001,Pooja Hegde,2004-08-12,GEN
+9182-3841-0012,Aarav Sharma Duplicate,2004-05-14,GEN
+9182-7729-9999,Rohan Varmaa,2003-11-20,GEN
+1234-5678,Malformed APAAR,2004-01-01,OBC
+9182-9901-4412,Vikram Rathore,1999/13/40,SC
+9182-7711-2299,Karan Johar,2004-10-15,UNKNOWN_CAT`;
+  }
+}
+
+function handleAdminAdmissionCsv(e) {
+  e.preventDefault();
+  const health = getCollegeHealthScore();
+  if (health.isLocked) {
+    toast('Admissions are locked due to student-to-faculty capacity limits.');
+    return;
+  }
+  const el = document.getElementById('admission-csv-area');
+  const text = (el ? el.value : '').trim();
+  if (!text) {
+    toast('Paste or load CSV content first.');
+    return;
+  }
+
+  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+  let admitted = 0;
+  let rejected = 0;
+  let reasons = [];
+  const validCategories = ['GEN', 'OBC', 'SC', 'ST', 'EWS'];
+  const processedRows = [];
+  V.admissionValidationResults = [];
+
+  for (let i = 1; i < lines.length; i++) {
+    const parts = lines[i].split(',').map(p => p.trim());
+    const apaar = parts[0] || '';
+    const name = parts[1] || '';
+    const dob = parts[2] || '';
+    const cat = (parts[3] || '').toUpperCase();
+    const rowErrors = [];
+    const fixHints = [];
+
+    // 1. 12-digit APAAR format
+    const cleanApaar = apaar.replace(/\D/g, '');
+    if (cleanApaar.length !== 12 || !cleanApaar.startsWith('9182')) {
+      rowErrors.push('Invalid APAAR ID format');
+      fixHints.push('APAAR format must be 12 digits starting with 9182 (e.g. 9182-XXXX-XXXX).');
+    }
+
+    // 2. Duplicate check against existing ledger
+    if (DB.apex.studentsLedger.some(s => s.apaar === apaar)) {
+      rowErrors.push('Duplicate record: student already admitted');
+      fixHints.push('Verify student registration history or check if student is already active in Semester 1 master ledger.');
+    }
+
+    // 3. Name check
+    if (!name) {
+      rowErrors.push('Candidate name is missing');
+      fixHints.push('Enter candidate full legal name matching Class 10 certificate.');
+    }
+
+    // 4. DOB check (YYYY-MM-DD)
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(dob)) {
+      rowErrors.push(`Invalid DOB '${dob}'`);
+      fixHints.push('DOB format must be YYYY-MM-DD (e.g. 2004-05-14).');
+    } else {
+      const year = parseInt(dob.slice(0, 4), 10);
+      if (year < 1980 || year > 2010) {
+        rowErrors.push(`Unrealistic DOB year ${year}`);
+        fixHints.push('Candidate birth year must fall within 1980–2010 for regular undergraduate admissions.');
+      }
+    }
+
+    // 5. Category check
+    if (!validCategories.includes(cat)) {
+      rowErrors.push(`Invalid category '${cat}'`);
+      fixHints.push(`Category must be one of: ${validCategories.join(', ')}.`);
+    }
+
+    // 6. Fuzzy near-duplicate check (Jaro-Winkler / Levenshtein threshold 0.85)
+    if (name) {
+      // Check against current batch earlier rows
+      for (const prev of processedRows) {
+        const sim = jaroWinklerSimilarity(name, prev.name);
+        if (sim >= 0.85 && sim < 1.0) {
+          rowErrors.push(`Intra-batch near-duplicate with Row ${prev.row} ('${prev.name}', similarity ${(sim * 100).toFixed(0)}%)`);
+          fixHints.push(`Did you mean '${prev.name}'? Check for spelling typos across batch entries.`);
+        }
+      }
+
+      // Check against existing student ledger & cross records
+      const allKnownCandidates = [
+        ...DB.apex.studentsLedger.map(s => ({ name: s.name, apaar: s.apaar, source: 'College Ledger' })),
+        ...DB.crossRecords.map(s => ({ name: s.name, apaar: s.apaar, source: 'National Cross-Register' }))
+      ];
+      for (const known of allKnownCandidates) {
+        if (known.apaar !== apaar) {
+          const sim = jaroWinklerSimilarity(name, known.name);
+          if (sim >= 0.85 && sim < 1.0) {
+            rowErrors.push(`Near-duplicate with existing student '${known.name}' (similarity ${(sim * 100).toFixed(0)}%)`);
+            fixHints.push(`Did you mean ${known.name}? Check candidate identity against national registry.`);
+            break;
+          }
+        }
+      }
+    }
+
+    // 7. Mock DigiLocker KYC Check
+    if (cleanApaar.length === 12) {
+      const sumDigits = cleanApaar.split('').reduce((acc, digit) => acc + parseInt(digit, 10), 0);
+      if (sumDigits % 7 === 0) {
+        rowErrors.push('DigiLocker Aadhaar eKYC failed');
+        fixHints.push('Ask candidate to complete DigiLocker Aadhaar mobile OTP linkage.');
+      }
+    }
+
+    // 8. Capacity & Quota checks
+    const currentHealth = getCollegeHealthScore();
+    if (currentHealth.totalEnrolled >= currentHealth.effectiveIntake) {
+      rowErrors.push('Institutional admissions capacity reached');
+      fixHints.push('Effective intake exhausted. Add active faculty or request AICTE capacity review.');
+    }
+    const qObj = DB.apex.quotas.find(q => q.category === cat);
+    if (qObj && qObj.admitted >= qObj.approved) {
+      rowErrors.push(`Category quota full for '${cat}' (${qObj.admitted}/${qObj.approved})`);
+      fixHints.push(`Submit an AICTE Seat-Rule Exception Request for additional ${cat} seats.`);
+    }
+
+    if (rowErrors.length > 0) {
+      rejected++;
+      reasons.push(`Row ${i} (${name || apaar}): ${rowErrors.join('; ')}`);
+      V.admissionValidationResults.push({
+        row: i,
+        apaar,
+        name,
+        dob,
+        category: cat,
+        status: 'Rejected',
+        issues: rowErrors,
+        fixGuidance: fixHints
+      });
+      continue;
+    }
+
+    // Accepted
+    DB.apex.studentsLedger.push({
+      apaar,
+      name,
+      category: cat,
+      credits: 0,
+      flag: 'Clear'
+    });
+    if (qObj) qObj.admitted++;
+
+    let minDept = DB.apex.departments[0];
+    for (const d of DB.apex.departments) {
+      if ((d.enrolled / d.intake) < (minDept.enrolled / minDept.intake)) {
+        minDept = d;
+      }
+    }
+    minDept.enrolled++;
+
+    const d = new Date();
+    const timeStr = `${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')}:${String(d.getSeconds()).padStart(2, '0')}`;
+    DB.syncLogs.unshift({
+      time: timeStr,
+      service: 'DigiLocker',
+      apaar,
+      op: 'Batch Admission eKYC',
+      result: 'Pass',
+      latency: '145ms'
+    });
+    DB.syncLogs.unshift({
+      time: timeStr,
+      service: 'ABC Registry',
+      apaar,
+      op: 'Account Discovery & Linking',
+      result: 'Pass',
+      latency: '190ms'
+    });
+
+    admitted++;
+    processedRows.push({ row: i, name, apaar, dob });
+    V.admissionValidationResults.push({
+      row: i,
+      apaar,
+      name,
+      dob,
+      category: cat,
+      status: 'Admitted',
+      issues: [],
+      fixGuidance: ['Record verified and admitted into college master ledger.']
+    });
+  }
+
+  const batchId = `UPL-${String(DB.apex.admissionUploadHistory.length + 1).padStart(3, '0')}`;
+  DB.apex.admissionUploadHistory.unshift({
+    id: batchId,
+    date: new Date().toISOString().replace('T', ' ').slice(0, 16),
+    admitted,
+    rejected,
+    filename: 'admissions_batch_upload.csv',
+    by: S.user.email
+  });
+
+  logAudit(S.user.name, 'College Admin', 'Admission Batch Processed', null, `Batch ${batchId}: ${admitted} admitted, ${rejected} rejected with fix guidance`);
+  saveDB();
+  toast(`Batch processed: ${admitted} admitted, ${rejected} rejected with fix guidance.`);
+  render();
+}
+
+function renderAdminStudents() {
+  return `
+    <div class="c">
+      <h2>Student Master Ledger</h2>
+      <div class="mu" style="margin-bottom:12px">Comprehensive enrollment registry with privacy-masked identifiers and fraud monitoring tags.</div>
+      ${tb(
+        ['APAAR ID (Masked)', 'ABC ID', 'Student Name', 'Category', 'Verified Credits', 'Fraud Radar Status'],
+        DB.apex.studentsLedger.map(s => {
+          const derivedAbc = `4021-${s.apaar.slice(5, 9)}-${s.apaar.slice(10, 14)}`;
+          return {
+            cols: [
+              `<span class="m">${maskApaar(s.apaar)}</span>`,
+              `<span class="m">${derivedAbc}</span>`,
+              maskName(s.name),
+              esc(s.category),
+              `<b>${s.credits}</b>`,
+              s.flag === 'Clear' ? '<span class="t ok">Clear</span>' : `<span class="t bad">${esc(s.flag)}</span>`
+            ]
+          };
+        })
+      )}
+    </div>
+  `;
+}
+
+function renderAdminApprovals() {
+  return `
+    <div class="c">
+      <h2>Administrative Approvals Queue</h2>
+      <div class="mu" style="margin-bottom:12px">Review pending student credit claims and cross-institutional transfer mobility requests.</div>
+
+      <h3>(A) Pending Credit Uploads Verification</h3>
+      ${DB.pendingCreditUploads.length === 0 ? '<div class="mu" style="padding:10px 0">No pending credit upload requests.</div>' : tb(
+        ['Upload ID', 'APAAR (Masked)', 'Student', 'Course Code & Name', 'Credits', 'Term', 'Actions'],
+        DB.pendingCreditUploads.map(cr => ({
+          cols: [
+            `<span class="m">${esc(cr.id)}</span>`,
+            `<span class="m">${maskApaar(cr.studentApaar)}</span>`,
+            maskName(cr.studentName),
+            `<b>${esc(cr.code)}</b> - ${esc(cr.name)}`,
+            `<b>${cr.credits} cr</b> (Grade: ${esc(cr.grade)})`,
+            esc(cr.term),
+            `<div style="display:flex;gap:6px">
+              <button class="b" style="padding:4px 8px;font-size:11px" onclick="approveCreditUpload('${cr.id}')">Approve</button>
+              <button class="b d" style="padding:4px 8px;font-size:11px" onclick="openRejectModal('reject_credit', '${cr.id}')">Reject</button>
+            </div>`
+          ]
+        }))
+      )}
+
+      <h3 style="margin-top:24px">(B) Pending Credit Transfer Mobility Requests</h3>
+      ${DB.transfers.filter(tr => tr.status === 'Pending').length === 0 ? '<div class="mu" style="padding:10px 0">No pending student transfer requests.</div>' : tb(
+        ['Transfer ID', 'Student', 'Target Institution', 'Courses & Credits', 'Stated Reason', 'Actions'],
+        DB.transfers.filter(tr => tr.status === 'Pending').map(tr => ({
+          cols: [
+            `<span class="m">${esc(tr.id)}</span>`,
+            `${maskName(tr.studentName)} (${maskApaar(tr.studentApaar)})`,
+            `<b>${esc(tr.toInst)}</b>`,
+            `${esc(tr.courseCodes.join(', '))} (<b>${tr.totalCredits} cr</b>)`,
+            esc(tr.reason),
+            `<div style="display:flex;gap:6px">
+              <button class="b" style="padding:4px 8px;font-size:11px" onclick="approveTransferRequest('${tr.id}')">Approve</button>
+              <button class="b d" style="padding:4px 8px;font-size:11px" onclick="openRejectModal('reject_transfer', '${tr.id}')">Reject</button>
+            </div>`
+          ]
+        }))
+      )}
+
+      <h3 style="margin-top:24px">Manual Credit Entry & Student Verification</h3>
+      <form onsubmit="handleAdminAddManualCredit(event)" style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+        <div style="flex:1.5;min-width:180px">
+          <label>Student APAAR ID</label>
+          <input type="text" id="manual-cr-apaar" value="9182-3841-0012" class="m" required>
+        </div>
+        <div style="flex:1;min-width:120px">
+          <label>Course Code</label>
+          <input type="text" id="manual-cr-code" placeholder="CS599" class="m" required>
+        </div>
+        <div style="flex:2;min-width:200px">
+          <label>Course Title</label>
+          <input type="text" id="manual-cr-name" placeholder="Advanced Cyber Security" required>
+        </div>
+        <div style="flex:0.8;min-width:80px">
+          <label>Credits</label>
+          <input type="number" id="manual-cr-credits" value="3" min="1" max="8" required>
+        </div>
+        <div style="flex:0.8;min-width:80px">
+          <label>Grade</label>
+          <input type="text" id="manual-cr-grade" value="A+" required>
+        </div>
+        <button type="submit" class="b">Verify & Add credit</button>
+      </form>
+    </div>
+  `;
+}
+
+function approveCreditUpload(crId) {
+  const cr = DB.pendingCreditUploads.find(item => item.id === crId);
+  if (!cr) return;
+  // Add to student term courses
+  let semTerm = DB.terms.find(t => t.term === cr.term);
+  if (!semTerm) {
+    semTerm = { term: cr.term, credits: 0, sgpa: 8.5, status: 'Verified', courses: [] };
+    DB.terms.push(semTerm);
+  }
+  semTerm.courses.push({
+    code: cr.code,
+    name: cr.name,
+    credits: cr.credits,
+    grade: cr.grade,
+    status: 'Verified'
+  });
+  semTerm.credits += cr.credits;
+
+  // Remove from pending
+  DB.pendingCreditUploads = DB.pendingCreditUploads.filter(item => item.id !== crId);
+
+  logAudit(
+    S.user.name,
+    'College Admin',
+    'Credit Upload Approved',
+    cr.studentApaar,
+    `Approved course ${cr.code} (${cr.credits} credits, Grade: ${cr.grade}) into Academic Bank of Credits`
+  );
+  toast(`Course ${cr.code} approved and added to student verified credits.`);
+  render();
+}
+
+function approveTransferRequest(trId) {
+  const tr = DB.transfers.find(item => item.id === trId);
+  if (!tr) return;
+  tr.status = 'Approved';
+  tr.remark = 'Approved by College Academic Review Committee';
+
+  // Also reflect in the student's local view
+  logAudit(
+    S.user.name,
+    'College Admin',
+    'Credit Transfer Approved',
+    tr.studentApaar,
+    `Approved transfer request ${tr.id} for ${tr.totalCredits} credits to ${tr.toInst}`
+  );
+  toast(`Transfer request ${tr.id} has been Approved.`);
+  render();
+}
+
+function handleAdminAddManualCredit(e) {
+  e.preventDefault();
+  const apaar = document.getElementById('manual-cr-apaar').value.trim();
+  const code = document.getElementById('manual-cr-code').value.trim().toUpperCase();
+  const name = document.getElementById('manual-cr-name').value.trim();
+  const cr = parseInt(document.getElementById('manual-cr-credits').value, 10);
+  const grade = document.getElementById('manual-cr-grade').value.trim().toUpperCase();
+
+  if (apaar === DB.student.apaar) {
+    let t = DB.terms[DB.terms.length - 1];
+    t.courses.push({ code, name, credits: cr, grade, status: 'Verified' });
+    t.credits += cr;
+  }
+  logAudit(S.user.name, 'College Admin', 'Manual Credit Awarded', apaar, `Admin verified and awarded ${code} (${cr} cr, Grade: ${grade})`);
+  toast(`Credit for ${code} awarded and synchronized.`);
+  render();
+}
+
+async function handleVerifyAuditChainClick() {
+  toast('Verifying cryptographic SHA-256 audit chain...');
+  const res = await verifyAuditChain();
+  V.auditVerificationResult = res;
+  if (res.valid) {
+    toast(`Audit chain verified: all ${res.count} records intact.`);
+  } else {
+    toast(`Audit chain broken at entry #${res.brokenIndex}!`);
+  }
+  render();
+}
+
+function renderAdminAuditLog() {
+  return `
+    <div class="c">
+      <div class="hd" style="margin-bottom:8px">
+        <div>
+          <h2>Institutional Audit Log & Statutory Ledger</h2>
+          <div class="mu" style="font-size:12px">Immutable chronologically ordered event trail with SHA-256 hash chaining.</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="b" onclick="handleVerifyAuditChainClick()">Verify chain</button>
+          <button class="b w" onclick="tamperAuditEntry()">Tamper entry (demo)</button>
+        </div>
+      </div>
+
+      ${V.auditVerificationResult ? `
+        <div style="margin-bottom:14px;padding:12px;border-radius:12px;border:2px solid ${V.auditVerificationResult.valid ? 'var(--ok)' : 'var(--bad)'};background:${V.auditVerificationResult.valid ? '#16a34a14' : '#dc262614'}">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="t ${V.auditVerificationResult.valid ? 'ok' : 'bad'}">${V.auditVerificationResult.valid ? 'Chain Verified' : 'Integrity Failure'}</span>
+            <b>${V.auditVerificationResult.valid ? `All ${V.auditVerificationResult.count} audit entries cryptographically sealed with SHA-256 integrity chain.` : `Tampering detected at entry #${V.auditVerificationResult.brokenIndex}!`}</b>
+          </div>
+          ${!V.auditVerificationResult.valid ? `<div style="font-size:12px;margin-top:6px;color:var(--bad)">${esc(V.auditVerificationResult.reason)}</div>` : ''}
+        </div>
+      ` : ''}
+
+      ${tb(
+        ['Timestamp', 'Actor', 'Role', 'Action', 'Target APAAR', 'Details', 'Previous Hash', 'SHA-256 Digest'],
+        DB.auditLogs.filter(l => l.institutionId === 'AICTE-1-4417' || !l.institutionId).map((l, idx) => ({
+          cols: [
+            `<span class="m" style="font-size:11px">${esc(l.time)}</span>`,
+            `<b>${esc(l.actor)}</b>`,
+            esc(l.role),
+            `<span class="t ok">${esc(l.action)}</span>`,
+            l.apaar ? `<span class="m">${maskApaar(l.apaar)}</span>` : '<span class="mu">-</span>',
+            esc(l.details),
+            `<span class="m mu" title="${esc(l.prevHash || '')}">${esc((l.prevHash || '').slice(0, 8))}...</span>`,
+            `<span class="m" style="font-size:11px;font-weight:600" title="${esc(l.hash || '')}">${esc((l.hash || '').slice(0, 8))}...</span>`
+          ]
+        }))
+      )}
+    </div>
+  `;
+}
+
+function renderAdminReports() {
+  return `
+    <div class="c">
+      <h2>Statutory Stamped Reports & Compliance Certificates</h2>
+      <div class="mu" style="margin-bottom:14px">Official tamper-evident reports verified with cryptographic SHA-256 and HMAC-SHA256 signatures.</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="b" onclick="generateAdminAnomalyReport()">Generate Anomaly Report (PDF)</button>
+        <button class="b" onclick="generateAdminComplianceReport()">Generate Compliance Report (PDF)</button>
+        <button class="b" onclick="generateAdminStudentLedgerReport()">Generate Student Ledger (PDF)</button>
+      </div>
+
+      <h3 style="margin-top:24px">Historical CSV Uploads</h3>
+      ${tb(
+        ['Upload Reference', 'Date', 'Admitted', 'Rejected', 'Source Filename', 'Processed By'],
+        DB.apex.admissionUploadHistory.map(u => ({
+          cols: [
+            `<span class="m">${esc(u.id)}</span>`,
+            esc(u.date),
+            u.admitted,
+            u.rejected,
+            esc(u.filename),
+            esc(u.by)
+          ]
+        }))
+      )}
+    </div>
+  `;
+}
+
+async function generateAdminAnomalyReport() {
+  const rows = [
+    { label: 'Institution Name', val: DB.student.college },
+    { label: 'AICTE Identification', val: DB.student.collegeId },
+    { label: 'Generated By', val: S.user.name },
+    { label: 'Open Anomalies Count', val: DB.apex.fraudFlags.length }
+  ];
+  DB.apex.fraudFlags.forEach((f, i) => {
+    rows.push({ label: `Anomaly #${f.id} [${f.severity}]`, val: `${f.desc} (Status: ${f.frozen ? 'Frozen' : 'Open'})` });
+  });
+  await downloadStampedPdf('Institutional Anomaly & Fraud Risk Audit', rows, 'Apex_Anomaly_Report.pdf');
+}
+
+async function generateAdminComplianceReport() {
+  const h = getCollegeHealthScore();
+  const rows = [
+    { label: 'Institution', val: DB.student.college },
+    { label: 'Compliance Health Score', val: `${h.score}/100 (${h.badge})` },
+    { label: 'Sanctioned Intake Capacity', val: DB.apex.sanctionedIntake },
+    { label: 'Active Faculty Headcount', val: h.activeFaculty },
+    { label: 'Effective Intake Limit (1:20 Ratio)', val: h.effectiveIntake },
+    { label: 'Total Enrolled Students', val: h.totalEnrolled },
+    { label: 'Admissions Status', val: h.isLocked ? 'LOCKED' : 'PERMITTED' }
+  ];
+  await downloadStampedPdf('AICTE Statutory Compliance & Capacity Report', rows, 'Apex_Compliance_Report.pdf');
+}
+
+async function generateAdminStudentLedgerReport() {
+  const rows = [
+    { label: 'Institution', val: DB.student.college },
+    { label: 'Ledger Audit Date', val: new Date().toISOString().slice(0, 10) },
+    { label: 'Total Enrolled Ledger Records', val: DB.apex.studentsLedger.length }
+  ];
+  DB.apex.studentsLedger.forEach(s => {
+    rows.push({ label: maskApaar(s.apaar), val: `${maskName(s.name)} · ${s.category} · ${s.credits} cr · ${s.flag}` });
+  });
+  await downloadStampedPdf('Institutional Student Admissions & Credit Ledger', rows, 'Apex_Student_Ledger.pdf');
+}
+
+// ----------------------------------------------------------------------------
+// AICTE REGULATOR VIEWS
+// ----------------------------------------------------------------------------
+function renderAicteOverview() {
+  const totalStudents = DB.institutions.reduce((s, i) => s + i.enrolled, 0);
+  const totalIntake = DB.institutions.reduce((s, i) => s + i.intake, 0);
+  const natRate = Math.round((totalStudents / totalIntake) * 100);
+
+  return `
+    <div class="g g4" style="margin-bottom:16px">
+      <div class="k"><span>Active Students</span><b>${totalStudents.toLocaleString()}</b><span class="mu">National APAAR total</span></div>
+      <div class="k"><span>Verified Institutions</span><b>${DB.institutions.length}</b><span class="mu">AICTE Approved</span></div>
+      <div class="k"><span>National Enrolment</span><b>${natRate}%</b><span class="mu">Capacity utilization</span></div>
+      <div class="k"><span>Open Alerts</span><b>${DB.aicteAlerts.filter(a => !a.frozen).length}</b><span class="mu">Pending resolution</span></div>
+      <div class="k"><span>Quota Breaches Throttled</span><b>182</b><span class="mu">Auto-throttled</span></div>
+      <div class="k"><span>Duplicates Prevented</span><b>1,942</b><span class="mu">APAAR Cross-match</span></div>
+    </div>
+
+    <div class="g g2">
+      <div class="c">
+        <h2>Enrolment by Region (National Distribution)</h2>
+        ${bars([
+          { label: 'South', val: 32410 },
+          { label: 'North', val: 24890 },
+          { label: 'West', val: 21200 },
+          { label: 'East', val: 14650 },
+          { label: 'Central', val: 9840 },
+          { label: 'North-East', val: 3820 }
+        ])}
+      </div>
+
+      <div class="c">
+        <h2>Enrolment by Discipline (Indicative)</h2>
+        ${bars([
+          { label: 'Computer Science & IT', val: 41200 },
+          { label: 'Electronics & Comm (ECE)', val: 22100 },
+          { label: 'Mechanical Engineering', val: 18400 },
+          { label: 'Electrical Engineering (EEE)', val: 12900 },
+          { label: 'Civil Engineering', val: 9400 },
+          { label: 'Emerging Tech (AI/ML/DS)', val: 8200 }
+        ])}
+      </div>
+    </div>
+
+    <div class="c">
+      <h2>National Enrolment Trend</h2>
+      <div class="mu" style="margin-bottom:12px">Prior-year values are synthetic.</div>
+      ${bars([
+        { label: '2024-25 (Prior Year)', val: 98400 },
+        { label: '2025-26 (Prior Year)', val: 104200 },
+        { label: '2026-27 (Current Sandbox)', val: totalStudents }
+      ])}
+    </div>
+
+    <div class="c">
+      <div class="hd" style="margin-bottom:10px">
+        <h2>Compliance Alerts (Latest)</h2>
+        <div style="display:flex;gap:8px">
+          <button class="b" onclick="downloadAicteOverviewPdf()">Stamped PDF</button>
+          <button class="b s" onclick="downloadAicteExcel()">Stamped Excel</button>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        ${DB.aicteAlerts.slice(0, 5).map((a, idx) => `
+          <div style="border-top:1px solid var(--bd);padding-top:10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+            <div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <span class="t ${a.severity === 'Critical' ? 'bad' : 'wr'}">${esc(a.severity)}</span>
+                <b>${esc(a.title)}</b> · <span class="mu">${esc(a.inst)}</span>
+              </div>
+              <div style="font-size:12px;color:var(--tx);margin-top:2px">${esc(a.desc)}</div>
+            </div>
+            <div>
+              ${a.apaar ? (
+                a.frozen ? '<span class="t ok">Seat Frozen</span>' : `<button class="b d" style="padding:4px 10px;font-size:11px" onclick="openRejectModal('freeze_seat', { idx: ${idx}, apaar: '${a.apaar}', inst: '${a.inst}' })">Freeze seat</button>`
+              ) : '<span class="t wr">Auto-throttled</span>'}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+
+      <div style="margin-top:16px;text-align:right">
+        <button class="lk" onclick="navigate('compliance')">Open compliance centre &rarr;</button>
+      </div>
+    </div>
+  `;
+}
+
+async function downloadAicteOverviewPdf() {
+  const rows = [
+    { label: 'Supervising Authority', val: 'All India Council for Technical Education (AICTE)' },
+    { label: 'National Active Students', val: DB.institutions.reduce((s, i) => s + i.enrolled, 0) },
+    { label: 'Approved Institutions', val: DB.institutions.length },
+    { label: 'Dual Enrolment Flags Prevented', val: '1,942 cases' },
+    { label: 'Quota Breaches Auto-throttled', val: '182 cases' }
+  ];
+  DB.aicteAlerts.slice(0, 5).forEach((a, i) => {
+    rows.push({ label: `Alert #${i+1} [${a.severity}]`, val: `${a.inst}: ${a.desc}` });
+  });
+  await downloadStampedPdf('AICTE National Regulatory Overview Report', rows, 'AICTE_Overview_Report.pdf');
+}
+
+function renderAicteInstitutions() {
+  let list = DB.institutions;
+  if (V.institutionSearch) {
+    const q = V.institutionSearch.toLowerCase();
+    list = list.filter(i => i.name.toLowerCase().includes(q) || i.city.toLowerCase().includes(q) || (i.id && i.id.toLowerCase().includes(q)));
+  }
+  if (V.institutionStateFilter) {
+    list = list.filter(i => i.state === V.institutionStateFilter);
+  }
+
+  const allStates = Array.from(new Set(DB.institutions.map(i => i.state))).sort();
+  const pageSize = 25;
+  const totalPages = Math.ceil(list.length / pageSize) || 1;
+  const start = V.institutionPage * pageSize;
+  const paged = list.slice(start, start + pageSize);
+
+  return `
+    <div class="c">
+      <h2>National Approved Institutions Register (~190 Institutions)</h2>
+      <div class="mu" style="margin-bottom:14px">Official registry of AICTE approved technical and polytechnic institutes.</div>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+        <input type="text" placeholder="Search by name, city, or AICTE ID..." style="flex:2;min-width:200px" value="${esc(V.institutionSearch)}" oninput="V.institutionSearch=this.value;V.institutionPage=0;render()">
+        <select style="flex:1;min-width:160px" onchange="V.institutionStateFilter=this.value;V.institutionPage=0;render()">
+          <option value="">All States / UTs</option>
+          ${allStates.map(st => `<option value="${esc(st)}" ${V.institutionStateFilter === st ? 'selected' : ''}>${esc(st)}</option>`).join('')}
+        </select>
+        <button class="b s" onclick="importAicteRegisterPrompt()">Import AICTE register (CSV)</button>
+      </div>
+
+      ${tb(
+        ['AICTE ID', 'Institution Name', 'City', 'State', 'Region', 'Intake', 'Enrolled', 'Faculty', 'Ratio'],
+        paged.map(i => ({
+          clickable: true,
+          click: `viewInstitutionProfile('${esc(i.id || i.name)}')`,
+          cols: [
+            `<span class="m">${esc(i.id || 'AICTE-1-XXXX')}</span>`,
+            `<b>${esc(i.name)}</b>`,
+            esc(i.city),
+            esc(i.state),
+            esc(i.region),
+            i.intake,
+            i.enrolled > i.intake ? `<b style="color:var(--bad)">${i.enrolled}</b>` : i.enrolled,
+            i.faculty,
+            `<span class="m">1:${Math.round(i.enrolled / Math.max(1, i.faculty))}</span>`
+          ]
+        }))
+      )}
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px" class="mu">
+        <span>Showing ${start + 1} to ${Math.min(list.length, start + pageSize)} of ${list.length} institutions</span>
+        <div style="display:flex;gap:6px">
+          <button class="b s" style="padding:4px 10px" onclick="if(V.institutionPage>0){V.institutionPage--;render()}" ${V.institutionPage === 0 ? 'disabled' : ''}>&larr; Prev</button>
+          <span style="align-self:center;font-weight:600">Page ${V.institutionPage + 1} of ${totalPages}</span>
+          <button class="b s" style="padding:4px 10px" onclick="if(V.institutionPage<totalPages-1){V.institutionPage++;render()}" ${V.institutionPage >= totalPages - 1 ? 'disabled' : ''}>Next &rarr;</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function importAicteRegisterPrompt() {
+  const csv = prompt(
+    "Paste AICTE register CSV (Header: name,city,state):\nDuplicates will be skipped automatically.",
+    "KITS Engineering College,Warangal,Telangana\nTechno Main Salt Lake,Kolkata,West Bengal"
+  );
+  if (!csv) return;
+  const lines = csv.trim().split('\n').map(l => l.trim()).filter(Boolean);
+  let added = 0;
+  for (let i = (lines[0].includes('name') ? 1 : 0); i < lines.length; i++) {
+    const [name, city, state] = lines[i].split(',').map(s => s ? s.trim() : '');
+    if (!name || !city || !state) continue;
+    if (DB.institutions.some(item => item.name.toLowerCase() === name.toLowerCase())) continue;
+    DB.institutions.push({
+      name,
+      city,
+      state,
+      region: 'South',
+      id: `AICTE-1-${Math.floor(20000 + Math.random() * 50000)}`,
+      domain: name.split(' ').map(w => w[0].toLowerCase()).join('') + '.edu.in',
+      intake: 480,
+      enrolled: 440,
+      faculty: 25
+    });
+    added++;
+  }
+  toast(`Import complete: ${added} new institutions added.`);
+  render();
+}
+
+function viewInstitutionProfile(instIdOrName) {
+  const inst = DB.institutions.find(i => i.id === instIdOrName || i.name === instIdOrName);
+  if (!inst) return;
+  const isApex = inst.name === DB.student.college;
+  const health = isApex ? getCollegeHealthScore() : { score: 92, badge: 'Compliant', badgeClass: 'ok' };
+
+  V.modal = {
+    type: 'profile',
+    title: inst.name,
+    html: `
+      <div class="c" style="border:0;padding:0">
+        <div class="mu" style="margin-bottom:12px">${esc(inst.city)}, ${esc(inst.state)} · ${esc(inst.id || 'AICTE-1-PENDING')}</div>
+        <div class="g g4" style="margin-bottom:14px">
+          <div class="k"><span>Health Score</span><b>${health.score}</b><span class="t ${health.badgeClass}">${health.badge}</span></div>
+          <div class="k"><span>Intake</span><b>${inst.intake}</b></div>
+          <div class="k"><span>Enrolled</span><b>${inst.enrolled}</b></div>
+          <div class="k"><span>Faculty</span><b>${inst.faculty}</b></div>
+        </div>
+        <h3>Institutional Details</h3>
+        ${kv([
+          { label: 'Registered Domain', val: inst.domain || 'Not verified' },
+          { label: 'Geographic Region', val: inst.region },
+          { label: 'Student-to-Faculty Ratio', val: `1:${Math.round(inst.enrolled / Math.max(1, inst.faculty))}` },
+          { label: 'Admissions Window', val: inst.enrolled > inst.intake ? 'Auto-Throttled' : 'Open' }
+        ])}
+        <div style="margin-top:16px;text-align:right">
+          <button class="b" onclick="V.modal=null;render()">Close profile</button>
+        </div>
+      </div>
+    `
+  };
+  render();
+}
+
+function openExceptionDecisionPrompt(excId, decision) {
+  const note = prompt(`Enter official regulatory remark for ${decision.toUpperCase()} exception ${excId}:`, decision === 'Approved' ? 'Approved under AICTE statutory quota flexibility rule.' : 'Rejected: institutional capacity limit reached.');
+  if (note !== null) {
+    decideSeatException(excId, decision, note);
+  }
+}
+
+function decideSeatException(excId, decision, note) {
+  const exc = (DB.seatExceptions || []).find(e => e.id === excId);
+  if (!exc) return;
+  exc.status = decision;
+  exc.officerNote = note || (decision === 'Approved' ? 'Approved under AICTE quota flexibility regulation.' : 'Rejected by regulatory officer.');
+  exc.decidedAt = new Date().toISOString().replace('T', ' ').slice(0, 16);
+
+  if (decision === 'Approved') {
+    const qObj = DB.apex.quotas.find(q => q.category === exc.category);
+    if (qObj) qObj.approved += exc.requestedSeats;
+  }
+
+  logAudit(
+    S.user.name,
+    'AICTE Regulator',
+    `Seat-Rule Exception ${decision}`,
+    null,
+    `Exception ${exc.id} (${exc.category} +${exc.requestedSeats} seats) ${decision}. Note: ${exc.officerNote}`,
+    exc.instId
+  );
+
+  DB.aicteAlerts.unshift({
+    severity: decision === 'Approved' ? 'Low' : 'High',
+    title: `Seat Exception ${decision}`,
+    inst: exc.instName,
+    desc: `AICTE officer ${S.user.name} ${decision.toLowerCase()} ${exc.category} seat exception (${exc.id}). Note: ${exc.officerNote}`,
+    apaar: null
+  });
+
+  saveDB();
+  toast(`Seat exception ${exc.id} has been ${decision}.`);
+  render();
+}
+
+function renderAicteCompliance() {
+  const selectedInst = V.complianceSelectedInst || 'AICTE-1-4417';
+  const relatedLogs = DB.auditLogs.filter(l => l.institutionId === selectedInst);
+
+  return `
+    <div class="c">
+      <h2>Compliance & Audit Center</h2>
+      <div class="mu" style="margin-bottom:14px">Regulatory surveillance for multi-institutional duplicate enrollment, credit velocity anomalies, seat matrix violations, and quota exceptions.</div>
+
+      <h3>Live Compliance Feed</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+        ${DB.aicteAlerts.map((a, idx) => `
+          <div style="border-top:1px solid var(--bd);padding-top:10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+            <div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <span class="t ${a.severity === 'Critical' ? 'bad' : a.severity === 'Low' ? 'ok' : 'wr'}">${esc(a.severity)}</span>
+                <b>${esc(a.title)}</b> · <span class="mu">${esc(a.inst)}</span>
+              </div>
+              <div style="font-size:12px;margin-top:2px">${esc(a.desc)}</div>
+            </div>
+            <div>
+              ${a.apaar ? (
+                a.frozen ? '<span class="t ok">Seat Frozen</span>' : `<button class="b d" style="padding:4px 10px;font-size:11px" onclick="openRejectModal('freeze_seat', { idx: ${idx}, apaar: '${a.apaar}', inst: '${a.inst}' })">Freeze seat</button>`
+              ) : '<span class="t wr">Monitored</span>'}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+
+      <h3>Institutional Seat-Rule Exception Requests</h3>
+      <div class="mu" style="margin-bottom:10px">Review quota exception applications submitted by institutions facing category over-enrollment. Decisions are permanently logged in the audit ledger.</div>
+      ${tb(
+        ['Request ID', 'Institution', 'Category', 'Requested Seats', 'Justification / Reason', 'Status', 'Decisions & Notes', 'Actions'],
+        (DB.seatExceptions || []).map(exc => ({
+          cols: [
+            `<span class="m"><b>${esc(exc.id)}</b></span>`,
+            `<b>${esc(exc.instName)}</b> (${esc(exc.instId)})`,
+            `<span class="t ok">${esc(exc.category)}</span>`,
+            `<b>+${exc.requestedSeats}</b>`,
+            esc(exc.reason),
+            `<span class="t ${exc.status === 'Approved' ? 'ok' : exc.status === 'Pending' ? 'wr' : 'bad'}">${esc(exc.status)}</span>`,
+            exc.officerNote ? `<i>${esc(exc.officerNote)}</i>` : '<span class="mu">-</span>',
+            exc.status === 'Pending' ? `
+              <div style="display:flex;gap:6px">
+                <button class="b" style="padding:4px 8px;font-size:11px" onclick="openExceptionDecisionPrompt('${exc.id}', 'Approved')">Approve</button>
+                <button class="b d" style="padding:4px 8px;font-size:11px" onclick="openExceptionDecisionPrompt('${exc.id}', 'Rejected')">Reject</button>
+              </div>
+            ` : '<span class="mu">Resolved</span>'
+          ]
+        }))
+      )}
+
+      <div style="margin-top:24px" class="hd">
+        <div>
+          <h3>Cross-Institution Statutory Event Logs</h3>
+          <div class="mu" style="font-size:12px">Transfers, credit approvals, exception decisions, and admission batches update this central register in real time.</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="b" onclick="handleVerifyAuditChainClick()">Verify chain</button>
+          <button class="b w" onclick="tamperAuditEntry()">Tamper entry (demo)</button>
+        </div>
+      </div>
+
+      ${V.auditVerificationResult ? `
+        <div style="margin-bottom:14px;padding:12px;border-radius:12px;border:2px solid ${V.auditVerificationResult.valid ? 'var(--ok)' : 'var(--bad)'};background:${V.auditVerificationResult.valid ? '#16a34a14' : '#dc262614'}">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="t ${V.auditVerificationResult.valid ? 'ok' : 'bad'}">${V.auditVerificationResult.valid ? 'Chain Verified' : 'Integrity Failure'}</span>
+            <b>${V.auditVerificationResult.valid ? `All ${V.auditVerificationResult.count} audit entries cryptographically sealed with SHA-256 integrity chain.` : `Tampering detected at entry #${V.auditVerificationResult.brokenIndex}!`}</b>
+          </div>
+          ${!V.auditVerificationResult.valid ? `<div style="font-size:12px;margin-top:6px;color:var(--bad)">${esc(V.auditVerificationResult.reason)}</div>` : ''}
+        </div>
+      ` : ''}
+      
+      <div style="max-width:360px;margin-bottom:12px">
+        <label>Select Institution to Inspect Audit Logs</label>
+        <select onchange="V.complianceSelectedInst=this.value;render()">
+          <option value="AICTE-1-4417" ${selectedInst === 'AICTE-1-4417' ? 'selected' : ''}>Apex Institute of Technology (AICTE-1-4417)</option>
+          <option value="AICTE-1-10029341" ${selectedInst === 'AICTE-1-10029341' ? 'selected' : ''}>St Joseph's College of Engineering (AICTE-1-10029341)</option>
+          <option value="AICTE-HQ" ${selectedInst === 'AICTE-HQ' ? 'selected' : ''}>AICTE Central Directorate HQ</option>
+        </select>
+      </div>
+
+      ${tb(
+        ['Timestamp', 'Actor', 'Role', 'Action', 'Target APAAR', 'Details', 'Previous Hash', 'SHA-256 Digest'],
+        relatedLogs.map(l => ({
+          cols: [
+            `<span class="m" style="font-size:11px">${esc(l.time)}</span>`,
+            `<b>${esc(l.actor)}</b>`,
+            esc(l.role),
+            `<span class="t ok">${esc(l.action)}</span>`,
+            l.apaar ? `<span class="m">${maskApaar(l.apaar)}</span>` : '<span class="mu">-</span>',
+            esc(l.details),
+            `<span class="m mu" title="${esc(l.prevHash || '')}">${esc((l.prevHash || '').slice(0, 8))}...</span>`,
+            `<span class="m" style="font-size:11px;font-weight:600" title="${esc(l.hash || '')}">${esc((l.hash || '').slice(0, 8))}...</span>`
+          ]
+        }))
+      )}
+    </div>
+  `;
+}
+
+function renderAicteVerification() {
+  const lookupId = (V.verificationLookupId || '').trim();
+  let match = null;
+  let isDual = false;
+
+  if (lookupId) {
+    match = DB.crossRecords.find(r => r.apaar === lookupId || r.apaar.replace(/-/g, '') === lookupId.replace(/-/g, ''));
+    if (match && match.enrolments.length > 1) {
+      isDual = true;
+    }
+  }
+
+  return `
+    <div class="c">
+      <h2>APAAR ID Cross-Verification & Sync Inspector</h2>
+      <div class="mu" style="margin-bottom:12px">Lookup student records across national databases to detect ghost admissions and dual enrolments.</div>
+
+      <form onsubmit="handleVerificationLookup(event)" style="display:flex;gap:10px;margin-bottom:8px">
+        <input type="text" id="verif-input" placeholder="XXXX-XXXX-XXXX" class="m" value="${esc(lookupId)}" oninput="onApaarInput(this)" style="max-width:320px" required>
+        <button type="submit" class="b">Verify</button>
+      </form>
+      <div class="mu" style="font-size:11px;margin-bottom:16px">
+        Try <b>9182-3841-0012</b>, <b>9182-7729-1092</b> (dual enrolment) or <b>9182-9001-3355</b>.
+      </div>
+
+      ${match ? `
+        ${isDual ? `
+          <div class="ban">
+            <b>Duplicate enrolment: active in ${match.enrolments.length} institutions.</b>
+            <div style="font-size:12px;margin-top:4px">Aadhaar Vault collision indicates duplicate enrollment across different AICTE colleges for the same academic cycle.</div>
+          </div>
+        ` : ''}
+
+        <div style="margin-bottom:16px">
+          ${kv([
+            { label: 'APAAR ID (Full)', val: match.apaar, mono: true },
+            { label: 'Derived ABC ID', val: `4021-${match.apaar.slice(5, 9)}-${match.apaar.slice(10, 14)}`, mono: true },
+            { label: 'Student Name (Masked)', val: maskName(match.name) },
+            { label: 'DigiLocker Status', val: 'Linked (mock), KYC verified' }
+          ])}
+        </div>
+
+        <h3>Active Institutional Enrolments</h3>
+        ${tb(
+          ['Institution', 'Category', 'ABC Credits', 'Enrolment Status'],
+          match.enrolments.map(e => ({
+            cols: [
+              `<b>${esc(e.inst)}</b>`,
+              esc(match.category),
+              `<b>${e.credits} credits</b>`,
+              `<span class="t ${isDual ? 'bad' : 'ok'}">${esc(e.status)}</span>`
+            ]
+          }))
+        )}
+      ` : lookupId ? `
+        <div class="mu" style="padding:12px;background:var(--so);border-radius:10px">No student record located for APAAR ID <span class="m">${esc(lookupId)}</span>.</div>
+      ` : ''}
+
+      <h3 style="margin-top:24px">Credit sync logs (simulated DigiLocker and ABC)</h3>
+      ${tb(
+        ['Time', 'Service', 'APAAR (Masked)', 'Operation', 'Result', 'Latency'],
+        DB.syncLogs.map(s => ({
+          cols: [
+            `<span class="m">${esc(s.time)}</span>`,
+            esc(s.service),
+            `<span class="m">${maskApaar(s.apaar)}</span>`,
+            esc(s.op),
+            `<span class="t ${s.result === 'Pass' ? 'ok' : 'bad'}">${esc(s.result)}</span>`,
+            `<span class="m mu">${esc(s.latency)}</span>`
+          ]
+        }))
+      )}
+    </div>
+  `;
+}
+
+function handleVerificationLookup(e) {
+  e.preventDefault();
+  const el = document.getElementById('verif-input');
+  V.verificationLookupId = (el ? el.value : '').trim();
+  render();
+}
+
+// ----------------------------------------------------------------------------
+// MODALS LOGIC
+// ----------------------------------------------------------------------------
+function openRejectModal(type, data) {
+  V.modal = { type, data };
+  render();
+}
+
+function confirmModalAction() {
+  if (!V.modal) return;
+  const m = V.modal;
+  const remarkEl = document.getElementById('modal-remark-input');
+  const remark = remarkEl ? remarkEl.value.trim() : '';
+
+  if (m.type === 'reject_credit') {
+    if (!remark) { toast('A rejection remark is mandatory.'); return; }
+    const cr = DB.pendingCreditUploads.find(item => item.id === m.data);
+    if (cr) {
+      cr.status = 'Rejected';
+      DB.pendingCreditUploads = DB.pendingCreditUploads.filter(item => item.id !== m.data);
+      // Add rejected row in student history
+      const semTerm = DB.terms.find(t => t.term === cr.term) || DB.terms[DB.terms.length - 1];
+      semTerm.courses.push({
+        code: cr.code,
+        name: cr.name,
+        credits: cr.credits,
+        grade: cr.grade,
+        status: 'Rejected',
+        remark
+      });
+      logAudit(S.user.name, 'College Admin', 'Credit Upload Rejected', cr.studentApaar, `Rejected ${cr.code}: ${remark}`);
+      toast('Credit upload rejected.');
+    }
+  } else if (m.type === 'reject_transfer') {
+    if (!remark) { toast('A rejection remark is mandatory.'); return; }
+    const tr = DB.transfers.find(item => item.id === m.data);
+    if (tr) {
+      tr.status = 'Rejected';
+      tr.remark = remark;
+      logAudit(S.user.name, 'College Admin', 'Credit Transfer Rejected', tr.studentApaar, `Rejected transfer ${tr.id}: ${remark}`);
+      toast('Transfer request rejected.');
+    }
+  } else if (m.type === 'freeze_seat') {
+    const alertItem = DB.aicteAlerts[m.data.idx];
+    if (alertItem) {
+      alertItem.frozen = true;
+      logAudit(S.user.name, 'AICTE Regulator', 'Seat Frozen', m.data.apaar, `Froze seat at ${m.data.inst} for duplicate APAAR ${m.data.apaar}`);
+      toast(`Seat frozen for APAAR ${m.data.apaar} at ${m.data.inst}.`);
+    }
+  }
+
+  V.modal = null;
+  render();
+}
+
+// ============================================================================
+// LOGIN SCREEN & MAIN RENDER DISPATCHER
+// ============================================================================
+
+function renderLandingShell(cardInnerHtml) {
+  return `
+    <div class="lp">
+      <div class="lp-frame" aria-hidden="true"></div>
+      <div class="lp-glow" aria-hidden="true"></div>
+      
+      <!-- 6 Floating Orbs -->
+      <div class="lp-orb lp-orb-1" aria-hidden="true"></div>
+      <div class="lp-orb lp-orb-2" aria-hidden="true"></div>
+      <div class="lp-orb lp-orb-3" aria-hidden="true"></div>
+      <div class="lp-orb lp-orb-4" aria-hidden="true"></div>
+      <div class="lp-orb lp-orb-5" aria-hidden="true"></div>
+      <div class="lp-orb lp-orb-6" aria-hidden="true"></div>
+
+      <!-- Top Nav -->
+      <header class="lp-nav">
+        <div class="lp-brand" onclick="L.isRegister=false;render()">
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none" stroke="#a78bfa" stroke-width="2" aria-hidden="true"><rect x="4" y="7" width="26" height="20" rx="4"/><circle cx="13" cy="16" r="3.5"/><path d="M8 23c1-3 9-3 10 0M21 14h5M21 19h5"/></svg>
+          <span class="lp-brand-name">APAAR-Sync</span>
+        </div>
+        <nav class="lp-nav-links" aria-label="Landing Navigation">
+          <a href="#features" class="lp-nav-link" onclick="event.preventDefault();toast('Platform Features: DigiLocker eKYC, ABC Credit Bank, AICTE Fraud Radar')">FEATURES</a>
+          <a href="#roles" class="lp-nav-link" onclick="event.preventDefault();toast('Roles: College Administrator, AICTE Regulator, Student')">ROLES</a>
+          <a href="#how" class="lp-nav-link" onclick="event.preventDefault();toast('How it works: Cryptographic SHA-256 Ledger & ECDSA P-256 Credentials')">HOW IT WORKS</a>
+          <a href="#roadmap" class="lp-nav-link" onclick="event.preventDefault();toast('Roadmap: National AICTE roll-out for 2026-27 academic cycle')">ROADMAP</a>
+        </nav>
+        <div class="lp-nav-actions">
+          <button type="button" class="lp-nav-new" onclick="L.isRegister=true;L.regStep=1;L.error='';render()">NEW ACCOUNT</button>
+          <button type="button" class="lp-nav-signin" onclick="L.isRegister=false;render();const c=document.getElementById('lp-card');if(c)c.scrollIntoView({behavior:'smooth'})">SIGN IN</button>
+        </div>
+      </header>
+
+      <!-- Centered Hero -->
+      <section class="lp-hero">
+        <h1>One Student, One ID,<br>One Version of the <span class="lp-rainbow-word">Truth</span></h1>
+        <p class="lp-hero-sub">The secure layer on top of APAAR and DigiLocker that validates, flags and monitors student data for AICTE institutions.</p>
+        <button type="button" class="lp-btn-getstarted" onclick="const f=document.querySelector('#lp-card input');if(f){f.focus();document.getElementById('lp-card').scrollIntoView({behavior:'smooth'});}">GET STARTED</button>
+      </section>
+
+      <!-- Centered Glass Sign-in Card -->
+      <div class="lp-card-wrapper">
+        <div class="lp-card" id="lp-card">
+          ${cardInnerHtml}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderRegistrationScreen() {
+  const subtitle = L.tab === 'aicte_regulator'
+    ? 'First-time registration for AICTE officers. Only whitelisted official emails and officer IDs can register.'
+    : 'Register a college administrator account with your AICTE institution ID and institutional email.';
+
+  const formHtml = `
+    <h2 style="font-size:20px;font-weight:700;color:#fff;margin:0 0 4px">Create Account</h2>
+    <div style="font-size:12px;color:#c9c6de;margin-bottom:18px">${esc(subtitle)} (Step ${L.regStep} of 2)</div>
+
+    <div class="lp-tabs" role="tablist">
+      <button type="button" class="lp-tab ${L.tab === 'college_admin' ? 'lp-tab-active' : ''}" onclick="L.tab='college_admin';L.regStep=1;L.error='';render()">College Admin</button>
+      <button type="button" class="lp-tab ${L.tab === 'aicte_regulator' ? 'lp-tab-active' : ''}" onclick="L.tab='aicte_regulator';L.regStep=1;L.error='';render()">AICTE Regulator</button>
+      <button type="button" class="lp-tab ${L.tab === 'student' ? 'lp-tab-active' : ''}" onclick="L.tab='student';L.isRegister=false;L.error='';render()">Student</button>
+    </div>
+
+    ${L.regStep === 1 ? `
+      <form onsubmit="handleRegistrationStep1(event)">
+        ${L.tab === 'aicte_regulator' ? `
+          <label class="lp-label">Official email</label>
+          <input type="email" placeholder="name@aicte-india.org" class="lp-input" value="${esc(L.regEmail)}" oninput="L.regEmail=this.value" required>
+          <label class="lp-label">Officer ID</label>
+          <input type="text" placeholder="AICTE-OFF-0000" class="lp-input" style="font-family:'JetBrains Mono',monospace" value="${esc(L.regOfficerId)}" oninput="L.regOfficerId=this.value" required>
+          <div class="lp-error" role="alert">${esc(L.error)}</div>
+          <button type="submit" class="lp-btn-submit">Check eligibility</button>
+        ` : `
+          <label class="lp-label">AICTE institution ID</label>
+          <input type="text" placeholder="AICTE-1-0000000" class="lp-input" style="font-family:'JetBrains Mono',monospace" value="${esc(L.regInstId)}" oninput="L.regInstId=this.value" required>
+          <label class="lp-label">Institutional email</label>
+          <input type="email" placeholder="name@college.edu.in" class="lp-input" value="${esc(L.regEmail)}" oninput="L.regEmail=this.value" required>
+          <div class="lp-error" role="alert">${esc(L.error)}</div>
+          <button type="submit" class="lp-btn-submit">Verify institution</button>
+        `}
+      </form>
+    ` : `
+      <form onsubmit="handleRegistrationStep2(event)">
+        <div style="font-size:12px;color:#c9c6de;margin-bottom:12px">Registering <b>${esc(L.regEmail)}</b>.</div>
+        <div style="border:1px dashed rgba(167,139,250,0.5);background:rgba(124,58,237,0.1);border-radius:12px;padding:12px;margin:4px 0 14px">
+          <b style="color:#e9d5ff;font-size:12px">Mock verification email (Sandbox)</b>
+          <div style="font-size:11px;color:#b4b1cc;margin-top:2px">Simulated inbox for ${esc(L.regEmail)}. Valid for 10 minutes.</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:22px;letter-spacing:0.2em;margin-top:8px;font-weight:700;color:#38bdf8">${esc(L.mockOtpSent)}</div>
+        </div>
+
+        <label class="lp-label">6-digit OTP</label>
+        <input type="text" maxlength="6" class="lp-input" style="font-family:'JetBrains Mono',monospace" value="${esc(L.otp)}" oninput="L.otp=this.value" required>
+
+        <label class="lp-label">Full name</label>
+        <input type="text" class="lp-input" value="${esc(L.regName)}" oninput="L.regName=this.value" required>
+
+        ${L.tab === 'college_admin' ? `
+          <label class="lp-label">Mobile number (10 digits)</label>
+          <input type="tel" maxlength="10" placeholder="98XXXXXXXX" class="lp-input" value="${esc(L.regMobile)}" oninput="L.regMobile=this.value" required>
+        ` : ''}
+
+        <label class="lp-label">Password</label>
+        <input type="password" class="lp-input" value="${esc(L.regPwd)}" oninput="L.regPwd=this.value" required>
+        <div style="font-size:11px;color:#b4b1cc;margin-top:4px">At least 8 characters with upper case, lower case and a digit.</div>
+
+        <label class="lp-label">Confirm password</label>
+        <input type="password" class="lp-input" value="${esc(L.regConfirmPwd)}" oninput="L.regConfirmPwd=this.value" required>
+
+        <div class="lp-error" role="alert">${esc(L.error)}</div>
+        <button type="submit" class="lp-btn-submit">Create account</button>
+
+        <div style="display:flex;justify-content:space-between;margin-top:14px">
+          <button type="button" class="lp-link-btn" onclick="toast('A new OTP was sent: ' + L.mockOtpSent)">Resend OTP</button>
+          <button type="button" class="lp-link-btn" onclick="L.regStep=1;L.error='';render()">Back</button>
+        </div>
+      </form>
+    `}
+
+    <div style="margin-top:20px;font-size:12px;text-align:center;color:#b4b1cc">
+      Already registered? <button type="button" class="lp-link-btn" onclick="L.isRegister=false;L.error='';render()">Sign in</button>
+    </div>
+
+    <details class="lp-demo-details">
+      <summary>Demo details</summary>
+      <div class="lp-demo-box">
+        ${L.tab === 'aicte_regulator' ? `
+          <div>Email: <b>officer.test@aicte-india.org</b></div>
+          <div>Officer ID: <b>AICTE-OFF-1001</b></div>
+        ` : `
+          <div>Institution ID: <b>AICTE-1-10029341</b></div>
+          <div>Email: <b>admin@stjosephs.edu.in</b></div>
+        `}
+        <button type="button" class="lp-btn-outline" style="width:100%;margin-top:8px" onclick="fillDemoRegister()">Fill demo</button>
+      </div>
+    </details>
+  `;
+
+  return renderLandingShell(formHtml);
+}
+
+async function handleVerifyCertSubmit() {
+  const token = (L.certToken || '').trim();
+  if (!token) {
+    L.certResult = { valid: false, error: 'Please enter or paste a signed certificate token.' };
+    render();
+    return;
+  }
+  L.certResult = await verifyOfflineCertificate(token);
+  render();
+}
+
+async function loadSampleCertForVerification() {
+  L.certToken = await generateOfflineCertificate();
+  L.certResult = null;
+  render();
+  setTimeout(() => handleVerifyCertSubmit(), 50);
+}
+
+async function loadTamperedCertForVerification() {
+  const token = await generateOfflineCertificate();
+  const parts = token.split('.');
+  const payload = JSON.parse(unb64u(parts[0]));
+  payload.credits = 150;
+  payload.nameMasked = 'Malicious Actor';
+  L.certToken = `${b64u(JSON.stringify(payload))}.${parts[1]}.${parts[2]}`;
+  L.certResult = null;
+  render();
+  setTimeout(() => handleVerifyCertSubmit(), 50);
+}
+
+function renderCertVerificationResult() {
+  if (!L.certResult) {
+    return '<div style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:#b4b1cc;margin-top:10px">Paste or load a certificate token above and click Verify token.</div>';
+  }
+  if (L.certResult.valid) {
+    const p = L.certResult.payload;
+    return `
+      <div style="border:1px solid #22c55e;background:rgba(34,197,94,0.12);border-radius:14px;padding:14px;margin-top:12px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="background:#22c55e;color:#0b0a12;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px;text-transform:uppercase">Valid</span>
+          <b style="color:#4ade80;font-size:13px">Cryptographically Verified Certificate</b>
+        </div>
+        <div style="font-size:11px;color:#c9c6de;margin:6px 0 10px">Validated locally with ECDSA P-256 WebCrypto · Zero network reliance.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:11px;font-family:'JetBrains Mono',monospace">
+          <div style="background:rgba(255,255,255,0.04);padding:8px;border-radius:8px"><span style="color:#8b85ad;display:block;font-size:9px">STUDENT</span><b>${esc(p.nameMasked)}</b></div>
+          <div style="background:rgba(255,255,255,0.04);padding:8px;border-radius:8px"><span style="color:#8b85ad;display:block;font-size:9px">APAAR ID</span><b>${esc(p.apaarMasked)}</b></div>
+          <div style="background:rgba(255,255,255,0.04);padding:8px;border-radius:8px"><span style="color:#8b85ad;display:block;font-size:9px">ABC CREDITS</span><b style="color:#38bdf8">${esc(p.credits)} credits</b></div>
+          <div style="background:rgba(255,255,255,0.04);padding:8px;border-radius:8px"><span style="color:#8b85ad;display:block;font-size:9px">INSTITUTION</span><b>${esc(p.institution)}</b></div>
+        </div>
+      </div>
+    `;
+  }
+  return `
+    <div style="border:1px solid #ef4444;background:rgba(239,68,68,0.12);border-radius:14px;padding:14px;margin-top:12px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="background:#ef4444;color:#ffffff;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px;text-transform:uppercase">Tampered</span>
+        <b style="color:#f87171;font-size:13px">Signature Verification Failed</b>
+      </div>
+      <div style="font-size:11px;color:#fca5a5;margin-top:6px">${esc(L.certResult.error)}</div>
+      <div style="font-size:10px;color:#b4b1cc;margin-top:6px;font-family:'JetBrains Mono',monospace">Payload bytes or signature does not match the certifying authority's public key.</div>
+    </div>
+  `;
+}
+
+// Normal Sign In Screen
+function renderLoginScreen() {
+  if (L.isRegister) {
+    return renderRegistrationScreen();
+  }
+
+  const isLocked = Date.now() < S.lockoutUntil;
+  const remainingLock = Math.max(0, Math.ceil((S.lockoutUntil - Date.now()) / 1000));
+
+  const formHtml = `
+    <h2 style="font-size:20px;font-weight:700;color:#fff;margin:0 0 4px">Portal Sign In</h2>
+    <div style="font-size:12px;color:#c9c6de;margin-bottom:18px">Select your statutory role to authenticate.</div>
+
+    <div class="lp-tabs" role="tablist">
+      <button type="button" class="lp-tab ${L.tab === 'college_admin' ? 'lp-tab-active' : ''}" onclick="L.tab='college_admin';L.studentStep=1;L.error='';render()">College Admin</button>
+      <button type="button" class="lp-tab ${L.tab === 'aicte_regulator' ? 'lp-tab-active' : ''}" onclick="L.tab='aicte_regulator';L.studentStep=1;L.error='';render()">AICTE Regulator</button>
+      <button type="button" class="lp-tab ${L.tab === 'student' ? 'lp-tab-active' : ''}" onclick="L.tab='student';L.studentStep=1;L.error='';render()">Student</button>
+      <button type="button" class="lp-tab ${L.tab === 'verify_cert' ? 'lp-tab-active' : ''}" onclick="L.tab='verify_cert';L.studentStep=1;L.error='';render()">Verify cert</button>
+    </div>
+
+    ${L.tab === 'verify_cert' ? `
+      <div>
+        <div style="font-size:13px;font-weight:600;color:#e9d5ff">Offline Certificate Verification (Zero-Trust)</div>
+        <div style="font-size:11px;color:#b4b1cc;margin:4px 0 12px">
+          Cryptographically validates ECDSA P-256 signatures with zero network reliance.
+        </div>
+        <label class="lp-label">Certificate Token (Base64)</label>
+        <textarea rows="3" placeholder="Paste cryptographic certificate token here..." class="lp-input" style="font-family:'JetBrains Mono',monospace;font-size:11px;resize:vertical" oninput="L.certToken=this.value">${esc(L.certToken || '')}</textarea>
+        
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+          <button type="button" class="lp-btn-submit" style="margin-top:0;flex:2;min-width:140px" onclick="handleVerifyCertSubmit()">Verify token</button>
+          <button type="button" class="lp-btn-outline" style="flex:1;min-width:130px;padding:12px" onclick="loadSampleCertForVerification()">Load sample</button>
+          <button type="button" class="lp-btn-outline lp-btn-danger" style="flex:1;min-width:130px;padding:12px" onclick="loadTamperedCertForVerification()">Tampered test</button>
+        </div>
+        ${renderCertVerificationResult()}
+      </div>
+    ` : `
+      <form onsubmit="handleLoginSubmit(event)">
+        ${L.tab === 'student' ? `
+          ${L.studentStep === 1 ? `
+            <label class="lp-label">APAAR ID</label>
+            <input type="text" inputmode="numeric" placeholder="XXXX-XXXX-XXXX" class="lp-input" style="font-family:'JetBrains Mono',monospace" value="${esc(L.apaar)}" oninput="onApaarInput(this)" required>
+
+            <label class="lp-label">Date of birth</label>
+            <input type="date" class="lp-input" value="${esc(L.dob)}" oninput="L.dob=this.value" required>
+
+            <div class="lp-error" role="alert">${esc(isLocked ? `Too many attempts. Try again in ${remainingLock} seconds.` : L.error)}</div>
+            <button type="submit" class="lp-btn-submit" ${isLocked ? 'disabled' : ''}>Send OTP</button>
+          ` : `
+            <label class="lp-label">6-digit OTP</label>
+            <input type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="123456" class="lp-input" style="font-family:'JetBrains Mono',monospace" value="${esc(L.otp)}" oninput="L.otp=this.value" required>
+            <div style="font-size:11px;color:#a78bfa;margin-top:4px;font-family:'JetBrains Mono',monospace">Demo OTP: 123456</div>
+
+            <div class="lp-error" role="alert">${esc(isLocked ? `Too many attempts. Try again in ${remainingLock} seconds.` : L.error)}</div>
+            <button type="submit" class="lp-btn-submit" ${isLocked ? 'disabled' : ''}>Sign in</button>
+          `}
+        ` : `
+          <label class="lp-label">Email</label>
+          <input type="email" placeholder="name@institution.edu" class="lp-input" value="${esc(L.email)}" oninput="L.email=this.value" required>
+
+          <label class="lp-label">Password</label>
+          <input type="password" class="lp-input" value="${esc(L.password)}" oninput="L.password=this.value" required>
+
+          <div class="lp-error" role="alert">${esc(isLocked ? `Too many attempts. Try again in ${remainingLock} seconds.` : L.error)}</div>
+          <button type="submit" class="lp-btn-submit" ${isLocked ? 'disabled' : ''}>Sign in</button>
+        `}
+      </form>
+
+      <div style="margin-top:16px;font-size:12px;text-align:center;color:#b4b1cc">
+        ${L.tab === 'college_admin' ? `
+          New college administrator? <button type="button" class="lp-link-btn" onclick="L.isRegister=true;L.regStep=1;L.error='';render()">Create account</button>
+        ` : L.tab === 'aicte_regulator' ? `
+          First time here? <button type="button" class="lp-link-btn" onclick="L.isRegister=true;L.regStep=1;L.error='';render()">Create account</button>
+        ` : `
+          Students sign in with their APAAR ID. Accounts come from college admission.
+        `}
+      </div>
+
+      <div class="lp-footer-row">
+        <span class="lp-footer-note">Sandbox build, synthetic data</span>
+        <button type="button" class="lp-link-btn" onclick="fillDemoCredentials()">Fill demo</button>
+      </div>
+
+      <details class="lp-demo-details">
+        <summary>Demo credentials</summary>
+        <div class="lp-demo-box">
+          ${L.tab === 'college_admin' ? `
+            <div>Email: <b>registrar@apex.edu</b></div>
+            <div>Password: <b>Demo@123</b></div>
+          ` : L.tab === 'aicte_regulator' ? `
+            <div>Email: <b>officer@aicte.gov.in</b></div>
+            <div>Password: <b>Demo@123</b></div>
+          ` : `
+            <div>APAAR ID: <b>9182-3841-0012</b></div>
+            <div>Date of Birth: <b>2004-05-14</b></div>
+            <div>Mock OTP: <b>123456</b></div>
+          `}
+          <div class="lp-btn-row">
+            <button type="button" class="lp-btn-outline" onclick="fillDemoCredentials()">Fill demo</button>
+            <button type="button" class="lp-btn-outline lp-btn-danger" onclick="resetDemoData()">Reset demo data</button>
+          </div>
+        </div>
+      </details>
+    `}
+  `;
+
+  return renderLandingShell(formHtml);
+}
+
+// Global modal overlay renderer
+function renderModal() {
+  if (!V.modal) return '';
+  const m = V.modal;
+  if (m.type === 'profile') {
+    return `<div class="ov"><div class="c"><h2>${esc(m.title)}</h2>${m.html}</div></div>`;
+  }
+  const titles = {
+    reject_credit: 'Reject Credit Upload',
+    reject_transfer: 'Reject Credit Transfer Request',
+    freeze_seat: 'Confirm Freeze Seat'
+  };
+  return `
+    <div class="ov">
+      <div class="c">
+        <h2>${esc(titles[m.type] || 'Action Remark')}</h2>
+        ${m.type === 'freeze_seat' ? `
+          <div class="mu" style="margin:8px 0 12px">
+            Are you sure you want to freeze this admission seat at <b>${esc(m.data.inst)}</b> for APAAR ID <b>${esc(m.data.apaar)}</b>?
+          </div>
+        ` : `
+          <div class="mu" style="margin:8px 0">Please enter mandatory statutory remark or reason for rejection:</div>
+          <textarea id="modal-remark-input" rows="3" placeholder="Enter reason for rejection..." required></textarea>
+        `}
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px">
+          <button class="b s" onclick="V.modal=null;render()">Cancel</button>
+          <button class="b ${m.type === 'freeze_seat' ? 'd' : 'd'}" onclick="confirmModalAction()">Confirm & Execute</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// Master Render Function
+async function render() {
+  const app = document.getElementById('app');
+  if (!app) return;
+
+  // 1. If nobody signed in: show Login
+  if (!S.token || !S.user) {
+    app.innerHTML = renderLoginScreen() + renderModal();
+    return;
+  }
+
+  // 2. Re-verify JWT on every render
+  let verified = null;
+  try {
+    verified = await verifyJwt(S.token);
+  } catch (err) {
+    verified = null;
+  }
+  if (!verified || !S.user || verified.role !== S.user.role) {
+    S.token = null;
+    S.user = null;
+    toast('Access denied. Please sign in again.');
+    app.innerHTML = renderLoginScreen() + renderModal();
+    return;
+  }
+
+  // 3. Render Role Views inside Shell
+  let bodyHtml = '';
+  let title = 'APAAR-Sync';
+  const role = S.user.role;
+
+  if (role === 'student') {
+    if (S.page === 'home') { bodyHtml = renderStudentHome(); title = 'APAAR-Sync'; }
+    else if (S.page === 'personal') { bodyHtml = renderStudentPersonal(); title = 'Personal details'; }
+    else if (S.page === 'academic') { bodyHtml = renderStudentAcademic(); title = 'Academic details'; }
+    else if (S.page === 'courses') { bodyHtml = renderStudentCourses(); title = 'Courses enrolled'; }
+    else if (S.page === 'internship') { bodyHtml = renderStudentInternships(); title = 'Internship'; }
+    else if (S.page === 'credit_actions') { bodyHtml = renderStudentCreditActions(); title = 'Credit actions'; }
+    else if (S.page === 'documents') { bodyHtml = renderStudentDocuments(); title = 'Documents'; }
+  } else if (role === 'college_admin') {
+    if (S.page === 'home') { bodyHtml = renderAdminHome(); title = 'APAAR-Sync'; }
+    else if (S.page === 'departments') { bodyHtml = renderAdminDepartments(); title = 'Departments'; }
+    else if (S.page === 'faculty') { bodyHtml = renderAdminFaculty(); title = 'Faculty'; }
+    else if (S.page === 'admission') { bodyHtml = renderAdminAdmission(); title = 'Admission'; }
+    else if (S.page === 'students') { bodyHtml = renderAdminStudents(); title = 'Students'; }
+    else if (S.page === 'approvals') { bodyHtml = renderAdminApprovals(); title = 'Approvals'; }
+    else if (S.page === 'audit_log') { bodyHtml = renderAdminAuditLog(); title = 'Audit log'; }
+    else if (S.page === 'reports') { bodyHtml = renderAdminReports(); title = 'Reports'; }
+  } else if (role === 'aicte_regulator') {
+    if (S.page === 'home') { bodyHtml = renderAicteOverview(); title = 'APAAR-Sync'; }
+    else if (S.page === 'institutions') { bodyHtml = renderAicteInstitutions(); title = 'Institutions'; }
+    else if (S.page === 'compliance') { bodyHtml = renderAicteCompliance(); title = 'Compliance & audit centre'; }
+    else if (S.page === 'verification') { bodyHtml = renderAicteVerification(); title = 'Verification'; }
+  }
+
+  app.innerHTML = renderAppShell(bodyHtml, title) + renderModal();
+}
+
+// Initial render and startup self-check
+window.addEventListener('DOMContentLoaded', async () => {
+  if (typeof window === 'undefined' || !window.crypto || !window.crypto.subtle) {
+    L.error = 'Open via http://localhost:8080, not by double-clicking the file.';
+    render();
+    return;
+  }
+
+  // 1. Snapshot default DB for resetDemoData()
+  INITIAL_DB_SNAPSHOT = JSON.stringify(DB);
+
+  // 2. Load from localStorage if present
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      Object.assign(DB, parsed);
+    }
+  } catch (err) {
+    console.warn('Failed to load DB from localStorage:', err);
+  }
+
+  // 3. Initialize ECDSA certificate key pair
+  try {
+    await initCertKeys();
+  } catch (err) {
+    console.error('Failed to init cert keys:', err);
+  }
+
+  // 4. Startup self-check: verify demo users pwdHash
+  try {
+    for (const u of DB.users) {
+      if (u.salt) {
+        const computed = await pbkdf2Hash('Demo@123', u.salt);
+        if (computed !== u.pwdHash) {
+          console.error(`Hash mismatch for ${u.email}: expected ${computed}, found ${u.pwdHash}. Auto-fixing hash.`);
+          u.pwdHash = computed;
+        }
+      }
+    }
+  } catch (err) {
+    console.error('Startup self-check error:', err);
+  }
+
+  render();
+});
+</script>
+</body>
+</html>

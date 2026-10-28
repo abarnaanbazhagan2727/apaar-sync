@@ -1,0 +1,75 @@
+{
+  "description": "The six numerical features expected by the trained Random Forest prototype.",
+  "properties": {
+    "missing_fields": {
+      "description": "Count of missing or blank required fields (0-50).",
+      "examples": [
+        2
+      ],
+      "maximum": 50,
+      "minimum": 0,
+      "title": "Missing Fields",
+      "type": "integer"
+    },
+    "duplicate_flag": {
+      "description": "Duplicate indicator: 1 if duplicate suspected/found, 0 otherwise.",
+      "examples": [
+        0
+      ],
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Duplicate Flag",
+      "type": "integer"
+    },
+    "invalid_id_format": {
+      "description": "ID format indicator: 1 if APAAR ID format is invalid/malformed, 0 otherwise.",
+      "examples": [
+        1
+      ],
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Invalid Id Format",
+      "type": "integer"
+    },
+    "invalid_age": {
+      "description": "Age indicator: 1 if age outside permissible range (15-60), 0 otherwise.",
+      "examples": [
+        0
+      ],
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Invalid Age",
+      "type": "integer"
+    },
+    "invalid_department": {
+      "description": "Department: 1 if programme code is unrecognized, 0 otherwise.",
+      "examples": [
+        0
+      ],
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Invalid Department",
+      "type": "integer"
+    },
+    "invalid_marks": {
+      "description": "Marks: 1 if qualifying marks % is invalid (<0 or >100), 0 otherwise.",
+      "examples": [
+        0
+      ],
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Invalid Marks",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "missing_fields",
+    "duplicate_flag",
+    "invalid_id_format",
+    "invalid_age",
+    "invalid_department",
+    "invalid_marks"
+  ],
+  "title": "DataQualityFeaturesInput",
+  "type": "object"
+}
